@@ -19,10 +19,10 @@ export async function newUser(req: Request, res: Response) {
 export async function login(req:Request, res:Response) {
     let userExists = await get_user(req.body.username)
     
-    //console.log(userExists.rows)
     if (userExists && (userExists.rows[0]['password'] === req.body.password)) {
         return res.status(200).send(userExists.rows[0])
     }
+    console.log(req.body + "Invalid login details")
     return res.status(400).send(`Invalid login details`);
     
 }

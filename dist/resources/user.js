@@ -32,10 +32,10 @@ exports.newUser = newUser;
 function login(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let userExists = yield (0, user_1.get_user)(req.body.username);
-        //console.log(userExists.rows)
         if (userExists && (userExists.rows[0]['password'] === req.body.password)) {
             return res.status(200).send(userExists.rows[0]);
         }
+        console.log(req.body + "Invalid login details");
         return res.status(400).send(`Invalid login details`);
     });
 }
