@@ -3,15 +3,27 @@ import { open } from 'sqlite';
 import { Pool} from "pg";
 
 
+
 export async function dbConnection(){
-  const pg = new Pool({
-    user: "hope",
-    host: "localhost",
-    database: "ballroom",
-    password: "12345678kds",
-    port: 5432
-  });
-  return pg
+  if (process.env.DATABASE_URL) {
+    const pg = new Pool({
+      connectionString: process.env.DATABASE_URL,
+      ssl: {
+        rejectUnauthorized: false
+      }
+    })
+    return pg
+
+  }else{
+    const pg = new Pool({
+      user: "hope",
+      host: "localhost",
+      database: "ballroom",
+      password: "12345678kds",
+      port: 5432
+    });
+    return pg
+  }  
 }
 
 //export async function dbConnection() {

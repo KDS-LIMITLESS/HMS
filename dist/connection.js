@@ -13,14 +13,25 @@ exports.dbConnection = void 0;
 const pg_1 = require("pg");
 function dbConnection() {
     return __awaiter(this, void 0, void 0, function* () {
-        const pg = new pg_1.Pool({
-            user: "hope",
-            host: "localhost",
-            database: "ballroom",
-            password: "12345678kds",
-            port: 5432
-        });
-        return pg;
+        if (process.env.DATABASE_URL) {
+            const pg = new pg_1.Pool({
+                connectionString: process.env.DATABASE_URL,
+                ssl: {
+                    rejectUnauthorized: false
+                }
+            });
+            return pg;
+        }
+        else {
+            const pg = new pg_1.Pool({
+                user: "hope",
+                host: "localhost",
+                database: "ballroom",
+                password: "12345678kds",
+                port: 5432
+            });
+            return pg;
+        }
     });
 }
 exports.dbConnection = dbConnection;
