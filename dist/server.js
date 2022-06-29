@@ -13,9 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const dotenv_1 = __importDefault(require("dotenv"));
 const connection_1 = require("./connection");
+const item_1 = require("./models/item");
+const order_1 = require("./models/order");
 const user_1 = require("./models/user");
 const app = (0, express_1.default)();
+dotenv_1.default.config();
 app.use(express_1.default.json());
 app.use('', require('./routes/item'));
 app.use('', require('./routes/user'));
@@ -27,11 +31,12 @@ function startServer() {
                 return console.error(err.message);
             console.log(`Connected to Database!`);
         });
-        //await createItemsTable();
-        //await createOrderTable();
-        yield (0, user_1.createUsersTable)();
+        yield (0, item_1.createItemsTable)().then(() => console.log("done creating items tables"));
+        yield (0, order_1.createOrderTable)().then(() => console.log("done creating order table"));
+        yield (0, user_1.createUsersTable)().then(() => console.log("done creating user table"));
         //await db.query(`DROP TABLE ordert`)
-        app.listen(3000, () => {
+        const PORT = process.env.PORT || 3000;
+        app.listen(PORT, () => {
             console.log('Server Listening on port 3000');
         });
     });
