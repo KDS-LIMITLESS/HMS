@@ -14,9 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const connection_1 = require("./connection");
+const user_1 = require("./models/user");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use('', require('./routes/item'));
+app.use('', require('./routes/user'));
 function startServer() {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
@@ -25,7 +27,10 @@ function startServer() {
                 return console.error(err.message);
             console.log(`Connected to Database!`);
         });
-        // await create_items_table()
+        //await createItemsTable();
+        //await createOrderTable();
+        yield (0, user_1.createUsersTable)();
+        //await db.query(`DROP TABLE ordert`)
         app.listen(3000, () => {
             console.log('Server Listening on port 3000');
         });
