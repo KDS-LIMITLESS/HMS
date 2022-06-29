@@ -21,7 +21,7 @@ export async function login(req:Request, res:Response) {
     
     //console.log(userExists.rows)
     if (userExists && (userExists.rows[0]['password'] === req.body.password)) {
-        return res.status(400).send(` Welcome back ${userExists.rows[0]['username']}`)
+        return res.status(200).send(userExists.rows[0])
     }
     return res.status(400).send(`Invalid login details`);
     
