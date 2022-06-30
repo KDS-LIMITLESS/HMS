@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authorizeSuperAdmin = exports.authorizeUser = void 0;
+exports.authorizeSuperAdminNext = exports.checkPasscode = exports.authorizeUser = void 0;
 const user_1 = require("../models/user");
 function authorizeUser(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -30,7 +30,24 @@ function authorizeUser(req, res, next) {
     });
 }
 exports.authorizeUser = authorizeUser;
-function authorizeSuperAdmin(req, res, next) {
+function checkPasscode(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        //let user: any
+        try {
+            let userExists = yield (0, user_1.get_user)(req.body.username);
+            if (userExists && (req.body.passcode === userExists.rows[0]['passcode']) && (req.body.role === 'Super Admin')) {
+                return res.status(200).send("OK");
+            }
+        }
+        catch (err) {
+            console.log(err);
+            return res.status(500).send("An error Occured!");
+        }
+        return res.status(400).send("Please login to continue");
+    });
+}
+exports.checkPasscode = checkPasscode;
+function authorizeSuperAdminNext(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         //let user: any
         try {
@@ -46,4 +63,4 @@ function authorizeSuperAdmin(req, res, next) {
         return res.status(400).send("Please login to continue");
     });
 }
-exports.authorizeSuperAdmin = authorizeSuperAdmin;
+exports.authorizeSuperAdminNext = authorizeSuperAdminNext;

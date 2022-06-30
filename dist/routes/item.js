@@ -10,5 +10,5 @@ const user_1 = require("../middlewares/user");
 exports.router = express_1.default.Router();
 exports.router.get('/items', item_1.getItem);
 exports.router.get('/items/category', item_1.getItemsInCategory);
-exports.router.post('/new-item', user_1.authorizeSuperAdmin, item_1.addNewItem);
+exports.router.post('/new-item', user_1.authorizeSuperAdminNext, item_1.addNewItem);
 module.exports = exports.router;

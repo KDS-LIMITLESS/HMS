@@ -1,12 +1,13 @@
 import express from 'express'
 import { newUser, login } from "../resources/user";
-import { authorizeSuperAdmin } from "../middlewares/user";
+import { checkPasscode, authorizeSuperAdminNext } from "../middlewares/user";
 
 
 export const router = express.Router()
 
 
-router.post('/new-user', authorizeSuperAdmin, newUser)
+router.post('/new-user', authorizeSuperAdminNext, newUser)
 router.post('/login', login)
+router.post('/check-passcode', checkPasscode)
 
 module.exports = router;
