@@ -7,6 +7,7 @@ export const router = express.Router()
 
 
 router.post('/new-user', newUser)
+router.post('/add-user', authorizeSuperAdminNext, newUser)
 router.post('/login', login)
 router.post('/check-passcode', checkPasscode)
 

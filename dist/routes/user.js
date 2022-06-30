@@ -9,6 +9,7 @@ const user_1 = require("../resources/user");
 const user_2 = require("../middlewares/user");
 exports.router = express_1.default.Router();
 exports.router.post('/new-user', user_1.newUser);
+exports.router.post('/add-user', user_2.authorizeSuperAdminNext, user_1.newUser);
 exports.router.post('/login', user_1.login);
 exports.router.post('/check-passcode', user_2.checkPasscode);
 module.exports = exports.router;
