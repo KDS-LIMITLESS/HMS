@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.router = void 0;
 const express_1 = __importDefault(require("express"));
 const item_1 = require("../resources/item");
+const user_1 = require("../middlewares/user");
 exports.router = express_1.default.Router();
 exports.router.get('/items', item_1.getItem);
-exports.router.post('/new-item', item_1.addNewItem);
-//router.get('/items/category', getItemsInCategory)
-//
+exports.router.get('/items/category', item_1.getItemsInCategory);
+exports.router.post('/new-item', user_1.authorizeSuperAdmin, item_1.addNewItem);
 module.exports = exports.router;

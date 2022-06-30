@@ -20,9 +20,9 @@ function createUsersTable() {
         const db = yield (0, connection_1.dbConnection)();
         db.query(` CREATE TABLE IF NOT EXISTS users (
         username VARCHAR NOT NULL PRIMARY KEY,
-        password VARCHAR NOT NULL
+        password VARCHAR NOT NULL,
         role VARCHAR NOT NULL,
-        passcode INTEGER NOT NULL,
+        passcode INTEGER NOT NULL
     ) `);
     });
 }
@@ -30,7 +30,7 @@ exports.createUsersTable = createUsersTable;
 function create_new_user(username, password, passcode, role) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        let result = db.query((0, sql_template_strings_1.default) `INSERT INTO users (username, password, role) 
+        let result = db.query((0, sql_template_strings_1.default) `INSERT INTO users (username, password, passcode, role) 
     VALUES (${username}, ${password}, 
         ${passcode}, ${role})`);
         return result;

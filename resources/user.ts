@@ -25,6 +25,7 @@ export async function login(req:Request, res:Response) {
     const PSW = bcrypt.compare(req.body.password, userExists?.rows[0]['password'])
     
     if (userExists && await PSW) {
+        
         return res.status(200).send(userExists.rows[0])
     }
     console.log(JSON.stringify(req.body) + " Invalid login details")

@@ -45,7 +45,7 @@ function getItemsInCategory(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const reqBody = req.body;
         const result = yield (0, item_1.get_all_items_with_category)(reqBody['category']);
-        return res.status(200).send(result);
+        return res.status(200).send(result.rows);
     });
 }
 exports.getItemsInCategory = getItemsInCategory;
