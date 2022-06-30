@@ -38,12 +38,13 @@ function checkPasscode(req, res) {
             if (userExists && (req.body.passcode === userExists.rows[0]['passcode']) && (req.body.role === 'Super Admin')) {
                 return res.status(200).send("OK");
             }
+            console.log(JSON.stringify(req.body));
+            return res.status(400).send("Please login to continue");
         }
         catch (err) {
             console.log(err);
             return res.status(500).send("An error Occured!");
         }
-        return res.status(400).send("Please login to continue");
     });
 }
 exports.checkPasscode = checkPasscode;
