@@ -6,14 +6,20 @@ export async function createUsersTable(){
 
     db.query(` CREATE TABLE IF NOT EXISTS users (
         username VARCHAR NOT NULL PRIMARY KEY,
-        password VARCHAR NOT NULL
+        password VARCHAR NOT NULL,
+        role VARCHAR NOT NULL,
+        passcode INTEGER NOT NULL
     ) `)
 }
 
-export async function create_new_user(username:string, password:string){
+export async function create_new_user(username:string, password:string, 
+    passcode: number, role:string) 
+{
     const db = await dbConnection();
     
-    let result = db.query(SQL `INSERT INTO users (username, password) VALUES (${username}, ${password})`);
+    let result = db.query(SQL `INSERT INTO users (username, password, passcode, role) 
+    VALUES (${username}, ${password}, 
+        ${passcode}, ${role})`);
    
     return result;
 }
