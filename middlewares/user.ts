@@ -24,7 +24,7 @@ export async function checkPasscode(req: Request, res: Response){
 
     try {
         let userExists = await get_user(req.body.username)
-        if (userExists && (req.body.passcode === userExists.rows[0]['passcode']) && (req.body.role === 'Super Admin') ){
+        if (userExists && (req.body.role === 'Super Admin') && (req.body.passcode === userExists.rows[0]['passcode'])){
             return res.status(200).send("OK") 
         } 
         console.log(JSON.stringify(req.body))
