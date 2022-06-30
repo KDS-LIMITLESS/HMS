@@ -53,7 +53,7 @@ function authorizeSuperAdminNext(req, res, next) {
         //let user: any
         try {
             let userExists = yield (0, user_1.get_user)(req.body.username);
-            if (userExists && (req.body.passcode === userExists.rows[0]['passcode']) && (req.body.role === 'Super Admin')) {
+            if (userExists && (userExists.rows[0]['role'] === 'Super Admin') && (req.body.passcode === userExists.rows[0]['passcode'])) {
                 next();
             }
             console.log(req.body);
