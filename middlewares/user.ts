@@ -40,9 +40,9 @@ export async function authorizeSuperAdminNext(req: Request, res: Response, next:
     //let user: any
 
     try {
-        let userExists = await get_user(req.body.username)
-        if (userExists && ( userExists.rows[0]['role'] === 'Super Admin') && (req.body.passcode === userExists.rows[0]['passcode']) ){
-            next() 
+        let userExists = await get_user(req.body.activeUser)
+        if (userExists && ( userExists.rows[0]['role'] === 'Super Admin') && (req.body.activePasscode === userExists.rows[0]['passcode']) ){
+            next();
         } 
         console.log(req.body)
         return res.status(400).send("Please login to continue")
@@ -50,6 +50,5 @@ export async function authorizeSuperAdminNext(req: Request, res: Response, next:
     catch(err) {
         console.log(err);
         return res.status(500).send("An error Occured!")
-    }
-       
+    }  
 }
