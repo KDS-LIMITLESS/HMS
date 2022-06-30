@@ -35,7 +35,7 @@ function checkPasscode(req, res) {
         //let user: any
         try {
             let userExists = yield (0, user_1.get_user)(req.body.username);
-            if (userExists && (req.body.role === 'Super Admin') && (req.body.passcode === userExists.rows[0]['passcode'])) {
+            if (userExists && (userExists.rows[0]['role'] === 'Super Admin') && (req.body.passcode === userExists.rows[0]['passcode'])) {
                 return res.status(200).send("OK");
             }
             console.log(JSON.stringify(req.body));
