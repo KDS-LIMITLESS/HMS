@@ -6,7 +6,7 @@ import { checkPasscode, authorizeSuperAdminNext } from "../middlewares/user";
 export const router = express.Router()
 
 
-router.post('/new-user', authorizeSuperAdminNext, newUser)
+router.post('/new-user', newUser)
 router.post('/login', login)
 router.post('/check-passcode', checkPasscode)
 

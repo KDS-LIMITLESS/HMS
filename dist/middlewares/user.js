@@ -56,12 +56,13 @@ function authorizeSuperAdminNext(req, res, next) {
             if (userExists && (req.body.passcode === userExists.rows[0]['passcode']) && (req.body.role === 'Super Admin')) {
                 next();
             }
+            console.log(req.body);
+            return res.status(400).send("Please login to continue");
         }
         catch (err) {
             console.log(err);
             return res.status(500).send("An error Occured!");
         }
-        return res.status(400).send("Please login to continue");
     });
 }
 exports.authorizeSuperAdminNext = authorizeSuperAdminNext;

@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const connection_1 = require("./connection");
-const user_1 = require("./models/user");
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 app.use(express_1.default.json());
@@ -31,7 +30,7 @@ function startServer() {
         });
         // await createItemsTable().then(() => console.log("done creating items tables"));
         // await createOrderTable().then(() => console.log("done creating order table"));
-        yield (0, user_1.createUsersTable)().then(() => console.log("done creating user table"));
+        // await createUsersTable().then(() => console.log("done creating user table")); 
         // await db.query(`DROP TABLE users`)
         const PORT = process.env.PORT || 3000;
         app.listen(PORT, () => {
