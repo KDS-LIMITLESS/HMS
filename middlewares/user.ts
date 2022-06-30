@@ -42,10 +42,13 @@ export async function authorizeSuperAdminNext(req: Request, res: Response, next:
     try {
         let userExists = await get_user(req.body.activeUser)
         if (userExists && ( userExists.rows[0]['role'] === 'Super Admin') && (req.body.activePasscode === userExists.rows[0]['passcode']) ){
+            console.log("calling Next")
             next();
-        } 
-        console.log(req.body)
-        return res.status(400).send("Please login to continue")
+        }else {
+            console.log(req.body)
+            return res.status(400).send("Please login to continue")
+        }
+        
     }
     catch(err) {
         console.log(err);
