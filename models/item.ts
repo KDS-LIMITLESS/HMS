@@ -9,7 +9,7 @@ export async function createItemsTable() {
     item(
         product VARCHAR UNIQUE NOT NULL PRIMARY KEY,
         price INTEGER NOT NULL,
-        category VARCHAR 
+        category VARCHAR NOT NULL, image VARCHAR NOT NULL
     )`, 
     (err, result) =>{
         if(err) return console.error(err.message);
@@ -30,6 +30,13 @@ export async function get_item(product: string) {
     if ((await result).rowCount === 0) return null
     return result
 }
+
+export async function get_product_price(product: string){
+    const db = await dbConnection();
+    let result = db.query(SQL `SELECT price FROM item WHERE product = ${product}`)
+    if ((await result).rowCount === 0) return null;
+    return (await result).rows[0]['price']
+}
  
 export async function get_all_items_with_category(itemCategory: string){
     const db = await dbConnection();
@@ -37,9 +44,9 @@ export async function get_all_items_with_category(itemCategory: string){
     return result
 }
 
-export async function add_item(product:string, price:number, category:string) {
+export async function add_item(product:string, price:number, category:string, image: string) {
     const db = await dbConnection();
-    let result = db.query(SQL `INSERT INTO item(product, price, category) 
-        VALUES(${product}, ${price}, ${category});`)
-    return result   
+    let result = db.query(SQL `INSERT INTO item(product, price, category, image) 
+        VALUES(${product}, ${price}, ${category}, ${image});`)
+    return await result   
 }

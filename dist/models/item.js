@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.add_item = exports.get_all_items_with_category = exports.get_item = exports.get_all_items = exports.createItemsTable = void 0;
+exports.add_item = exports.get_all_items_with_category = exports.get_product_price = exports.get_item = exports.get_all_items = exports.createItemsTable = void 0;
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const connection_1 = require("../connection");
 function createItemsTable() {
@@ -22,7 +22,7 @@ function createItemsTable() {
     item(
         product VARCHAR UNIQUE NOT NULL PRIMARY KEY,
         price INTEGER NOT NULL,
-        category VARCHAR 
+        category VARCHAR NOT NULL, image VARCHAR NOT NULL
     )`, (err, result) => {
             if (err)
                 return console.error(err.message);
@@ -49,6 +49,16 @@ function get_item(product) {
     });
 }
 exports.get_item = get_item;
+function get_product_price(product) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        let result = db.query((0, sql_template_strings_1.default) `SELECT price FROM item WHERE product = ${product}`);
+        if ((yield result).rowCount === 0)
+            return null;
+        return (yield result).rows[0]['price'];
+    });
+}
+exports.get_product_price = get_product_price;
 function get_all_items_with_category(itemCategory) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
@@ -57,12 +67,12 @@ function get_all_items_with_category(itemCategory) {
     });
 }
 exports.get_all_items_with_category = get_all_items_with_category;
-function add_item(product, price, category) {
+function add_item(product, price, category, image) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        let result = db.query((0, sql_template_strings_1.default) `INSERT INTO item(product, price, category) 
-        VALUES(${product}, ${price}, ${category});`);
-        return result;
+        let result = db.query((0, sql_template_strings_1.default) `INSERT INTO item(product, price, category, image) 
+        VALUES(${product}, ${price}, ${category}, ${image});`);
+        return yield result;
     });
 }
 exports.add_item = add_item;
