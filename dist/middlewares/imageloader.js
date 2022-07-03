@@ -34,7 +34,7 @@ function uploadPicture(req, res) {
                 return res.status(200).send(`An error occured!`);
             }
             console.log(req.file);
-            res.send((_a = req.file) === null || _a === void 0 ? void 0 : _a.path);
+            return res.status(200).json({ imgPath: (_a = req.file) === null || _a === void 0 ? void 0 : _a.path });
         });
     });
 }
