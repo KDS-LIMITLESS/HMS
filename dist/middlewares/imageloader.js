@@ -28,12 +28,13 @@ const upload = (0, multer_1.default)({
 function uploadPicture(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         upload(req, res, (err) => {
+            var _a;
             if (err) {
                 console.log(err);
                 return res.status(200).send(`An error occured!`);
             }
             console.log(req.file);
-            res.send(`OK`);
+            res.send((_a = req.file) === null || _a === void 0 ? void 0 : _a.path);
         });
     });
 }
