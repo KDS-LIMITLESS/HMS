@@ -9,7 +9,7 @@ export const router = express.Router()
 router.get('/items', getItem)
 router.get('/items/category', getItemsInCategory)
 
-router.post('/new-item', /*authorizeSuperAdminNext,*/ addNewItem)
+router.post('/new-item', authorizeSuperAdminNext, addNewItem)
 router.post('/upload', uploadPicture)
 
 module.exports = router;
