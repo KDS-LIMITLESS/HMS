@@ -25,9 +25,10 @@ async function startServer(){
     // await createItemsTable().then(() => console.log("done creating items tables"));
     // await createOrderTable().then(() => console.log("done creating order table"));
     // await createUsersTable().then(() => console.log("done creating user table")); 
-    // await db.query(`DROP TABLE orders`)
+    await db.query(`DROP TABLE items`)
     
     const PORT = process.env.PORT || 3000
+    console.log(__dirname)
 
     app.listen(PORT, () => {
         console.log('Server Listening on port 3000')
