@@ -27,9 +27,12 @@ export async function addNewItem(req:Request, res: Response) {
         if (!err){
             add_item(reqBody['product'], reqBody['price'], reqBody['category'], reqBody['image'])
             .catch((err) => {
+                console.log('catching')
+                console.log(err.message)
                 return res.status(400).send(err.message)
             })
             .then(() => {
+                console.log('OK')
                 return res.status(200).send('OK')
             });
         } else {

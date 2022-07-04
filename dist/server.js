@@ -35,7 +35,6 @@ function startServer() {
         // await createUsersTable().then(() => console.log("done creating user table")); 
         // await db.query(`DROP TABLE items`)
         const PORT = process.env.PORT || 3000;
-        console.log(__dirname);
         app.listen(PORT, () => {
             console.log('Server Listening on port 3000');
         });
