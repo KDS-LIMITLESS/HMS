@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getItemsInCategory = exports.addNewItem = exports.getItem = void 0;
 const item_1 = require("../models/item");
 const fs_1 = __importDefault(require("fs"));
-global.__dirname = __dirname;
 function getItem(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -31,15 +30,19 @@ function getItem(req, res) {
 exports.getItem = getItem;
 function addNewItem(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log(`here now `);
         const reqBody = req.body;
+        console.log(`called body............`);
         if ((yield (0, item_1.get_item)(reqBody['product'])) !== null)
             return res.status(400)
                 .send(`${reqBody['product']} already exists`);
+        console.log(`read db............`);
         fs_1.default.access(`uploads/${req.body.image}`, (err) => {
+            console.log(`reading image path............`);
             if (!err) {
+                console.log(`no error............`);
                 (0, item_1.add_item)(reqBody['product'], reqBody['price'], reqBody['category'], reqBody['image'])
                     .catch((err) => {
-                    console.log(err.message);
                     return res.status(400).send(err.message);
                 })
                     .then(() => {

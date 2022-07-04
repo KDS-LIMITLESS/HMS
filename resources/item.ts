@@ -4,8 +4,6 @@ import { get_all_items, add_item, get_item,
 import { Request, Response } from "express";
 import fs from 'fs';
 
-global.__dirname = __dirname
-
 
 export async function getItem(req: Request, res: Response){
     try{
@@ -21,22 +19,19 @@ export async function getItem(req: Request, res: Response){
 
 export async function addNewItem(req:Request, res: Response) {
     const reqBody = req.body;
-
-    if (await get_item(reqBody['product']) !== null) return res.status(400)
-            .send(`${reqBody['product']} already exists`)
     
+    if (await get_item(reqBody['product']) !== null) return res.status(400)
+        .send(`${reqBody['product']} already exists`)
+
     fs.access(`uploads/${req.body.image}`, (err) => {
         if (!err){
-
             add_item(reqBody['product'], reqBody['price'], reqBody['category'], reqBody['image'])
             .catch((err) => {
-                console.log(err.message)
                 return res.status(400).send(err.message)
             })
             .then(() => {
                 return res.status(200).send('OK')
             });
-            
         } else {
             console.log(err.message)
             return res.status(400).send(err)
