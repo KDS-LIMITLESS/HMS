@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = exports.newUser = void 0;
+exports.checkPasscode = exports.login = exports.newUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = require("../models/user");
 function newUser(req, res) {
@@ -46,3 +46,20 @@ function login(req, res) {
     });
 }
 exports.login = login;
+function checkPasscode(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let userExists = yield (0, user_1.get_user)(req.body.username);
+        try {
+            if (userExists && (userExists.rows[0]['role'] === 'Super Admin') && (req.body.passcode === userExists.rows[0]['passcode'])) {
+                return res.status(200).send("OK");
+            }
+            console.log(JSON.stringify(req.body));
+            return res.status(400).send("Please login to continue");
+        }
+        catch (err) {
+            console.log(err);
+            return res.status(500).send("An error Occured!");
+        }
+    });
+}
+exports.checkPasscode = checkPasscode;

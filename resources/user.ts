@@ -31,3 +31,18 @@ export async function login(req:Request, res:Response) {
     console.log(JSON.stringify(req.body) + " Invalid login details")
     return res.status(400).send(`Invalid login details`);
 }
+
+export async function checkPasscode(req: Request, res: Response){
+    let userExists = await get_user(req.body.username)
+    try {
+        if (userExists && ( userExists.rows[0]['role'] === 'Super Admin') && (req.body.passcode === userExists.rows[0]['passcode'])){
+            return res.status(200).send("OK") 
+        } 
+        console.log(JSON.stringify(req.body))
+        return res.status(400).send("Please login to continue")
+    }
+    catch(err) {
+        console.log(err);
+        return res.status(500).send("An error Occured!")
+    }
+}
