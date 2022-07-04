@@ -23,6 +23,6 @@ export async function uploadPicture(req: Request, res: Response) {
             return res.status(200).send(`An error occured!`)
         }
         console.log(req.file);
-        return res.status(200).json({imgPath: req.file?.path})
+        return res.status(200).json({imgPath: req.file?.filename})
     })
 }
