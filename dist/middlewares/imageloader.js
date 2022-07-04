@@ -18,7 +18,8 @@ const path_1 = __importDefault(require("path"));
 const storage = multer_1.default.diskStorage({
     destination: './uploads',
     filename: function (req, file, cb) {
-        cb(null, path_1.default.basename(file.originalname) + '-' + Date.now());
+        cb(null, path_1.default.basename(file.originalname, path_1.default.extname(file.originalname))
+            + '-' + Date.now() + path_1.default.extname(file.originalname));
     }
 });
 const upload = (0, multer_1.default)({
@@ -34,7 +35,7 @@ function uploadPicture(req, res) {
                 return res.status(200).send(`An error occured!`);
             }
             console.log(req.file);
-            return res.status(200).json({ imgPath: (_a = req.file) === null || _a === void 0 ? void 0 : _a.path });
+            return res.status(200).json({ imgPath: (_a = req.file) === null || _a === void 0 ? void 0 : _a.filename });
         });
     });
 }
