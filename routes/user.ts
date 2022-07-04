@@ -1,6 +1,6 @@
 import express from 'express'
-import { newUser, login } from "../resources/user";
-import { checkPasscode, authorizeSuperAdminNext } from "../middlewares/user";
+import { newUser, login, checkPasscode } from "../resources/user";
+import { authorizeSuperAdminNext } from "../middlewares/user";
 
 
 export const router = express.Router()
