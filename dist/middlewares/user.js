@@ -31,9 +31,7 @@ function authorizeUser(req, res, next) {
 exports.authorizeUser = authorizeUser;
 function authorizeSuperAdminNext(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(`calling authorize user............`);
         try {
-            console.log(`entring try in authorize............`);
             let userExists = yield (0, user_1.get_user)(req.body.activeUser);
             if (userExists && (userExists.rows[0]['role'] === 'Super Admin') && (req.body.activePasscode === userExists.rows[0]['passcode'])) {
                 console.log("calling Next");
