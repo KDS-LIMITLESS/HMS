@@ -14,12 +14,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const cors_1 = __importDefault(require("cors"));
 const connection_1 = require("./connection");
 const item_1 = require("./models/item");
 const order_1 = require("./models/order");
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 app.use(express_1.default.json());
+app.use((0, cors_1.default)());
+app.use('image', express_1.default.static('uploads'));
 app.use('', require('./routes/item'));
 app.use('', require('./routes/user'));
 app.use('', require('./routes/order'));

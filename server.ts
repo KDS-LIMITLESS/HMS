@@ -1,5 +1,6 @@
 import express from 'express'
 import dotenv from "dotenv"
+import cors from 'cors'
 import { dbConnection } from './connection';
 import { createItemsTable } from './models/item';
 import { createOrderTable } from './models/order';
@@ -10,6 +11,8 @@ const app = express();
 dotenv.config()
 
 app.use(express.json())
+app.use(cors())
+app.use('image', express.static('uploads'));
 app.use('', require('./routes/item'));
 app.use('', require('./routes/user'));
 app.use('', require('./routes/order'));
