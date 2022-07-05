@@ -24,10 +24,12 @@ export async function addNewItem(req:Request, res: Response) {
         .send(`${reqBody['product']} already exists`)
 
     fs.access(`uploads/${req.body.image}`, (err) => {
+        console.log(`entering image access`)
         if (!err){
+            console.log(`found image`)
             add_item(reqBody['product'], reqBody['price'], reqBody['category'], reqBody['image'])
             .catch((err) => {
-                console.log('catching')
+                console.log('catching error in db')
                 console.log(err.message)
                 return res.status(400).send(err.message)
             })
@@ -36,6 +38,7 @@ export async function addNewItem(req:Request, res: Response) {
                 return res.status(200).send('OK')
             });
         } else {
+            console.log(`error in image`)
             console.log(err.message)
             return res.status(400).send(err)
         }

@@ -35,10 +35,12 @@ function addNewItem(req, res) {
             return res.status(400)
                 .send(`${reqBody['product']} already exists`);
         fs_1.default.access(`uploads/${req.body.image}`, (err) => {
+            console.log(`entering image access`);
             if (!err) {
+                console.log(`found image`);
                 (0, item_1.add_item)(reqBody['product'], reqBody['price'], reqBody['category'], reqBody['image'])
                     .catch((err) => {
-                    console.log('catching');
+                    console.log('catching error in db');
                     console.log(err.message);
                     return res.status(400).send(err.message);
                 })
@@ -48,6 +50,7 @@ function addNewItem(req, res) {
                 });
             }
             else {
+                console.log(`error in image`);
                 console.log(err.message);
                 return res.status(400).send(err);
             }
