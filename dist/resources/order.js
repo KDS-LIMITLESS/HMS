@@ -35,4 +35,6 @@ exports.placeOrder = placeOrder;
 // printing dockets
 // logout 
 // splitting orders into a transaction
-// check which user from passcode
+// printing dockets
+// make table Database ---> tableName, 
+// order table will now have a tablename which is unique
