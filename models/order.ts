@@ -12,18 +12,21 @@ export async function createOrderTable() {
         price INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
         total_amount INTEGER NOT NULL,
+        table_name VARCHAR NOT NULL,
         time VARCHAR
     )`)
 }
 
 export async function new_order(username: string, item: string, price: number,
-             quantity: number,total_amount: number, time: string) {            
+             quantity: number,total_amount: number, table_name: string, time: string) {            
     const db = await dbConnection();
-    let result = db.query(SQL `INSERT INTO orders (username, item, price, quantity, total_amount, time)
-        VALUES (${username}, ${item}, ${price}, ${quantity}, ${total_amount}, ${time})`);
+    let result = db.query(SQL `INSERT INTO orders (username, item, price, quantity, total_amount, table_name, time)
+        VALUES (${username}, ${item}, ${price}, ${quantity}, ${total_amount}, ${table_name}, ${time})`);
     return result
 }
 
 export async function get_all_order() {
 
 }
+
+// get waiters table

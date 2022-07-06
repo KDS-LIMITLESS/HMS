@@ -25,16 +25,17 @@ function createOrderTable() {
         price INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
         total_amount INTEGER NOT NULL,
+        table_name VARCHAR NOT NULL,
         time VARCHAR
     )`);
     });
 }
 exports.createOrderTable = createOrderTable;
-function new_order(username, item, price, quantity, total_amount, time) {
+function new_order(username, item, price, quantity, total_amount, table_name, time) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        let result = db.query((0, sql_template_strings_1.default) `INSERT INTO orders (username, item, price, quantity, total_amount, time)
-        VALUES (${username}, ${item}, ${price}, ${quantity}, ${total_amount}, ${time})`);
+        let result = db.query((0, sql_template_strings_1.default) `INSERT INTO orders (username, item, price, quantity, total_amount, table_name, time)
+        VALUES (${username}, ${item}, ${price}, ${quantity}, ${total_amount}, ${table_name}, ${time})`);
         return result;
     });
 }
@@ -44,3 +45,4 @@ function get_all_order() {
     });
 }
 exports.get_all_order = get_all_order;
+// get waiters table

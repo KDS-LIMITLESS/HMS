@@ -15,11 +15,12 @@ const item_1 = require("../models/item");
 function placeOrder(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let time = new Date();
+        console.log(req.body);
         try {
             let price = yield (0, item_1.get_product_price)(req.body.item);
             console.log(price);
             if (price) {
-                yield (0, order_1.new_order)(req.body.username, req.body.item, price, req.body.quantity, req.body.total_amount, time.toLocaleTimeString());
+                yield (0, order_1.new_order)(req.body.activeUser, req.body.item, price, req.body.quantity, req.body.total_amount, req.body.table_name, time.toLocaleTimeString());
                 return res.status(200).send(` OK `);
             }
             return res.status(400).send(`Item does not exist`);
@@ -31,6 +32,7 @@ function placeOrder(req, res) {
     });
 }
 exports.placeOrder = placeOrder;
+// get all waiters tables
 // notification
 // printing dockets
 // logout 

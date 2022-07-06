@@ -5,13 +5,14 @@ import { get_product_price } from "../models/item";
 
 export async function placeOrder(req: Request, res: Response){
     let time = new Date();
+    console.log(req.body)
     
     try {
         let price = await get_product_price(req.body.item)
         console.log(price)
         if (price){
-            await new_order(req.body.username, req.body.item, price, 
-                req.body.quantity, req.body.total_amount, time.toLocaleTimeString()
+            await new_order(req.body.activeUser, req.body.item, price, 
+                req.body.quantity, req.body.total_amount, req.body.table_name, time.toLocaleTimeString()
             )
             return res.status(200).send(` OK `);
         }
@@ -21,6 +22,8 @@ export async function placeOrder(req: Request, res: Response){
         return res.status(400).send("Please login to continue")
     }
 }
+
+// get all waiters tables
 
 // notification
 // printing dockets

@@ -13,12 +13,14 @@ exports.authorizeSuperAdminNext = exports.authorizeUser = void 0;
 const user_1 = require("../models/user");
 function authorizeUser(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
+        const USERS = ['Waiter', 'Bar Man'];
         try {
-            let userExists = yield (0, user_1.get_user)(req.body.username);
-            if (userExists && (req.body.passcode === (userExists === null || userExists === void 0 ? void 0 : userExists.rows[0]['passcode']))) {
+            let userExists = yield (0, user_1.get_user)(req.body.activeUser);
+            if (userExists && (USERS.includes(userExists === null || userExists === void 0 ? void 0 : userExists.rows[0]['role'])) && (req.body.activePasscode === userExists.rows[0]['passcode'])) {
                 next();
             }
             else {
+                console.log(req.body);
                 return res.status(400).send("Please login to continue");
             }
         }
