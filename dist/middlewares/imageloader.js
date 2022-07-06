@@ -16,7 +16,7 @@ exports.uploadPicture = void 0;
 const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
 const storage = multer_1.default.diskStorage({
-    destination: './uploads',
+    destination: `uploads`,
     filename: function (req, file, cb) {
         cb(null, path_1.default.basename(file.originalname, path_1.default.extname(file.originalname))
             + '-' + Date.now() + path_1.default.extname(file.originalname));

@@ -10,7 +10,7 @@ const user_1 = require("../middlewares/user");
 const imageloader_1 = require("../middlewares/imageloader");
 exports.router = express_1.default.Router();
 exports.router.get('/items', item_1.getItem);
-exports.router.get('/items/category', item_1.getItemsInCategory);
+exports.router.post('/items/category', item_1.getItemsInCategory);
 exports.router.post('/new-item', user_1.authorizeSuperAdminNext, item_1.addNewItem);
 exports.router.post('/upload', imageloader_1.uploadPicture);
 module.exports = exports.router;
