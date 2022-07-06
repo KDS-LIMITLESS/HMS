@@ -12,7 +12,7 @@ dotenv.config()
 
 app.use(express.json())
 app.use(cors())
-app.use(express.static('uploads'));
+app.use(express.static('app/uploads'));
 app.use('', require('./routes/item'));
 app.use('', require('./routes/user'));
 app.use('', require('./routes/order'));
