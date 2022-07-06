@@ -22,7 +22,7 @@ const app = (0, express_1.default)();
 dotenv_1.default.config();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
-app.use(express_1.default.static('app/uploads'));
+app.use(express_1.default.static('middlewares/uploads'));
 app.use('', require('./routes/item'));
 app.use('', require('./routes/user'));
 app.use('', require('./routes/order'));
