@@ -7,16 +7,16 @@ export async function createOrderTable() {
 
     return db.query(`CREATE TABLE IF NOT EXISTS orders (
         id SERIAL PRIMARY KEY, 
-        username VARCHAR NOT NULL references users(username),
+        username VARCHAR NOT NULL REFERENCES users(username),
         
-        item VARCHAR NOT NULL references item(product),
+        item VARCHAR NOT NULL REFERENCES item(product),
         price INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
         category VARCHAR NOT NULL,
         image VARCHAR NOT NULL,
         
         total INTEGER NOT NULL,
-        table_name VARCHAR NOT NULL,
+        table_name VARCHAR NOT NULL REFERENCES person(table_name),
         payment_method VARCHAR NOT NULL,
         time VARCHAR
     )`)

@@ -17,6 +17,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = require("./connection");
 const order_1 = require("./models/order");
+const table_1 = require("./models/table");
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 app.use(express_1.default.json());
@@ -25,6 +26,7 @@ app.use(express_1.default.static('uploads'));
 app.use('', require('./routes/item'));
 app.use('', require('./routes/user'));
 app.use('', require('./routes/order'));
+app.use('', require('./routes/table'));
 function startServer() {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
@@ -35,10 +37,10 @@ function startServer() {
         });
         // await createItemsTable().then(() => console.log("done creating items tables"));
         yield (0, order_1.createOrderTable)().then(() => console.log("done creating order table"));
-        // await createTableManager();
+        yield (0, table_1.createTableManager)();
         // await createUsersTable().then(() => console.log("done creating user table")); 
-        // await db.query(`DROP TABLE orders`)
-        // await db.query(`DROP TABLE person`)
+        //await db.query(`DROP TABLE orders`)
+        //await db.query(`DROP TABLE person`)
         const PORT = process.env.PORT || 3000;
         app.listen(PORT, () => {
             console.log('Server Listening on port 3000');

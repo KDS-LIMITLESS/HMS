@@ -12,15 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_table = exports.create_new_table = exports.createTableManager = void 0;
+exports.get_table = exports.get_all_tables = exports.get_waiter_tables = exports.create_new_table = exports.createTableManager = void 0;
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const connection_1 = require("../connection");
 function createTableManager() {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
         return db.query(`CREATE TABLE IF NOT EXISTS person (
-        id SERIAL PRIMARY KEY,
-        table_name VARCHAR NOT NULl,
+        table_name VARCHAR NOT NULl PRIMARY KEY,
         waiter VARCHAR NOT NULL references users(username)
     )`);
     });
@@ -35,11 +34,33 @@ function create_new_table(tableName, waiter) {
     });
 }
 exports.create_new_table = create_new_table;
-function get_table(table_name) {
+function get_waiter_tables(waiter) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        const result = db.query((0, sql_template_strings_1.default) `SELECT * FROM person WHERE table_name = ${table_name}`);
-        return (yield result).rows[0]['table_name'];
+        const result = db.query((0, sql_template_strings_1.default) `SELECT table_name FROM person WHERE waiter = ${waiter}`);
+        if ((yield result).rowCount === 0)
+            return null;
+        return (yield result).rows;
+    });
+}
+exports.get_waiter_tables = get_waiter_tables;
+function get_all_tables() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        let result = db.query((0, sql_template_strings_1.default) `SELECT table_name FROM person`);
+        if ((yield result).rowCount === 0)
+            return null;
+        return result;
+    });
+}
+exports.get_all_tables = get_all_tables;
+function get_table(table) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        let result = db.query((0, sql_template_strings_1.default) `SELECT table_name FROM person WHERE table_name = ${table}`);
+        if ((yield result).rowCount === 0)
+            return null;
+        return (yield result).rows;
     });
 }
 exports.get_table = get_table;

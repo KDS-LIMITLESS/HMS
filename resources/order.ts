@@ -1,7 +1,6 @@
 import { Response, Request } from "express";
 import { new_order } from "../models/order";
-import { get_product_price, get_item } from "../models/item";
-import { get_table } from "../models/table";
+import { get_item } from "../models/item";
 
 
 export async function placeOrder(req: Request, res: Response){
@@ -36,7 +35,7 @@ export async function placeOrder(req: Request, res: Response){
 
 // update item prices
 //jwts
-
+ 
 // notification
 // printing dockets
 // logout 
