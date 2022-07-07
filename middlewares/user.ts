@@ -11,7 +11,7 @@ export async function authorizeUser(req:Request, res:Response, next:NextFunction
             console.log(`calling next done...`)
             next();
         } else {
-            console.log(req.body + " Error from authorize User")
+            console.log(JSON.stringify(req.body) + " Error from authorize User")
             return res.status(400).send("Please login to continue")
         }
     }

@@ -15,8 +15,9 @@ function createTable(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             console.log(JSON.stringify(req.body) + ' From createTable function...');
-            let result = yield (0, table_1.create_new_table)(JSON.stringify(req.body.table_name), req.body.activeUser);
-            console.log(`Created table ${result.rows[0]['table_name']}`);
+            console.log(req.body.table_name);
+            yield (0, table_1.create_new_table)(req.body.table_name, req.body.activeUser);
+            console.log(`Created table ${req.body.table_name}`);
             next();
         }
         catch (err) {

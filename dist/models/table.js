@@ -26,11 +26,11 @@ function createTableManager() {
     });
 }
 exports.createTableManager = createTableManager;
-function create_new_table(table_name, waiter) {
+function create_new_table(tableName, waiter) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
         let result = db.query((0, sql_template_strings_1.default) `INSERT INTO person (table_name, waiter) 
-                        VALUES(${table_name}, ${waiter})`);
+                        VALUES(${tableName}, ${waiter})`);
         return result;
     });
 }

@@ -20,7 +20,7 @@ function placeOrder(req, res) {
         try {
             let price = yield (0, item_1.get_product_price)(req.body.item);
             let table = yield (0, table_1.get_table)(req.body.table_name);
-            console.log(price + table + " Table and price");
+            console.log(price + '' + table + " Table and price");
             if (price && table) {
                 console.log(`price and table exists!`);
                 yield (0, order_1.new_order)(req.body.activeUser, req.body.item, price, req.body.quantity, req.body.total_amount, table, time.toLocaleTimeString());

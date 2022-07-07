@@ -12,7 +12,7 @@ export async function placeOrder(req: Request, res: Response){
         let price = await get_product_price(req.body.item)
         let table = await get_table(req.body.table_name)
 
-        console.log(price  + table + " Table and price")
+        console.log(price  + '' + table + " Table and price")
 
         if (price && table){
             console.log(`price and table exists!`)
