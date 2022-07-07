@@ -29,7 +29,7 @@ export async function new_order(username: string, item: string, price: number,
     const db = await dbConnection();
     let result = db.query(SQL `INSERT INTO 
     orders (username, item, price, quantity, category, image, total, 
-            table_name, payment_method time)
+            table_name, payment_method, time)
 
     VALUES (${username}, ${item}, ${price}, ${quantity}, ${category}, 
             ${image}, ${total}, ${table_name}, ${paymentMethod}, ${time})`);

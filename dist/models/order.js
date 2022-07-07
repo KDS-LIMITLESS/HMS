@@ -41,7 +41,7 @@ function new_order(username, item, price, quantity, category, image, total, tabl
         const db = yield (0, connection_1.dbConnection)();
         let result = db.query((0, sql_template_strings_1.default) `INSERT INTO 
     orders (username, item, price, quantity, category, image, total, 
-            table_name, payment_method time)
+            table_name, payment_method, time)
 
     VALUES (${username}, ${item}, ${price}, ${quantity}, ${category}, 
             ${image}, ${total}, ${table_name}, ${paymentMethod}, ${time})`);

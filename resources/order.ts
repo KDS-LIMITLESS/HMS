@@ -1,38 +1,31 @@
 import { Response, Request } from "express";
 import { new_order } from "../models/order";
-import { get_product_price } from "../models/item";
+import { get_product_price, get_item } from "../models/item";
 import { get_table } from "../models/table";
 
 
 export async function placeOrder(req: Request, res: Response){
-    let time = new Date();
-
-    const ORDER: [] = req.body.order;
-    ORDER.forEach(o => {
-        console.log(o)
-        console.log(o['item'])
-    })
-
-    console.log(`after order`)
-    
+    let time = new Date();    
     try {
-        let price = await get_product_price(req.body.item)
-        let table = await get_table(req.body.table_name)
-        console.log(price)
-
-        console.log(price  + '' + table + " Table and price")
-
-        if (price && table){
-            console.log(`price and table exists!`)
-
-            //await new_order(req.body.activeUser, req.body.item, price, 
-            //    req.body.quantity, req.body.total_amount, table, time.toLocaleTimeString()
-            //)
-            console.log(`new order created!`)
-            return res.status(200).send(` OK `);
-        }
-        return res.status(400).send(`An error occured`);        
-
+       
+        const ORDER: [] = req.body.order;
+        ORDER.forEach(async order => {
+            let item = await get_item(order['item']['product'])
+            if (!item) return res.status(400).send(`Item does not exist`)
+            
+            // let productPrice = get_product_price()
+            
+            console.log(order)
+            console.log(order['quantity'])
+            
+            await new_order(req.body.activeUser, order['item']['product'], 
+                order['item']['price'], order['quantity'], order['item']['category'],  
+                order['item']['image'], req.body.total, req.body.table_name,
+                req.body.paymentMethod, time.toLocaleTimeString()
+            )
+        })       
+        console.log(`new order created!`)
+        return res.status(200).send(` OK `);
     }catch(err: any) {
         console.error(err.message + " Error from creating new order")
         return res.status(400).send("Please login to continue")
@@ -40,6 +33,8 @@ export async function placeOrder(req: Request, res: Response){
 }
 
 // get all waiters tables
+
+// update item prices
 //jwts
 
 // notification
