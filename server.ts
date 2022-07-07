@@ -28,11 +28,11 @@ async function startServer(){
     })
 
     // await createItemsTable().then(() => console.log("done creating items tables"));
-    // await createOrderTable().then(() => console.log("done creating order table"));
-    // await createTableManager();
+    await createTableManager();
+    await createOrderTable().then(() => console.log("done creating order table"));
     // await createUsersTable().then(() => console.log("done creating user table")); 
-    await db.query(`DROP TABLE orders`)
-    await db.query(`DROP TABLE person`)
+    // await db.query(`DROP TABLE orders`)
+    // await db.query(`DROP TABLE person`)
     
     const PORT = process.env.PORT || 3000
 
