@@ -10,20 +10,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.placeOrder = void 0;
-const order_1 = require("../models/order");
 const item_1 = require("../models/item");
 const table_1 = require("../models/table");
 function placeOrder(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let time = new Date();
-        console.log(req.body);
+        const ORDER = req.body.order;
+        ORDER.forEach(o => {
+            console.log(o);
+        });
+        console.log(`after order`);
         try {
             let price = yield (0, item_1.get_product_price)(req.body.item);
             let table = yield (0, table_1.get_table)(req.body.table_name);
+            console.log(price);
             console.log(price + '' + table + " Table and price");
             if (price && table) {
                 console.log(`price and table exists!`);
-                yield (0, order_1.new_order)(req.body.activeUser, req.body.item, price, req.body.quantity, req.body.total_amount, table, time.toLocaleTimeString());
+                //await new_order(req.body.activeUser, req.body.item, price, 
+                //    req.body.quantity, req.body.total_amount, table, time.toLocaleTimeString()
+                //)
                 console.log(`new order created!`);
                 return res.status(200).send(` OK `);
             }

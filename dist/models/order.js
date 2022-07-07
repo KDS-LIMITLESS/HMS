@@ -21,21 +21,30 @@ function createOrderTable() {
         return db.query(`CREATE TABLE IF NOT EXISTS orders (
         id SERIAL PRIMARY KEY, 
         username VARCHAR NOT NULL references users(username),
+        
         item VARCHAR NOT NULL references item(product),
         price INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
-        total_amount INTEGER NOT NULL,
+        category VARCHAR NOT NULL,
+        image VARCHAR NOT NULL,
+        
+        total INTEGER NOT NULL,
         table_name VARCHAR NOT NULL,
+        payment_method VARCHAR NOT NULL,
         time VARCHAR
     )`);
     });
 }
 exports.createOrderTable = createOrderTable;
-function new_order(username, item, price, quantity, total_amount, table_name, time) {
+function new_order(username, item, price, quantity, category, image, total, table_name, paymentMethod, time) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        let result = db.query((0, sql_template_strings_1.default) `INSERT INTO orders (username, item, price, quantity, total_amount, table_name, time)
-        VALUES (${username}, ${item}, ${price}, ${quantity}, ${total_amount}, ${table_name}, ${time})`);
+        let result = db.query((0, sql_template_strings_1.default) `INSERT INTO 
+    orders (username, item, price, quantity, category, image, total, 
+            table_name, payment_method time)
+
+    VALUES (${username}, ${item}, ${price}, ${quantity}, ${category}, 
+            ${image}, ${total}, ${table_name}, ${paymentMethod}, ${time})`);
         return result;
     });
 }
@@ -46,3 +55,7 @@ function get_all_order() {
 }
 exports.get_all_order = get_all_order;
 // get waiters table
+// item[product] = item
+// item[price] = price
+// item[image] = image
+// item[category] = category

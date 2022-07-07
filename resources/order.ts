@@ -6,20 +6,27 @@ import { get_table } from "../models/table";
 
 export async function placeOrder(req: Request, res: Response){
     let time = new Date();
-    console.log(req.body)
+
+    const ORDER: [] = req.body.order;
+    ORDER.forEach(o => {
+        console.log(o)
+    })
+
+    console.log(`after order`)
     
     try {
         let price = await get_product_price(req.body.item)
         let table = await get_table(req.body.table_name)
+        console.log(price)
 
         console.log(price  + '' + table + " Table and price")
 
         if (price && table){
             console.log(`price and table exists!`)
 
-            await new_order(req.body.activeUser, req.body.item, price, 
-                req.body.quantity, req.body.total_amount, table, time.toLocaleTimeString()
-            )
+            //await new_order(req.body.activeUser, req.body.item, price, 
+            //    req.body.quantity, req.body.total_amount, table, time.toLocaleTimeString()
+            //)
             console.log(`new order created!`)
             return res.status(200).send(` OK `);
         }
