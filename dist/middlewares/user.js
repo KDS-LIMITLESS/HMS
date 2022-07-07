@@ -16,7 +16,7 @@ function authorizeUser(req, res, next) {
         const USERS = ['Waiter', 'Bar Man'];
         try {
             let userExists = yield (0, user_1.get_user)(req.body.activeUser);
-            if (userExists && (USERS.includes(userExists === null || userExists === void 0 ? void 0 : userExists.rows[0]['role'])) && (req.body.activePasscode === userExists.rows[0]['passcode'])) {
+            if (userExists && (req.body.activePasscode === userExists.rows[0]['passcode'])) {
                 next();
             }
             else {

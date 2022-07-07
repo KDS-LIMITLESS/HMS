@@ -5,6 +5,7 @@ import { dbConnection } from './connection';
 import { createItemsTable } from './models/item';
 import { createOrderTable } from './models/order';
 import { createUsersTable } from './models/user';
+import { createTableManager } from './models/table';
 
 
 const app = express();
@@ -26,10 +27,11 @@ async function startServer(){
     })
 
     // await createItemsTable().then(() => console.log("done creating items tables"));
-    await createOrderTable().then(() => console.log("done creating order table"));
+    // await createOrderTable().then(() => console.log("done creating order table"));
+    await createTableManager();
     // await createUsersTable().then(() => console.log("done creating user table")); 
     // await db.query(`DROP TABLE orders`)
-    // await db.query(`DROP TABLE item`)
+    // await db.query(`DROP TABLE person`)
     
     const PORT = process.env.PORT || 3000
 

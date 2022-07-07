@@ -7,7 +7,7 @@ export async function authorizeUser(req:Request, res:Response, next:NextFunction
     try {
         let userExists = await get_user(req.body.activeUser)
         
-        if (userExists && ( USERS.includes(userExists?.rows[0]['role'])) && (req.body.activePasscode === userExists.rows[0]['passcode'])){
+        if (userExists && (req.body.activePasscode === userExists.rows[0]['passcode'])){
             next();
         } else {
             console.log(req.body)

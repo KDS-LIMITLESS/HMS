@@ -12,37 +12,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_all_order = exports.new_order = exports.createOrderTable = void 0;
+exports.get_table = exports.create_new_table = exports.createTableManager = void 0;
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const connection_1 = require("../connection");
-function createOrderTable() {
+function createTableManager() {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        return db.query(`CREATE TABLE IF NOT EXISTS orders (
-        id SERIAL PRIMARY KEY, 
-        username VARCHAR NOT NULL references users(username),
-        item VARCHAR NOT NULL references item(product),
-        price INTEGER NOT NULL,
-        quantity INTEGER NOT NULL,
-        total_amount INTEGER NOT NULL,
-        table_name VARCHAR NOT NULL,
-        time VARCHAR
+        return db.query(`CREATE TABLE IF NOT EXISTS person (
+        id SERIAL PRIMARY KEY,
+        table_name VARCHAR NOT NULl,
+        waiter VARCHAR NOT NULL references users(username)
     )`);
     });
 }
-exports.createOrderTable = createOrderTable;
-function new_order(username, item, price, quantity, total_amount, table_name, time) {
+exports.createTableManager = createTableManager;
+function create_new_table(tableName, waiter) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        let result = db.query((0, sql_template_strings_1.default) `INSERT INTO orders (username, item, price, quantity, total_amount, table_name, time)
-        VALUES (${username}, ${item}, ${price}, ${quantity}, ${total_amount}, ${table_name}, ${time})`);
+        let result = db.query((0, sql_template_strings_1.default) `INSERT INTO person (table_name, waiter) 
+                        VALUES(${tableName}, ${waiter})`);
         return result;
     });
 }
-exports.new_order = new_order;
-function get_all_order() {
+exports.create_new_table = create_new_table;
+function get_table(tableName) {
     return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        const result = db.query((0, sql_template_strings_1.default) `SELECT * FROM person WHERE table_name = ${tableName}`);
+        return (yield result).rows[0]['table_name'];
     });
 }
-exports.get_all_order = get_all_order;
-// get waiters table
+exports.get_table = get_table;

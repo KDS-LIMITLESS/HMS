@@ -5,7 +5,7 @@ import { dbConnection } from "../connection";
 export async function createOrderTable() {
     const db = await dbConnection()
 
-    db.query(`CREATE TABLE IF NOT EXISTS orders (
+    return db.query(`CREATE TABLE IF NOT EXISTS orders (
         id SERIAL PRIMARY KEY, 
         username VARCHAR NOT NULL references users(username),
         item VARCHAR NOT NULL references item(product),
@@ -15,6 +15,7 @@ export async function createOrderTable() {
         table_name VARCHAR NOT NULL,
         time VARCHAR
     )`)
+
 }
 
 export async function new_order(username: string, item: string, price: number,
