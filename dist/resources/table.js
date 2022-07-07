@@ -14,7 +14,8 @@ const table_1 = require("../models/table");
 function createTable(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            yield (0, table_1.create_new_table)(req.body.table_name, req.body.activeUser);
+            let result = yield (0, table_1.create_new_table)(req.body.table_name, req.body.activeUser);
+            console.log(`Created table ${result.rows[0]['table_name']}`);
             next();
         }
         catch (err) {

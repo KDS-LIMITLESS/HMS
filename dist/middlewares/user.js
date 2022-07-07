@@ -20,7 +20,7 @@ function authorizeUser(req, res, next) {
                 next();
             }
             else {
-                console.log(req.body);
+                console.log(req.body + " Error from authorize User");
                 return res.status(400).send("Please login to continue");
             }
         }

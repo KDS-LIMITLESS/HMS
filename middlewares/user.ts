@@ -10,7 +10,7 @@ export async function authorizeUser(req:Request, res:Response, next:NextFunction
         if (userExists && (req.body.activePasscode === userExists.rows[0]['passcode'])){
             next();
         } else {
-            console.log(req.body)
+            console.log(req.body + " Error from authorize User")
             return res.status(400).send("Please login to continue")
         }
     }
