@@ -10,6 +10,7 @@ export async function placeOrder(req: Request, res: Response){
     const ORDER: [] = req.body.order;
     ORDER.forEach(o => {
         console.log(o)
+        console.log(o[1])
     })
 
     console.log(`after order`)
