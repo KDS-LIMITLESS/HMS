@@ -12,15 +12,15 @@ export async function createTableManager(){
     )`)
 }
 
-export async function create_new_table(tableName: string, waiter: string) {
+export async function create_new_table(table_name: string, waiter: string) {
     const db = await dbConnection();
     let result = db.query(SQL `INSERT INTO person (table_name, waiter) 
-                        VALUES(${tableName}, ${waiter})`)
+                        VALUES(${table_name}, ${waiter})`)
     return result
 }
 
-export async function get_table(tableName: string){
+export async function get_table(table_name: string){
     const db = await dbConnection();
-    const result = db.query(SQL `SELECT * FROM person WHERE table_name = ${tableName}`)
+    const result = db.query(SQL `SELECT * FROM person WHERE table_name = ${table_name}`)
     return (await result).rows[0]['table_name']
 }

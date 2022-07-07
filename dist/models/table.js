@@ -26,19 +26,19 @@ function createTableManager() {
     });
 }
 exports.createTableManager = createTableManager;
-function create_new_table(tableName, waiter) {
+function create_new_table(table_name, waiter) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
         let result = db.query((0, sql_template_strings_1.default) `INSERT INTO person (table_name, waiter) 
-                        VALUES(${tableName}, ${waiter})`);
+                        VALUES(${table_name}, ${waiter})`);
         return result;
     });
 }
 exports.create_new_table = create_new_table;
-function get_table(tableName) {
+function get_table(table_name) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        const result = db.query((0, sql_template_strings_1.default) `SELECT * FROM person WHERE table_name = ${tableName}`);
+        const result = db.query((0, sql_template_strings_1.default) `SELECT * FROM person WHERE table_name = ${table_name}`);
         return (yield result).rows[0]['table_name'];
     });
 }

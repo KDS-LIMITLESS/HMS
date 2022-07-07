@@ -8,6 +8,7 @@ export async function authorizeUser(req:Request, res:Response, next:NextFunction
         let userExists = await get_user(req.body.activeUser)
         
         if (userExists && (req.body.activePasscode === userExists.rows[0]['passcode'])){
+            console.log(`calling next done...`)
             next();
         } else {
             console.log(req.body + " Error from authorize User")
