@@ -18,7 +18,7 @@ function placeOrder(req, res) {
         const ORDER = req.body.order;
         ORDER.forEach(o => {
             console.log(o);
-            console.log(o[1]);
+            console.log(o['item']);
         });
         console.log(`after order`);
         try {
