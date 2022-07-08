@@ -36,13 +36,9 @@ export async function new_order(username: string, item: string, price: number,
     return result
 }
 
-export async function get_all_order() {
-
+export async function get_table_orders(name:string){
+    const db = await dbConnection();
+    const result = db.query(SQL `SELECT item, price, quantity, image FROM orders WHERE username = ${name} `)
+    if ((await result).rowCount === 0) return null;
+    return (await result).rows
 }
-
-// get waiters table
-
-// item[product] = item
-// item[price] = price
-// item[image] = image
-// item[category] = category

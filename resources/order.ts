@@ -1,18 +1,18 @@
 import { Response, Request } from "express";
 import { new_order } from "../models/order";
 import { get_item } from "../models/item";
+import { get_table_orders } from "../models/order";
 
 
 export async function placeOrder(req: Request, res: Response){
     let time = new Date();    
     try {
        
+        console.log(req.body.order)
         const ORDER: [] = req.body.order;
         ORDER.forEach(async order => {
             let item = await get_item(order['item']['product'])
             if (!item) return res.status(400).send(`Item does not exist`)
-            
-            // let productPrice = get_product_price()
             
             console.log(order)
             console.log(order['quantity'])
@@ -31,17 +31,36 @@ export async function placeOrder(req: Request, res: Response){
     }
 }
 
+export async function getOpenOrders(req: Request, res: Response) {
+    await get_table_orders(req.body.activeUser)
+    .then((result) => {
+        result?.forEach(x => {
+            let order = {quantity: result}
+        })
+        
+        console.log(``)
+        return res.status(200).send(result)
+    })
+    .catch(err => {
+        console.error(err.message)
+        return res.status(400).send(err)
+    })
+}
+
+
+// order status
+// update item prices
+// notification
+// jwts
+// logout 
+// printing dockets
+// super admin dashboard
+
+    //  *********** //
+
 // get all waiters tables
 
-// update item prices
-//jwts
- 
-// notification
-// printing dockets
-// logout 
 // splitting orders into a transaction
-// printing dockets
 
 
-// make table Database ---> tableName, 
-// order table will now have a tablename which is unique
+ 
