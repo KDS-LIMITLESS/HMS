@@ -1,34 +1,29 @@
-import { Response, Request } from "express";
+import { Response, Request, NextFunction } from "express";
 import { new_order } from "../models/order";
 import { get_item } from "../models/item";
 import { get_table_orders } from "../models/order";
 
 
-export async function placeOrder(req: Request, res: Response){
+export async function placeOrder(req: Request, res: Response, next: NextFunction){
     let time = new Date();    
-    try {
        
-        console.log(req.body.order)
-        const ORDER: [] = req.body.order;
-        ORDER.forEach(async order => {
-            let item = await get_item(order['item']['product'])
-            if (!item) return res.status(400).send(`Item does not exist`)
-            
-            console.log(order)
-            console.log(order['quantity'])
-            
-            await new_order(req.body.activeUser, order['item']['product'], 
-                order['item']['price'], order['quantity'], order['item']['category'],  
-                order['item']['image'], req.body.total, req.body.table_name,
-                req.body.paymentMethod, time.toLocaleTimeString()
-            )
-        })       
-        console.log(`new order created!`)
-        return res.status(200).send(` OK `);
-    }catch(err: any) {
-        console.error(err.message + " Error from creating new order")
-        return res.status(400).send("Please login to continue")
-    }
+    console.log(req.body.order)
+    const ORDER: [] = req.body.order;
+    ORDER.forEach(async order => {
+       let item = await get_item(order['item']['product'])
+        // Delete table in table databases if error occurs here
+        // make serial data type count sequentially
+        if (!item) return res.status(400).end(`Item does not exist`)
+        
+        
+        await new_order(req.body.activeUser, order['item']['product'], 
+            order['item']['price'], order['quantity'], order['item']['category'],  
+            order['item']['image'], req.body.total, req.body.table_name,
+            req.body.paymentMethod, time.toLocaleTimeString()
+        )
+    });
+    console.log(`new order created!`)
+    res.status(200).send('OK');  
 }
 
 export async function getOpenOrders(req: Request, res: Response) {
@@ -64,3 +59,4 @@ export async function getOpenOrders(req: Request, res: Response) {
 
 
  
+// strong man creates good times, goot times creates weak men, weak men creates bad time

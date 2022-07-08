@@ -73,7 +73,7 @@ function add_item(product, price, category, image) {
         const db = yield (0, connection_1.dbConnection)();
         let result = db.query((0, sql_template_strings_1.default) `INSERT INTO item(product, price, category, image) 
         VALUES(${product}, ${price}, ${category}, ${image});`);
-        return yield result;
+        return result;
     });
 }
 exports.add_item = add_item;

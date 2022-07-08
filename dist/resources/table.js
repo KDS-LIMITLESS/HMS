@@ -23,7 +23,7 @@ function createTable(req, res, next) {
         }
         catch (err) {
             console.log(` table in use`);
-            return res.status(400).send(err.message);
+            return res.status(400).send(`table already exists`);
         }
     });
 }

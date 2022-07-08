@@ -15,7 +15,7 @@ export async function createTable(req:Request, res: Response, next: NextFunction
         next();
     }catch(err: any){
         console.log(` table in use`)
-        return res.status(400).send(err.message)
+        return res.status(400).send(`table already exists`)
     }
 }
 

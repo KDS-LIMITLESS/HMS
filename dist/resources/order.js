@@ -13,27 +13,21 @@ exports.getOpenOrders = exports.placeOrder = void 0;
 const order_1 = require("../models/order");
 const item_1 = require("../models/item");
 const order_2 = require("../models/order");
-function placeOrder(req, res) {
+function placeOrder(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         let time = new Date();
-        try {
-            console.log(req.body.order);
-            const ORDER = req.body.order;
-            ORDER.forEach((order) => __awaiter(this, void 0, void 0, function* () {
-                let item = yield (0, item_1.get_item)(order['item']['product']);
-                if (!item)
-                    return res.status(400).send(`Item does not exist`);
-                console.log(order);
-                console.log(order['quantity']);
-                yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], req.body.total, req.body.table_name, req.body.paymentMethod, time.toLocaleTimeString());
-            }));
-            console.log(`new order created!`);
-            return res.status(200).send(` OK `);
-        }
-        catch (err) {
-            console.error(err.message + " Error from creating new order");
-            return res.status(400).send("Please login to continue");
-        }
+        console.log(req.body.order);
+        const ORDER = req.body.order;
+        ORDER.forEach((order) => __awaiter(this, void 0, void 0, function* () {
+            let item = yield (0, item_1.get_item)(order['item']['product']);
+            // Delete table in table databases if error occurs here
+            // make serial data type count sequentially
+            if (!item)
+                return res.status(400).end(`Item does not exist`);
+            yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], req.body.total, req.body.table_name, req.body.paymentMethod, time.toLocaleTimeString());
+        }));
+        console.log(`new order created!`);
+        res.status(200).send('OK');
     });
 }
 exports.placeOrder = placeOrder;
@@ -64,3 +58,4 @@ exports.getOpenOrders = getOpenOrders;
 //  *********** //
 // get all waiters tables
 // splitting orders into a transaction
+// strong man creates good times, goot times creates weak men, weak men creates bad time

@@ -49,5 +49,5 @@ export async function add_item(product:string, price:number, category:string, im
     const db = await dbConnection();
     let result = db.query(SQL `INSERT INTO item(product, price, category, image) 
         VALUES(${product}, ${price}, ${category}, ${image});`)
-    return await result   
+    return result   
 }
