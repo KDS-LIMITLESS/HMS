@@ -13,7 +13,8 @@ export async function placeOrder(req: Request, res: Response, next: NextFunction
        let item = await get_item(order['item']['product'])
         // Delete table in table databases if error occurs here
         // make serial data type count sequentially
-        if (!item) return res.status(400).end(`Item does not exist`)
+        console.log(item)
+        if (!item || item === null) return res.status(400).end(`Item does not exist`)
         
         
         await new_order(req.body.activeUser, order['item']['product'], 
@@ -27,20 +28,28 @@ export async function placeOrder(req: Request, res: Response, next: NextFunction
 }
 
 export async function getOpenOrders(req: Request, res: Response) {
-    await get_table_orders(req.body.activeUser)
-    .then((result) => {
-        result?.forEach(x => {
-            let order = {quantity: result}
-        })
+    let order = await get_table_orders(req.body.activeUser, req.body.table_name);
+    if (!order) return res.status(400).send(`table not found`)
+    console.log(req.body)
+    let i: any[] = []
+    order?.forEach((item) => {
         
-        console.log(``)
-        return res.status(200).send(result)
+        let items = {
+            "quantity": item.quantity,
+            "item": {
+                "product": item.item,
+                "price": item.price,
+                "category": item.category,
+                "image": item.image
+            }
+        }
+        
+        i.push(items)
     })
-    .catch(err => {
-        console.error(err.message)
-        return res.status(400).send(err)
-    })
+    console.log(i)
+    return res.status(200).send(i)   
 }
+
 
 
 // order status

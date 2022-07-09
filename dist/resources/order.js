@@ -22,7 +22,8 @@ function placeOrder(req, res, next) {
             let item = yield (0, item_1.get_item)(order['item']['product']);
             // Delete table in table databases if error occurs here
             // make serial data type count sequentially
-            if (!item)
+            console.log(item);
+            if (!item || item === null)
                 return res.status(400).end(`Item does not exist`);
             yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], req.body.total, req.body.table_name, req.body.paymentMethod, time.toLocaleTimeString());
         }));
@@ -33,18 +34,25 @@ function placeOrder(req, res, next) {
 exports.placeOrder = placeOrder;
 function getOpenOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (0, order_2.get_table_orders)(req.body.activeUser)
-            .then((result) => {
-            result === null || result === void 0 ? void 0 : result.forEach(x => {
-                let order = { quantity: result };
-            });
-            console.log(``);
-            return res.status(200).send(result);
-        })
-            .catch(err => {
-            console.error(err.message);
-            return res.status(400).send(err);
+        let order = yield (0, order_2.get_table_orders)(req.body.activeUser, req.body.table_name);
+        if (!order)
+            return res.status(400).send(`table not found`);
+        console.log(req.body);
+        let i = [];
+        order === null || order === void 0 ? void 0 : order.forEach((item) => {
+            let items = {
+                "quantity": item.quantity,
+                "item": {
+                    "product": item.item,
+                    "price": item.price,
+                    "category": item.category,
+                    "image": item.image
+                }
+            };
+            i.push(items);
         });
+        console.log(i);
+        return res.status(200).send(i);
     });
 }
 exports.getOpenOrders = getOpenOrders;
