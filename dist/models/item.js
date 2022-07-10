@@ -46,7 +46,7 @@ function get_item(product) {
         let result = db.query((0, sql_template_strings_1.default) `SELECT product FROM item WHERE product = ${product};`);
         if ((yield result).rowCount === 0)
             return null;
-        return result;
+        return (yield result).rows[0]['product'];
     });
 }
 exports.get_item = get_item;

@@ -9,23 +9,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOpenOrders = exports.placeOrder = void 0;
-const order_1 = require("../models/order");
+exports.updateOrder = exports.getOpenOrders = exports.placeOrder = void 0;
 const item_1 = require("../models/item");
-const order_2 = require("../models/order");
+const order_1 = require("../models/order");
+const table_1 = require("../models/table");
 function placeOrder(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         let time = new Date();
         console.log(req.body.order);
         const ORDER = req.body.order;
+        let order;
         ORDER.forEach((order) => __awaiter(this, void 0, void 0, function* () {
             let item = yield (0, item_1.get_item)(order['item']['product']);
+            console.log(order['item']['product']);
             // Delete table in table databases if error occurs here
             // make serial data type count sequentially
             console.log(item);
-            if (!item || item === null)
+            if (item === null) {
+                yield (0, table_1.delete_rows)(req.body.table_name);
+                console.log(' deleted table');
                 return res.status(400).end(`Item does not exist`);
-            yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], req.body.total, req.body.table_name, req.body.paymentMethod, time.toLocaleTimeString());
+            }
+            else {
+                yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], req.body.total, req.body.table_name, req.body.paymentMethod, time.toLocaleTimeString());
+            }
         }));
         console.log(`new order created!`);
         res.status(200).send('OK');
@@ -34,7 +41,7 @@ function placeOrder(req, res, next) {
 exports.placeOrder = placeOrder;
 function getOpenOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        let order = yield (0, order_2.get_table_orders)(req.body.activeUser, req.body.table_name);
+        let order = yield (0, order_1.get_table_orders)(req.body.activeUser, req.body.table_name);
         if (!order)
             return res.status(400).send(`table not found`);
         console.log(req.body);
@@ -56,8 +63,34 @@ function getOpenOrders(req, res) {
     });
 }
 exports.getOpenOrders = getOpenOrders;
+// add item does not exist error check in this function
+// price should be read from database
+function updateOrder(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let time = new Date();
+        const ORDER = req.body.order;
+        let update;
+        let newOrder;
+        ORDER.forEach((order) => __awaiter(this, void 0, void 0, function* () {
+            let item = yield (0, order_1.get_drinks_in_table)(order['item']['product'], req.body.table_name);
+            console.log(item.rowCount);
+            if (item.rowCount !== 0) {
+                update = yield (0, order_1.update_order_quantity)(order['item']['product'], order['quantity'], req.body.table_name);
+            }
+            else {
+                newOrder = yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], req.body.total, req.body.table_name, req.body.paymentMethod, time.toLocaleTimeString());
+            }
+        }));
+        if (update === 0 || newOrder === 0)
+            return res.status(400).send(`an error occured`);
+        return res.end(`OK`);
+    });
+}
+exports.updateOrder = updateOrder;
+// cors should only direct to the frontend
 // order status
 // update item prices
+// splitting orders into a transaction
 // notification
 // jwts
 // logout 
@@ -65,5 +98,5 @@ exports.getOpenOrders = getOpenOrders;
 // super admin dashboard
 //  *********** //
 // get all waiters tables
-// splitting orders into a transaction
+// update drinks in db done
 // strong man creates good times, goot times creates weak men, weak men creates bad time

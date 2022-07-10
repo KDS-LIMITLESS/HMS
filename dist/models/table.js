@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_table = exports.get_all_tables = exports.get_waiter_tables = exports.create_new_table = exports.createTableManager = void 0;
+exports.delete_rows = exports.get_table = exports.get_all_tables = exports.get_waiter_tables = exports.create_new_table = exports.createTableManager = void 0;
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const connection_1 = require("../connection");
 function createTableManager() {
@@ -64,3 +64,11 @@ function get_table(table) {
     });
 }
 exports.get_table = get_table;
+function delete_rows(table_name) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        let del = db.query(`DELETE FROM person WHERE table_name = ${table_name}`);
+        return del;
+    });
+}
+exports.delete_rows = delete_rows;

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_table_orders = exports.new_order = exports.createOrderTable = void 0;
+exports.update_order_quantity = exports.get_drinks_in_table = exports.get_table_orders = exports.new_order = exports.createOrderTable = void 0;
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const connection_1 = require("../connection");
 function createOrderTable() {
@@ -60,3 +60,21 @@ function get_table_orders(name, tbl) {
     });
 }
 exports.get_table_orders = get_table_orders;
+function get_drinks_in_table(item, col) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        let result = db.query((0, sql_template_strings_1.default) `SELECT item, price, quantity, category, image FROM orders 
+            WHERE item = ${item} AND table_name = ${col}`);
+        return result;
+    });
+}
+exports.get_drinks_in_table = get_drinks_in_table;
+function update_order_quantity(item, quantity, tbl) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        let result = db.query((0, sql_template_strings_1.default) `UPDATE orders SET quantity = ${quantity} 
+        WHERE item = ${item} AND table_name = ${tbl}`);
+        return result;
+    });
+}
+exports.update_order_quantity = update_order_quantity;

@@ -38,3 +38,10 @@ export async function get_table(table:string) {
     if ((await result).rowCount === 0) return null;
     return (await result).rows
 }
+
+export async function delete_rows(table_name: string) {
+    const db = await dbConnection();
+
+    let del = db.query(`DELETE FROM person WHERE table_name = ${table_name}`);
+    return del;
+}

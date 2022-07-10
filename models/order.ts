@@ -43,3 +43,20 @@ export async function get_table_orders(name:string, tbl: string){
     if ((await result).rowCount === 0) return null;
     return (await result).rows
 }
+
+export async function get_drinks_in_table(item: string, col: string ){
+    const db = await dbConnection();
+    
+
+    let result = db.query(SQL `SELECT item, price, quantity, category, image FROM orders 
+            WHERE item = ${item} AND table_name = ${col}`);
+    return result;
+}
+
+export async function update_order_quantity(item:string, quantity: string, tbl: string) {
+    const db = await dbConnection();
+
+    let result = db .query(SQL `UPDATE orders SET quantity = ${quantity} 
+        WHERE item = ${item} AND table_name = ${tbl}`)
+    return result;
+}

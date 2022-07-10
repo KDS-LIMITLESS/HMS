@@ -29,7 +29,7 @@ export async function get_item(product: string) {
     const db = await dbConnection()
     let result = db.query(SQL `SELECT product FROM item WHERE product = ${product};`)
     if ((await result).rowCount === 0) return null
-    return result
+    return (await result).rows[0]['product']
 }
 
 export async function get_product_price(product: string){
