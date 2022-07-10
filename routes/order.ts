@@ -7,6 +7,6 @@ export const router = express.Router();
 
 router.post('/order', authorizeUser, createTable, placeOrder)
 router.post('/open-tables', authorizeUser, getOpenOrders)
-router.post('/update-order', updateOrder)
+router.post('/update-order', authorizeUser, updateOrder)
 
 module.exports = router;
