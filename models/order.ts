@@ -6,7 +6,7 @@ export async function createOrderTable() {
     const db = await dbConnection()
 
     return db.query(`CREATE TABLE IF NOT EXISTS orders (
-        id SERIAL PRIMARY KEY, 
+        id BIGSERIAL PRIMARY KEY, 
         username VARCHAR NOT NULL REFERENCES users(username),
         
         item VARCHAR NOT NULL REFERENCES item(product),
@@ -15,24 +15,24 @@ export async function createOrderTable() {
         category VARCHAR NOT NULL,
         image VARCHAR NOT NULL,
         
-        total INTEGER NOT NULL,
+        total INTEGER NOT NULL DEFAULT 0,
         table_name VARCHAR NOT NULL REFERENCES person(table_name),
-        payment_method VARCHAR NOT NULL,
+        payment_method VARCHAR NOT NULL DEFAULT '-',
+        status VARCHAR NOT NULL DEFAULT 'OPEN',
         time VARCHAR
     )`)
-
 }
 
 export async function new_order(username: string, item: string, price: number,
-            quantity: number, category: string, image: string, total: number, 
-            table_name: string, paymentMethod: string, time: string) {            
+            quantity: number, category: string, image: string,  
+            table_name: string, time: string) {            
     const db = await dbConnection();
     let result = db.query(SQL `INSERT INTO 
-    orders (username, item, price, quantity, category, image, total, 
-            table_name, payment_method, time)
+    orders (username, item, price, quantity, category, image,
+            table_name, time)
 
     VALUES (${username}, ${item}, ${price}, ${quantity}, ${category}, 
-            ${image}, ${total}, ${table_name}, ${paymentMethod}, ${time})`);
+            ${image},  ${table_name}, ${time})`);
     return result
 }
 

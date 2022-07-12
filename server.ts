@@ -32,7 +32,7 @@ async function startServer(){
     // await createTableManager();
     // await createOrderTable().then(() => console.log("done creating order table"));
    
-    // await db.query(`DROP TABLE orders`)
+    await db.query(`DROP TABLE orders`)
     // await db.query(`DROP TABLE person`)
     // await db.query(`DROP TABLE item`)
     // await db.query(`DROP TABLE users`)

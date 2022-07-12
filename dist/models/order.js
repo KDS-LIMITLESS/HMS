@@ -19,7 +19,7 @@ function createOrderTable() {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
         return db.query(`CREATE TABLE IF NOT EXISTS orders (
-        id SERIAL PRIMARY KEY, 
+        id BIGSERIAL PRIMARY KEY, 
         username VARCHAR NOT NULL REFERENCES users(username),
         
         item VARCHAR NOT NULL REFERENCES item(product),
@@ -28,23 +28,24 @@ function createOrderTable() {
         category VARCHAR NOT NULL,
         image VARCHAR NOT NULL,
         
-        total INTEGER NOT NULL,
+        total INTEGER NOT NULL DEFAULT 0,
         table_name VARCHAR NOT NULL REFERENCES person(table_name),
-        payment_method VARCHAR NOT NULL,
+        payment_method VARCHAR NOT NULL DEFAULT '-',
+        status VARCHAR NOT NULL DEFAULT 'OPEN',
         time VARCHAR
     )`);
     });
 }
 exports.createOrderTable = createOrderTable;
-function new_order(username, item, price, quantity, category, image, total, table_name, paymentMethod, time) {
+function new_order(username, item, price, quantity, category, image, table_name, time) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
         let result = db.query((0, sql_template_strings_1.default) `INSERT INTO 
-    orders (username, item, price, quantity, category, image, total, 
-            table_name, payment_method, time)
+    orders (username, item, price, quantity, category, image,
+            table_name, time)
 
     VALUES (${username}, ${item}, ${price}, ${quantity}, ${category}, 
-            ${image}, ${total}, ${table_name}, ${paymentMethod}, ${time})`);
+            ${image},  ${table_name}, ${time})`);
         return result;
     });
 }

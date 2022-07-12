@@ -31,7 +31,7 @@ function placeOrder(req, res, next) {
                 return res.status(400).end(`Item does not exist`);
             }
             else {
-                yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], req.body.total, req.body.table_name, req.body.paymentMethod, time.toLocaleTimeString());
+                yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], req.body.table_name, time.toLocaleTimeString());
             }
         }));
         console.log(`new order created!`);
@@ -78,7 +78,10 @@ function updateOrder(req, res) {
                 update = yield (0, order_1.update_order_quantity)(order['item']['product'], order['quantity'], req.body.table_name);
             }
             else {
-                newOrder = yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], req.body.total, req.body.table_name, req.body.paymentMethod, time.toLocaleTimeString());
+                const TOTAL = req.body.price * req.body.quantity;
+                // const PRODUCT_PRICE = await get_product_price(order['item']['product'])
+                // add total and total amount
+                newOrder = yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], req.body.table_name, time.toLocaleTimeString());
             }
         }));
         if (update === 0 || newOrder === 0)
@@ -88,8 +91,10 @@ function updateOrder(req, res) {
 }
 exports.updateOrder = updateOrder;
 // cors should only direct to the frontend
-// order status
+// order status table status
+// add automatic total amount check 
 // update item prices
+// specify items for lounge and bar
 // splitting orders into a transaction
 // notification
 // jwts

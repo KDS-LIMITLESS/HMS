@@ -1,5 +1,5 @@
 import { Response, Request, NextFunction } from "express";
-import { get_item } from "../models/item";
+import { get_item, get_product_price } from "../models/item";
 import {new_order, get_table_orders, get_drinks_in_table, 
     update_order_quantity } from "../models/order";
 import { delete_rows } from "../models/table";
@@ -26,8 +26,8 @@ export async function placeOrder(req: Request, res: Response, next: NextFunction
         } else {
             await new_order(req.body.activeUser, order['item']['product'], 
                 order['item']['price'], order['quantity'], order['item']['category'],  
-                order['item']['image'], req.body.total, req.body.table_name,
-                req.body.paymentMethod, time.toLocaleTimeString()
+                order['item']['image'],  req.body.table_name,
+                 time.toLocaleTimeString()
             )
         }
     });
@@ -76,11 +76,14 @@ export async function updateOrder(req: Request, res: Response) {
         if (item.rowCount !== 0 ) {
              update = await update_order_quantity(order['item']['product'], 
                                      order['quantity'], req.body.table_name)
-        } else { 
-             newOrder = await new_order(req.body.activeUser, order['item']['product'], 
+        } else {
+            const TOTAL =  req.body.price*req.body.quantity
+            // const PRODUCT_PRICE = await get_product_price(order['item']['product'])
+            // add total and total amount
+             
+            newOrder = await new_order(req.body.activeUser, order['item']['product'], 
                  order['item']['price'], order['quantity'], order['item']['category'],  
-                 order['item']['image'], req.body.total, req.body.table_name,
-                 req.body.paymentMethod, time.toLocaleTimeString()
+                 order['item']['image'], req.body.table_name,time.toLocaleTimeString()
             ); 
         }
     });
@@ -91,8 +94,10 @@ export async function updateOrder(req: Request, res: Response) {
 
 
 // cors should only direct to the frontend
-// order status
+// order status table status
+// add automatic total amount check 
 // update item prices
+// specify items for lounge and bar
 // splitting orders into a transaction
 
 // notification
