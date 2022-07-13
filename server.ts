@@ -3,7 +3,7 @@ import dotenv from "dotenv"
 import cors from 'cors'
 import { dbConnection } from './connection';
 import { createItemsTable } from './models/item';
-import { create_Order_Table } from './models/order';
+import { create_Order_Table, closed_Tables } from './models/order';
 import { createUsersTable } from './models/user';
 import { createTableManager } from './models/table';
 
@@ -27,10 +27,11 @@ async function startServer(){
         console.log(`Connected to Database!`)
     })
     
-    // await createUsersTable().then(() => console.log("done creating user table")); 
-    // await createItemsTable().then(() => console.log("done creating items tables"));
-    // await createTableManager();
+    await createUsersTable().then(() => console.log("done creating user table")); 
+    await createItemsTable().then(() => console.log("done creating items tables"));
+    await createTableManager();
     await create_Order_Table().then(() => console.log("done creating order table"));
+    // await closed_Tables();
    
     // await db.query(`DROP TABLE orders`)
     // await db.query(`DROP TABLE person`)

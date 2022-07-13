@@ -16,7 +16,10 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = require("./connection");
+const item_1 = require("./models/item");
 const order_1 = require("./models/order");
+const user_1 = require("./models/user");
+const table_1 = require("./models/table");
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 app.use(express_1.default.json());
@@ -34,10 +37,11 @@ function startServer() {
                 return console.error(err.message);
             console.log(`Connected to Database!`);
         });
-        // await createUsersTable().then(() => console.log("done creating user table")); 
-        // await createItemsTable().then(() => console.log("done creating items tables"));
-        // await createTableManager();
+        yield (0, user_1.createUsersTable)().then(() => console.log("done creating user table"));
+        yield (0, item_1.createItemsTable)().then(() => console.log("done creating items tables"));
+        yield (0, table_1.createTableManager)();
         yield (0, order_1.create_Order_Table)().then(() => console.log("done creating order table"));
+        // await closed_Tables();
         // await db.query(`DROP TABLE orders`)
         // await db.query(`DROP TABLE person`)
         // await db.query(`DROP TABLE item`)
