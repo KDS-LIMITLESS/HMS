@@ -8,13 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getItemsInCategory = exports.addNewItem = exports.getItem = void 0;
 const item_1 = require("../models/item");
-const fs_1 = __importDefault(require("fs"));
 function getItem(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -34,26 +30,16 @@ function addNewItem(req, res) {
         if ((yield (0, item_1.get_item)(reqBody['product'])) !== null)
             return res.status(400)
                 .send(`${reqBody['product']} already exists`);
-        fs_1.default.access(`uploads/${req.body.image}`, (err) => {
-            console.log(`entering image access`);
-            if (!err) {
-                console.log(`found image`);
-                (0, item_1.add_item)(reqBody['product'], reqBody['price'], reqBody['category'], reqBody['image'], reqBody['department'])
-                    .catch((err) => {
-                    console.log('catching error in db');
-                    console.log(err.message);
-                    return res.status(400).send(err.message);
-                })
-                    .then(() => {
-                    console.log('OK');
-                    return res.status(200).send('OK');
-                });
-            }
-            else {
-                console.log(`error in image`);
-                console.log(err.message);
-                return res.status(400).send(err);
-            }
+        console.log(`found image`);
+        (0, item_1.add_item)(reqBody['product'], reqBody['price'], reqBody['category'], reqBody['image'], reqBody['department'])
+            .catch((err) => {
+            console.log('catching error in db');
+            console.log(err.message);
+            return res.status(400).send(err.message);
+        })
+            .then(() => {
+            console.log('OK');
+            return res.status(200).send('OK');
         });
     });
 }

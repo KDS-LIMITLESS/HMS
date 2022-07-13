@@ -17,13 +17,13 @@ const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
 const aws = require('@aws-sdk/client-s3');
 const multers3 = require('multer-s3');
-const storage = multer_1.default.diskStorage({
-    destination: `uploads`,
-    filename: function (req, file, cb) {
-        cb(null, path_1.default.basename(file.originalname, path_1.default.extname(file.originalname))
-            + '-' + Date.now() + path_1.default.extname(file.originalname));
-    }
-});
+// const storage = multer.diskStorage({
+//     destination: `uploads`,
+//     filename: function (req, file, cb){
+//         cb(null, path.basename(file.originalname, path.extname(file.originalname)) 
+//         + '-' + Date.now() + path.extname(file.originalname));
+//     }
+// });
 const s3 = new aws.S3({
     region: 'us-east-1',
     credentials: {
@@ -31,10 +31,10 @@ const s3 = new aws.S3({
         secretAccessKey: "txUVwvT4wQR7ouyUVr494p7Pl7NlNJutkzmphnQy",
     }
 });
-const upload = (0, multer_1.default)({
-    storage: storage,
-    limits: { fileSize: 1000000 }
-}).single('image');
+// const upload = multer({
+//     storage: storage,
+//     limits: {fileSize: 1000000}
+// }).single('image')
 const uploadS3 = (0, multer_1.default)({
     storage: multers3({
         s3: s3,
@@ -42,6 +42,8 @@ const uploadS3 = (0, multer_1.default)({
         metadata: function (req, file, cb) {
             cb(null, { fieldname: file.fieldname });
         },
+        ACL: 'public-read',
+        ContentType: "image/jpeg",
         key: function (req, file, cb) {
             cb(null, path_1.default.basename(file.originalname, path_1.default.extname(file.originalname))
                 + '-' + Date.now() + path_1.default.extname(file.originalname));
@@ -51,13 +53,13 @@ const uploadS3 = (0, multer_1.default)({
 function uploadPicture(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         uploadS3(req, res, (err) => {
-            var _a;
             if (err) {
                 console.log(err);
                 return res.status(200).send(`An error occured!`);
             }
-            console.log(req);
-            return res.status(200).json({ imgPath: (_a = req.file) === null || _a === void 0 ? void 0 : _a.filename });
+            console.log(req.file.location);
+            // res.setHeader('content-type', 'image/jpeg')
+            return res.status(200).json({ imgPath: req.file.location });
         });
     });
 }

@@ -23,9 +23,7 @@ export async function addNewItem(req:Request, res: Response) {
     if (await get_item(reqBody['product']) !== null) return res.status(400)
         .send(`${reqBody['product']} already exists`)
 
-    fs.access(`uploads/${req.body.image}`, (err) => {
-        console.log(`entering image access`)
-        if (!err){
+
             console.log(`found image`)
             add_item(reqBody['product'], reqBody['price'], reqBody['category'], reqBody['image'], reqBody['department'])
             .catch((err) => {
@@ -37,12 +35,8 @@ export async function addNewItem(req:Request, res: Response) {
                 console.log('OK')
                 return res.status(200).send('OK')
             });
-        } else {
-            console.log(`error in image`)
-            console.log(err.message)
-            return res.status(400).send(err)
-        }
-    })
+        
+    
 }
 
 export async function getItemsInCategory(req:Request, res:Response) {
