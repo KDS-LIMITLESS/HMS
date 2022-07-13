@@ -31,7 +31,7 @@ export async function get_all_waiter_tables(waiter: string){
 
 export async function get_all_tables() {
     const db = await dbConnection();
-    let result = db.query(SQL `SELECT table_name FROM tables`)
+    let result = db.query(SQL `SELECT * FROM tables`)
     if ((await result).rowCount === 0) return null;
     return result
 }

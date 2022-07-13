@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { create_new_table, get_table, get_all_waiter_tables, 
-        get_one_waiter_table, close_table } from "../models/table";
+        get_one_waiter_table, close_table, get_all_tables } from "../models/table";
 // import { close_order_table, get_closed_tables } from "../models/table";
 
 
@@ -18,6 +18,18 @@ export async function createTable(req:Request, res: Response, next: NextFunction
         console.log(err.message + ` in createTable resource`)
         return res.status(400).send(`Table already exists`)
     }
+}
+
+export async function getAllTables(req:Request, res: Response) {
+    try{
+        const TABLES = await get_all_tables();
+        if (TABLES) return res.status(200).send(TABLES?.rows)
+        return res.status(404).send(`Table not found!`)
+        
+    }catch(err: any){
+        console.log(err.message)
+        res.status(400).send(err.message)
+    }   
 }
 
 export async function getWaiterTables(req: Request, res: Response) {

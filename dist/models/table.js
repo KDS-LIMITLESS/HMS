@@ -51,7 +51,7 @@ exports.get_all_waiter_tables = get_all_waiter_tables;
 function get_all_tables() {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        let result = db.query((0, sql_template_strings_1.default) `SELECT table_name FROM tables`);
+        let result = db.query((0, sql_template_strings_1.default) `SELECT * FROM tables`);
         if ((yield result).rowCount === 0)
             return null;
         return result;

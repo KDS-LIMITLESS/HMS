@@ -38,7 +38,7 @@ function addNewItem(req, res) {
             console.log(`entering image access`);
             if (!err) {
                 console.log(`found image`);
-                (0, item_1.add_item)(reqBody['product'], reqBody['price'], reqBody['category'], reqBody['image'])
+                (0, item_1.add_item)(reqBody['product'], reqBody['price'], reqBody['category'], reqBody['image'], reqBody['department'])
                     .catch((err) => {
                     console.log('catching error in db');
                     console.log(err.message);

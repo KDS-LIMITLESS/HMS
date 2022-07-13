@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.closeTable = exports.getWaiterTables = exports.createTable = void 0;
+exports.closeTable = exports.getWaiterTables = exports.getAllTables = exports.createTable = void 0;
 const table_1 = require("../models/table");
 // import { close_order_table, get_closed_tables } from "../models/table";
 function createTable(req, res, next) {
@@ -28,6 +28,21 @@ function createTable(req, res, next) {
     });
 }
 exports.createTable = createTable;
+function getAllTables(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const TABLES = yield (0, table_1.get_all_tables)();
+            if (TABLES)
+                return res.status(200).send(TABLES === null || TABLES === void 0 ? void 0 : TABLES.rows);
+            return res.status(404).send(`Table not found!`);
+        }
+        catch (err) {
+            console.log(err.message);
+            res.status(400).send(err.message);
+        }
+    });
+}
+exports.getAllTables = getAllTables;
 function getWaiterTables(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
