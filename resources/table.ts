@@ -37,15 +37,21 @@ export async function closeTable(req:Request, res:Response) {
     let getTable = await get_one_waiter_table(req.body.table_name, req.body.activeUser);
     const TABLE_CLOSED = await get_closed_tables(req.body.table_name);
 
-    if (getTable.rowCount === 0 || TABLE_CLOSED.rowCount === 1){
-        return res.status(400).send(`table not found or table already closed`)
-    } 
-    // check if this table has orders in the order table before closing!
-
-    console.log(`here!!`)
-    const CLOSE_TABLE = await close_order_table(req.body.activeUser, req.body.table_name, 
-            req.body.payment_method, req.body.total, time.toLocaleTimeString());
+    try {
+        if (getTable.rowCount === 0 || TABLE_CLOSED.rowCount === 1){
+            return res.status(400).send(`table not found or table already closed`)
+        } 
+        // check if this table has orders in the order table before closing!
     
-    console.log( CLOSE_TABLE.rowCount)
-    return res.status(200).json({table_status: "CLOSED"});
+        console.log(`here!!`)
+        const CLOSE_TABLE = await close_order_table(req.body.activeUser, req.body.table_name, 
+                req.body.payment_method, req.body.total, time.toLocaleTimeString());
+        
+        console.log( CLOSE_TABLE.rowCount)
+        return res.status(200).json({table_status: "CLOSED"});
+    }catch(err: any) {
+        return res.status(400).send(err.message)
+    }
+
+   
 }

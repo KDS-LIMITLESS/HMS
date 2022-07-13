@@ -48,14 +48,19 @@ function closeTable(req, res) {
         let time = new Date();
         let getTable = yield (0, table_1.get_one_waiter_table)(req.body.table_name, req.body.activeUser);
         const TABLE_CLOSED = yield (0, table_2.get_closed_tables)(req.body.table_name);
-        if (getTable.rowCount === 0 || TABLE_CLOSED.rowCount === 1) {
-            return res.status(400).send(`table not found or table already closed`);
+        try {
+            if (getTable.rowCount === 0 || TABLE_CLOSED.rowCount === 1) {
+                return res.status(400).send(`table not found or table already closed`);
+            }
+            // check if this table has orders in the order table before closing!
+            console.log(`here!!`);
+            const CLOSE_TABLE = yield (0, table_2.close_order_table)(req.body.activeUser, req.body.table_name, req.body.payment_method, req.body.total, time.toLocaleTimeString());
+            console.log(CLOSE_TABLE.rowCount);
+            return res.status(200).json({ table_status: "CLOSED" });
         }
-        // check if this table has orders in the order table before closing!
-        console.log(`here!!`);
-        const CLOSE_TABLE = yield (0, table_2.close_order_table)(req.body.activeUser, req.body.table_name, req.body.payment_method, req.body.total, time.toLocaleTimeString());
-        console.log(CLOSE_TABLE.rowCount);
-        return res.status(200).json({ table_status: "CLOSED" });
+        catch (err) {
+            return res.status(400).send(err.message);
+        }
     });
 }
 exports.closeTable = closeTable;
