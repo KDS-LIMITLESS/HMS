@@ -20,7 +20,7 @@ export async function createTable(req:Request, res: Response, next: NextFunction
     }
 }
 
-export async function getTable(req: Request, res: Response) {
+export async function getWaiterTables(req: Request, res: Response) {
     try {
         let result = await get_all_waiter_tables(req.body.activeUser)
         if (result) return res.status(200).send(result)

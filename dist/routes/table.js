@@ -6,6 +6,6 @@ const table_1 = require("../resources/table");
 const user_1 = require("../middlewares/user");
 const table_2 = require("../resources/table");
 exports.router = (0, express_1.Router)();
-exports.router.post('/tables', table_1.getTable);
+exports.router.post('/tables', table_1.getWaiterTables);
 exports.router.post('/close-table', user_1.authorizeUser, table_2.closeTable);
 module.exports = exports.router;

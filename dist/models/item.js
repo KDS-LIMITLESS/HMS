@@ -23,7 +23,8 @@ function createItemsTable() {
         product VARCHAR UNIQUE NOT NULL PRIMARY KEY,
         price INTEGER NOT NULL,
         category VARCHAR NOT NULL, 
-        image VARCHAR NOT NULL
+        image VARCHAR NOT NULL,
+        department VARCHAR NOT NULL
     )`, (err, result) => {
             if (err)
                 return console.error(err.message);

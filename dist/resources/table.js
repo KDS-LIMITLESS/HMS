@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.closeTable = exports.getTable = exports.createTable = void 0;
+exports.closeTable = exports.getWaiterTables = exports.createTable = void 0;
 const table_1 = require("../models/table");
 // import { close_order_table, get_closed_tables } from "../models/table";
 function createTable(req, res, next) {
@@ -28,7 +28,7 @@ function createTable(req, res, next) {
     });
 }
 exports.createTable = createTable;
-function getTable(req, res) {
+function getWaiterTables(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             let result = yield (0, table_1.get_all_waiter_tables)(req.body.activeUser);
@@ -41,7 +41,7 @@ function getTable(req, res) {
         }
     });
 }
-exports.getTable = getTable;
+exports.getWaiterTables = getWaiterTables;
 function closeTable(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let getTable = yield (0, table_1.get_one_waiter_table)(req.body.table_name, req.body.activeUser);
