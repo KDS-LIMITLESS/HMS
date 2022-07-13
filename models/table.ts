@@ -23,7 +23,8 @@ export async function create_new_table(tableName: string, waiter: string) {
 
 export async function get_all_waiter_tables(waiter: string){
     const db = await dbConnection();
-    const result = await db.query(SQL `SELECT table_name, status FROM tables WHERE waiter = ${waiter}`)
+    const result = await db.query(SQL `SELECT table_name, status, payment_method, total 
+            FROM tables WHERE waiter = ${waiter}`)
     if (result.rowCount === 0) return null
     return result.rows
 }

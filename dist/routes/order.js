@@ -13,5 +13,5 @@ exports.router.get('/all-orders', order_1.getAllOrder);
 exports.router.post('/order', user_1.authorizeUser, table_1.createTable, order_1.placeOrder);
 exports.router.post('/open-tables', user_1.authorizeUser, order_1.getOpenOrders);
 exports.router.post('/update-order', user_1.authorizeUser, order_1.updateOrder);
-exports.router.post('/order-count', order_1.countWaitersOrder);
+exports.router.post('/order-count', user_1.authorizeUser, order_1.countWaitersOrder);
 module.exports = exports.router;

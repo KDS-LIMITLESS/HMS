@@ -11,6 +11,6 @@ router.get('/all-orders', getAllOrder);
 router.post('/order', authorizeUser, createTable, placeOrder);
 router.post('/open-tables', authorizeUser, getOpenOrders);
 router.post('/update-order', authorizeUser, updateOrder);
-router.post('/order-count', countWaitersOrder)
+router.post('/order-count', authorizeUser, countWaitersOrder)
 
 module.exports = router;

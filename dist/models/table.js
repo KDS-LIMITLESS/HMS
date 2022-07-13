@@ -40,7 +40,8 @@ exports.create_new_table = create_new_table;
 function get_all_waiter_tables(waiter) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        const result = yield db.query((0, sql_template_strings_1.default) `SELECT table_name, status FROM tables WHERE waiter = ${waiter}`);
+        const result = yield db.query((0, sql_template_strings_1.default) `SELECT table_name, status, payment_method, total 
+            FROM tables WHERE waiter = ${waiter}`);
         if (result.rowCount === 0)
             return null;
         return result.rows;

@@ -29,6 +29,7 @@ export async function getWaiterTables(req: Request, res: Response) {
         
     }catch (err: any){
         console.log(err.message)
+        return res.status(400).send(err.message)
     }
 }
 
