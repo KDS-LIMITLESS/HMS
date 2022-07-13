@@ -37,7 +37,7 @@ const uploadS3  = multer({
           cb(null, {fieldname: file.fieldname});
         },
         ACL: 'public-read',
-        ContentType: "image/jpeg",
+        "Content-Type": "image/jpeg",
         key: function (req:Request, file:any, cb:any) {
           cb(null, path.basename(file.originalname, path.extname(file.originalname)) 
           + '-' + Date.now() + path.extname(file.originalname));
