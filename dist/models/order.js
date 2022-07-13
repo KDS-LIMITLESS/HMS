@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_all_orders = exports.update_order_quantity = exports.get_drinks_in_table = exports.get_table_orders = exports.new_order = exports.create_Order_Table = void 0;
+exports.count_waiters_order = exports.get_all_orders = exports.update_order_quantity = exports.get_drinks_in_table = exports.get_table_orders = exports.new_order = exports.create_Order_Table = void 0;
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const connection_1 = require("../connection");
 function create_Order_Table() {
@@ -85,3 +85,11 @@ function get_all_orders() {
     });
 }
 exports.get_all_orders = get_all_orders;
+function count_waiters_order(waiter) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        let orderCount = yield db.query((0, sql_template_strings_1.default) `SELECT username, item FROM orders WHERE username = ${waiter}`);
+        return orderCount;
+    });
+}
+exports.count_waiters_order = count_waiters_order;

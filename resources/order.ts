@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import { get_item } from "../models/item";
 import {new_order, get_table_orders, get_drinks_in_table, 
-    update_order_quantity, get_all_orders} from "../models/order";
+    update_order_quantity, get_all_orders, count_waiters_order} from "../models/order";
 import { delete_rows, get_one_waiter_table } from "../models/table";
 
 export async function placeOrder(req: Request, res: Response, next: NextFunction){
@@ -59,6 +59,7 @@ export async function getOpenOrders(req: Request, res: Response) {
     return res.status(200).send(i)   
 }
 
+// check if table is closed and do not do anything.....
 export async function updateOrder(req: Request, res: Response) {
     let time = new Date()
 
@@ -100,6 +101,16 @@ export async function getAllOrder(req:Request, res: Response) {
     }
 }
 
+export async function countWaitersOrder(req: Request, res: Response) {
+    try {
+        let count = await count_waiters_order(req.body.activeUser)
+        return res.status(200).json({Waiter_count: count.rowCount})
+    }catch(err: any){
+        console.log(err.message)
+        return res.status(400).send(err.message)
+    }
+    
+}
 
 
 

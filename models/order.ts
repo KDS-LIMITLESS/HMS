@@ -63,3 +63,10 @@ export async function get_all_orders() {
     let orders = await db.query(SQL `SELECT * FROM orders`)
     return orders
 }
+
+export async function count_waiters_order(waiter: string) {
+    const db = await dbConnection();
+
+    let orderCount = await db.query(SQL `SELECT username, item FROM orders WHERE username = ${waiter}`)
+    return orderCount
+}
