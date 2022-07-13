@@ -27,10 +27,9 @@ function create_Order_Table() {
         quantity INTEGER NOT NULL,
         category VARCHAR NOT NULL,
         image VARCHAR NOT NULL,
-        
-        total INTEGER NOT NULL DEFAULT 0,
+
         table_name VARCHAR NOT NULL REFERENCES tables(table_name),
-        payment_method VARCHAR NOT NULL DEFAULT '-',
+        
         time VARCHAR
     )`);
     });

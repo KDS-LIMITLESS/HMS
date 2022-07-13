@@ -41,8 +41,8 @@ function startServer() {
         yield (0, item_1.createItemsTable)().then(() => console.log("done creating items tables"));
         yield (0, table_1.createTableManager)();
         yield (0, order_1.create_Order_Table)().then(() => console.log("done creating order table"));
-        //await db.query(`DROP TABLE orders`)
-        //await db.query(`DROP TABLE item`)
+        // await db.query(`DROP TABLE orders`)
+        // await db.query(`DROP TABLE item`)
         // await db.query(`DROP TABLE users`)
         // await db.query(`DROP TABLE closedtbl`)
         // await db.query(`DROP TABLE tables`)
