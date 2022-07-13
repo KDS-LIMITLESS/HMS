@@ -61,20 +61,7 @@ export async function update_order_quantity(item:string, quantity: string, tbl: 
     return result;
 }
 
-export async function closed_Tables() {
-    const db = await dbConnection();
-    return await db.query(`CREATE TABLE IF NOT EXISTS closedtbl(
-        waiter VARCHAR NOT NULL references users(username),
-        table_name VARCHAR NOT NULL REFERENCES person(table_name) PRIMARY KEY,
-        payment_method VARCHAR NOT NULL,
-        total INTEGER NOT NULL
-    )`)
-}
-
-export async function close_order_table(waiter: string, tbl_name: string, payment_method: string, total: number) {
-    const db = await dbConnection();
-    let result = await db.query(SQL `INSERT INTO closedtbl (table_name) 
-        VALUES ${tbl_name}, ${payment_method}, ${total}`)
-
-    return result;
-}
+// export async function update_table_status(status:string) {
+//     const db = await dbConnection();
+//     let result = db.query(SQL `UPDATE orders SET status = `)
+// }

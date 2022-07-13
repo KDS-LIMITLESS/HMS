@@ -3,9 +3,9 @@ import dotenv from "dotenv"
 import cors from 'cors'
 import { dbConnection } from './connection';
 import { createItemsTable } from './models/item';
-import { create_Order_Table, closed_Tables } from './models/order';
+import { create_Order_Table } from './models/order';
 import { createUsersTable } from './models/user';
-import { createTableManager } from './models/table';
+import { createTableManager, closed_Tables_db } from './models/table';
 
 
 const app = express();
@@ -31,12 +31,13 @@ async function startServer(){
     await createItemsTable().then(() => console.log("done creating items tables"));
     await createTableManager();
     await create_Order_Table().then(() => console.log("done creating order table"));
-    // await closed_Tables();
+    // await closed_Tables_db();
    
     // await db.query(`DROP TABLE orders`)
     // await db.query(`DROP TABLE person`)
     // await db.query(`DROP TABLE item`)
     // await db.query(`DROP TABLE users`)
+    await db.query(`DROP TABLE closedtbl`)
     
     const PORT = process.env.PORT || 3000
 

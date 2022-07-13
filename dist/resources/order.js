@@ -39,6 +39,7 @@ function placeOrder(req, res, next) {
     });
 }
 exports.placeOrder = placeOrder;
+// get order history within a table
 function getOpenOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let order = yield (0, order_1.get_table_orders)(req.body.activeUser, req.body.table_name);
@@ -63,11 +64,10 @@ function getOpenOrders(req, res) {
     });
 }
 exports.getOpenOrders = getOpenOrders;
-// add item does not exist error check in this function
-// price should be read from database
 function updateOrder(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let time = new Date();
+        console.log(req.body);
         const ORDER = req.body.order;
         let update;
         let newOrder;

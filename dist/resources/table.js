@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTable = exports.createTable = void 0;
+exports.closeTable = exports.getTable = exports.createTable = void 0;
 const table_1 = require("../models/table");
+const table_2 = require("../models/table");
 function createTable(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -31,7 +32,7 @@ exports.createTable = createTable;
 function getTable(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            let result = yield (0, table_1.get_waiter_tables)(req.body.activeUser);
+            let result = yield (0, table_1.get_all_waiter_tables)(req.body.activeUser);
             if (result)
                 return res.status(200).send(result);
             return res.status(400).send(`None`);
@@ -42,3 +43,19 @@ function getTable(req, res) {
     });
 }
 exports.getTable = getTable;
+function closeTable(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let time = new Date();
+        let getTable = yield (0, table_1.get_one_waiter_table)(req.body.table_name, req.body.activeUser);
+        const TABLE_CLOSED = yield (0, table_2.get_closed_tables)(req.body.table_name);
+        if (getTable.rowCount === 0 || TABLE_CLOSED.rowCount === 1) {
+            return res.status(400).send(`table not found or table already closed`);
+        }
+        // check if this table has orders in the order table before closing!
+        console.log(`here!!`);
+        const CLOSE_TABLE = yield (0, table_2.close_order_table)(req.body.activeUser, req.body.table_name, req.body.payment_method, req.body.total, time.toLocaleTimeString());
+        console.log(CLOSE_TABLE.rowCount);
+        return res.status(200).json({ table_status: "CLOSED" });
+    });
+}
+exports.closeTable = closeTable;

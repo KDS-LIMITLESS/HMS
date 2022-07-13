@@ -12,4 +12,5 @@ exports.router = express_1.default.Router();
 exports.router.post('/order', user_1.authorizeUser, table_1.createTable, order_1.placeOrder);
 exports.router.post('/open-tables', user_1.authorizeUser, order_1.getOpenOrders);
 exports.router.post('/update-order', user_1.authorizeUser, order_1.updateOrder);
+exports.router.post('/close-table', user_1.authorizeUser, table_1.closeTable);
 module.exports = exports.router;

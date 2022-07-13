@@ -1,8 +1,8 @@
 import { Response, Request, NextFunction } from "express";
-import { get_item, get_product_price } from "../models/item";
+import { get_item } from "../models/item";
 import {new_order, get_table_orders, get_drinks_in_table, 
-    update_order_quantity } from "../models/order";
-import { delete_rows } from "../models/table";
+    update_order_quantity} from "../models/order";
+import { delete_rows, get_one_waiter_table } from "../models/table";
 
 export async function placeOrder(req: Request, res: Response, next: NextFunction){
     let time = new Date();    
@@ -35,6 +35,7 @@ export async function placeOrder(req: Request, res: Response, next: NextFunction
     res.status(200).send('OK');  
 }
 
+// get order history within a table
 export async function getOpenOrders(req: Request, res: Response) {
     let order = await get_table_orders(req.body.activeUser, req.body.table_name);
     if (!order) return res.status(400).send(`table not found`)
@@ -58,12 +59,10 @@ export async function getOpenOrders(req: Request, res: Response) {
     return res.status(200).send(i)   
 }
 
-
-// add item does not exist error check in this function
-// price should be read from database
-
 export async function updateOrder(req: Request, res: Response) {
     let time = new Date()
+
+    console.log(req.body)
     
     const ORDER: [] = req.body.order;
     let update;
@@ -90,6 +89,7 @@ export async function updateOrder(req: Request, res: Response) {
     if (update === 0 || newOrder === 0) return res.status(400).send(`an error occured`)
     return res.end(`OK`);
 }
+
 
 
 
