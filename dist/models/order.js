@@ -12,13 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.update_order_quantity = exports.get_drinks_in_table = exports.get_table_orders = exports.new_order = exports.createOrderTable = void 0;
+exports.close_order_table = exports.closed_Tables = exports.update_order_quantity = exports.get_drinks_in_table = exports.get_table_orders = exports.new_order = exports.create_Order_Table = void 0;
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const connection_1 = require("../connection");
-function createOrderTable() {
+function create_Order_Table() {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        return db.query(`CREATE TABLE IF NOT EXISTS orders (
+        return yield db.query(`CREATE TABLE IF NOT EXISTS orders (
         id BIGSERIAL PRIMARY KEY, 
         username VARCHAR NOT NULL REFERENCES users(username),
         
@@ -36,7 +36,7 @@ function createOrderTable() {
     )`);
     });
 }
-exports.createOrderTable = createOrderTable;
+exports.create_Order_Table = create_Order_Table;
 function new_order(username, item, price, quantity, category, image, table_name, time) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
@@ -79,3 +79,24 @@ function update_order_quantity(item, quantity, tbl) {
     });
 }
 exports.update_order_quantity = update_order_quantity;
+function closed_Tables() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        return yield db.query(`CREATE TABLE IF NOT EXISTS closedtbl(
+        waiter VARCHAR NOT NULL references users(username),
+        table_name VARCHAR NOT NULL REFERENCES person(table_name) PRIMARY KEY,
+        payment_method VARCHAR NOT NULL,
+        total INTEGER NOT NULL
+    )`);
+    });
+}
+exports.closed_Tables = closed_Tables;
+function close_order_table(waiter, tbl_name, payment_method, total) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        let result = yield db.query((0, sql_template_strings_1.default) `INSERT INTO closedtbl (table_name) 
+        VALUES ${tbl_name}, ${payment_method}, ${total}`);
+        return result;
+    });
+}
+exports.close_order_table = close_order_table;

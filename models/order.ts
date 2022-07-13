@@ -2,10 +2,10 @@ import SQL from "sql-template-strings";
 import { dbConnection } from "../connection";
 
 
-export async function createOrderTable() {
+export async function create_Order_Table() {
     const db = await dbConnection()
 
-    return db.query(`CREATE TABLE IF NOT EXISTS orders (
+    return await db.query(`CREATE TABLE IF NOT EXISTS orders (
         id BIGSERIAL PRIMARY KEY, 
         username VARCHAR NOT NULL REFERENCES users(username),
         
@@ -58,5 +58,23 @@ export async function update_order_quantity(item:string, quantity: string, tbl: 
 
     let result = db .query(SQL `UPDATE orders SET quantity = ${quantity} 
         WHERE item = ${item} AND table_name = ${tbl}`)
+    return result;
+}
+
+export async function closed_Tables() {
+    const db = await dbConnection();
+    return await db.query(`CREATE TABLE IF NOT EXISTS closedtbl(
+        waiter VARCHAR NOT NULL references users(username),
+        table_name VARCHAR NOT NULL REFERENCES person(table_name) PRIMARY KEY,
+        payment_method VARCHAR NOT NULL,
+        total INTEGER NOT NULL
+    )`)
+}
+
+export async function close_order_table(waiter: string, tbl_name: string, payment_method: string, total: number) {
+    const db = await dbConnection();
+    let result = await db.query(SQL `INSERT INTO closedtbl (table_name) 
+        VALUES ${tbl_name}, ${payment_method}, ${total}`)
+
     return result;
 }
