@@ -14,11 +14,9 @@ export async function create_Order_Table() {
         quantity INTEGER NOT NULL,
         category VARCHAR NOT NULL,
         image VARCHAR NOT NULL,
+
+        table_name VARCHAR NOT NULL REFERENCES tables(table_name),
         
-        total INTEGER NOT NULL DEFAULT 0,
-        table_name VARCHAR NOT NULL REFERENCES person(table_name),
-        payment_method VARCHAR NOT NULL DEFAULT '-',
-        status VARCHAR NOT NULL DEFAULT 'OPEN',
         time VARCHAR
     )`)
 }
@@ -46,8 +44,6 @@ export async function get_table_orders(name:string, tbl: string){
 
 export async function get_drinks_in_table(item: string, col: string ){
     const db = await dbConnection();
-    
-
     let result = db.query(SQL `SELECT item, price, quantity, category, image FROM orders 
             WHERE item = ${item} AND table_name = ${col}`);
     return result;
@@ -56,12 +52,14 @@ export async function get_drinks_in_table(item: string, col: string ){
 export async function update_order_quantity(item:string, quantity: string, tbl: string) {
     const db = await dbConnection();
 
-    let result = db .query(SQL `UPDATE orders SET quantity = ${quantity} 
+    let result = db.query(SQL `UPDATE orders SET quantity = ${quantity} 
         WHERE item = ${item} AND table_name = ${tbl}`)
     return result;
 }
 
-// export async function update_table_status(status:string) {
-//     const db = await dbConnection();
-//     let result = db.query(SQL `UPDATE orders SET status = `)
-// }
+export async function get_all_orders() {
+    const db = await dbConnection();
+
+    let orders = await db.query(SQL `SELECT * FROM orders`)
+    return orders
+}

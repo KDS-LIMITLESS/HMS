@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import { get_item } from "../models/item";
 import {new_order, get_table_orders, get_drinks_in_table, 
-    update_order_quantity} from "../models/order";
+    update_order_quantity, get_all_orders} from "../models/order";
 import { delete_rows, get_one_waiter_table } from "../models/table";
 
 export async function placeOrder(req: Request, res: Response, next: NextFunction){
@@ -9,7 +9,7 @@ export async function placeOrder(req: Request, res: Response, next: NextFunction
        
     console.log(req.body.order)
     const ORDER: [] = req.body.order;
-    let order;
+    
     ORDER.forEach(async order => {
        let item = await get_item(order['item']['product'])
        console.log(order['item']['product'])
@@ -17,11 +17,11 @@ export async function placeOrder(req: Request, res: Response, next: NextFunction
        
        // Delete table in table databases if error occurs here
        // make serial data type count sequentially
-
-        console.log(item)
-        if (item === null) {
+       // come back here!!!!!!!
+        if (!item) {
             await delete_rows(req.body.table_name)
             console.log(' deleted table')
+
             return res.status(400).end(`Item does not exist`)
         } else {
             await new_order(req.body.activeUser, order['item']['product'], 
@@ -88,6 +88,16 @@ export async function updateOrder(req: Request, res: Response) {
     });
     if (update === 0 || newOrder === 0) return res.status(400).send(`an error occured`)
     return res.end(`OK`);
+}
+
+export async function getAllOrder(req:Request, res: Response) {
+    try {
+        const ORDERS = await get_all_orders()
+        return res.status(200).send(ORDERS.rows)
+    }catch(err:any){
+        console.log(err.message)
+        return res.status(400).send(`An error occured`)
+    }
 }
 
 
