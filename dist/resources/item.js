@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getItemsInCategory = exports.addNewItem = exports.getItem = void 0;
+exports.getAllDrinksDepartment = exports.getItemsInCategory = exports.addNewItem = exports.getItem = void 0;
 const item_1 = require("../models/item");
 function getItem(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -49,3 +49,16 @@ function getItemsInCategory(req, res) {
     });
 }
 exports.getItemsInCategory = getItemsInCategory;
+function getAllDrinksDepartment(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const result = yield (0, item_1.get_drinks_in_department)(req.body.department);
+            return res.status(200).send(result.rows);
+        }
+        catch (err) {
+            console.error(err);
+            return res.status(400).send("An Error Occured ");
+        }
+    });
+}
+exports.getAllDrinksDepartment = getAllDrinksDepartment;

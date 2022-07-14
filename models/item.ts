@@ -32,8 +32,8 @@ export async function get_item(product: string, department: string) {
     const db = await dbConnection()
     let result = await db.query(SQL `SELECT product, department FROM item 
                     WHERE product = ${product} AND department = ${department};`)
-    // if (result.rowCount === 0) return null
-    return result.rowCount
+    if (result.rowCount === 0) return null
+    return result.rows
 }
 
 export async function get_product_price(product: string){
@@ -55,3 +55,12 @@ export async function add_item(product:string, price:number, category:string, im
         VALUES(${product}, ${price}, ${category}, ${image}, ${department});`)
     return result   
 }
+
+export async function get_drinks_in_department(department: string) {
+    const db = await dbConnection();
+
+    let result = await db.query(SQL `SELECT * FROM item 
+            WHERE department = ${department}`);
+    return result;
+}
+

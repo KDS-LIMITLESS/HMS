@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.add_item = exports.get_all_items_with_category = exports.get_product_price = exports.get_item = exports.get_all_items = exports.createItemsTable = void 0;
+exports.get_drinks_in_department = exports.add_item = exports.get_all_items_with_category = exports.get_product_price = exports.get_item = exports.get_all_items = exports.createItemsTable = void 0;
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const connection_1 = require("../connection");
 function createItemsTable() {
@@ -48,8 +48,9 @@ function get_item(product, department) {
         const db = yield (0, connection_1.dbConnection)();
         let result = yield db.query((0, sql_template_strings_1.default) `SELECT product, department FROM item 
                     WHERE product = ${product} AND department = ${department};`);
-        // if (result.rowCount === 0) return null
-        return result.rowCount;
+        if (result.rowCount === 0)
+            return null;
+        return result.rows;
     });
 }
 exports.get_item = get_item;
@@ -80,3 +81,12 @@ function add_item(product, price, category, image, department) {
     });
 }
 exports.add_item = add_item;
+function get_drinks_in_department(department) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        let result = yield db.query((0, sql_template_strings_1.default) `SELECT * FROM item 
+            WHERE department = ${department}`);
+        return result;
+    });
+}
+exports.get_drinks_in_department = get_drinks_in_department;
