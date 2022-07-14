@@ -64,3 +64,10 @@ export async function get_drinks_in_department(department: string) {
     return result;
 }
 
+export async function delete_item(item:string, department: string) {
+    const db = await dbConnection();
+
+    let result = await db.query(SQL `DELETE FROM item WHERE product = ${item} AND department = ${department}`)
+    return result;
+    
+}

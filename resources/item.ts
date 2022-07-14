@@ -1,5 +1,5 @@
 import { get_all_items, add_item, get_item, 
-        get_all_items_with_category, get_drinks_in_department
+        get_all_items_with_category, get_drinks_in_department, delete_item
 } from "../models/item";
 import { Request, Response } from "express";
 
@@ -45,5 +45,20 @@ export async function getAllDrinksDepartment(req:Request, res:Response) {
     }catch(err:any){
         console.error(err)
         return res.status(400).send("An Error Occured ")
+    }
+}
+
+export async function deleteItem(req: Request,res: Response){
+    try {
+        const ITEM = await get_item(req.body.product, req.body.department)
+        console.log(ITEM)
+        if (ITEM !== null) {
+            await delete_item(ITEM[0]['product'], ITEM[0]['department'])
+            return res.status(200).send("OK")
+        }
+       
+        return res.status(400).send(`Error`)
+    } catch(err: any) {
+        return res.status(400).send(err.message)
     }
 }
