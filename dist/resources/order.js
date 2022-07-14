@@ -19,7 +19,7 @@ function placeOrder(req, res, next) {
         console.log(req.body.order);
         const ORDER = req.body.order;
         ORDER.forEach((order) => __awaiter(this, void 0, void 0, function* () {
-            let item = yield (0, item_1.get_item)(order['item']['product']);
+            let item = yield (0, item_1.get_item)(order['item']['product'], order['item']['department']);
             console.log(order['item']['product']);
             // Delete table in table databases if error occurs here
             // make serial data type count sequentially
@@ -30,7 +30,7 @@ function placeOrder(req, res, next) {
                 return res.status(400).end(`Item does not exist`);
             }
             else {
-                yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], req.body.table_name, time.toLocaleTimeString());
+                yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], order['item']['department'], req.body.table_name, time.toLocaleTimeString());
             }
         }));
         console.log(`new order created!`);
@@ -81,7 +81,7 @@ function updateOrder(req, res) {
                 const TOTAL = req.body.price * req.body.quantity;
                 // const PRODUCT_PRICE = await get_product_price(order['item']['product'])
                 // add total and total amount
-                newOrder = yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], req.body.table_name, time.toLocaleTimeString());
+                newOrder = yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], order['item']['department'], req.body.table_name, time.toLocaleTimeString());
             }
         }));
         if (update === 0 || newOrder === 0)

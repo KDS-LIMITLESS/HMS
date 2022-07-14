@@ -17,13 +17,6 @@ const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
 const { S3Client } = require('@aws-sdk/client-s3');
 const multers3 = require('multer-s3');
-// const storage = multer.diskStorage({
-//     destination: `uploads`,
-//     filename: function (req, file, cb){
-//         cb(null, path.basename(file.originalname, path.extname(file.originalname)) 
-//         + '-' + Date.now() + path.extname(file.originalname));
-//     }
-// });
 const s3 = new S3Client({
     region: 'us-east-1',
     credentials: {
@@ -55,7 +48,6 @@ function uploadPicture(req, res) {
                 return res.status(200).send(`An error occured!`);
             }
             console.log(req.file.location);
-            // res.setHeader('content-type', 'image/jpeg')
             return res.status(200).json({ imgPath: req.file.location });
         });
     });

@@ -79,7 +79,7 @@ function delete_rows(table_name) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
         let del = yield db.query(`DELETE FROM tables WHERE table_name = ${table_name}`);
-        return del;
+        return del.rows;
     });
 }
 exports.delete_rows = delete_rows;

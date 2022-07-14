@@ -53,7 +53,7 @@ export async function delete_rows(table_name: string) {
     const db = await dbConnection();
 
     let del = await db.query(`DELETE FROM tables WHERE table_name = ${table_name}`);
-    return del;
+    return del.rows;
 }
 
 export async function close_table(waiter:string, status: string, tbl_name: string, payment_method: string, total: number){

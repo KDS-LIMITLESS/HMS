@@ -11,13 +11,13 @@ export async function placeOrder(req: Request, res: Response, next: NextFunction
     const ORDER: [] = req.body.order;
     
     ORDER.forEach(async order => {
-       let item = await get_item(order['item']['product'])
+       let item = await get_item(order['item']['product'], order['item']['department'])
        console.log(order['item']['product'])
         
-       
        // Delete table in table databases if error occurs here
        // make serial data type count sequentially
        // come back here!!!!!!!
+       
         if (!item) {
             await delete_rows(req.body.table_name)
             console.log(' deleted table')
@@ -26,8 +26,8 @@ export async function placeOrder(req: Request, res: Response, next: NextFunction
         } else {
             await new_order(req.body.activeUser, order['item']['product'], 
                 order['item']['price'], order['quantity'], order['item']['category'],  
-                order['item']['image'],  req.body.table_name,
-                 time.toLocaleTimeString()
+                order['item']['image'], order['item']['department'], req.body.table_name,
+                time.toLocaleTimeString()
             )
         }
     });
@@ -83,7 +83,7 @@ export async function updateOrder(req: Request, res: Response) {
              
             newOrder = await new_order(req.body.activeUser, order['item']['product'], 
                  order['item']['price'], order['quantity'], order['item']['category'],  
-                 order['item']['image'], req.body.table_name,time.toLocaleTimeString()
+                 order['item']['image'], order['item']['department'], req.body.table_name,time.toLocaleTimeString()
             ); 
         }
     });

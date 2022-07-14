@@ -16,6 +16,7 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = require("./connection");
+// set depeartment foreign key in order to automatically get value form items(department)
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 app.use(express_1.default.json());
@@ -37,9 +38,9 @@ function startServer() {
         // await createItemsTable().then(() => console.log("done creating items tables"));
         // await createTableManager();
         // await create_Order_Table().then(() => console.log("done creating order table"));
-        // await db.query(`DROP TABLE orders`)
-        // await db.query(`DROP TABLE item`)
-        // await db.query(`DROP TABLE tables`)
+        yield db.query(`DROP TABLE orders`);
+        yield db.query(`DROP TABLE item`);
+        yield db.query(`DROP TABLE tables`);
         // await db.query(`DROP TABLE users`)
         const PORT = process.env.PORT || 3000;
         app.listen(PORT, () => {

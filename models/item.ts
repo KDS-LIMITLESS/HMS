@@ -7,11 +7,13 @@ export async function createItemsTable() {
 
     db.query(`CREATE TABLE IF NOT EXISTS 
     item(
-        product VARCHAR UNIQUE NOT NULL PRIMARY KEY,
+        department VARCHAR NOT NULL,
+        product VARCHAR NOT NULL,
         price INTEGER NOT NULL,
         category VARCHAR NOT NULL, 
         image VARCHAR NOT NULL,
-        department VARCHAR NOT NULL
+        
+        PRIMARY KEY (department,product)
     )`, 
     (err, result) =>{
         if(err) return console.error(err.message);
@@ -26,11 +28,12 @@ export async function get_all_items() {
     return result;
 }
 
-export async function get_item(product: string) {
+export async function get_item(product: string, department: string) {
     const db = await dbConnection()
-    let result = db.query(SQL `SELECT product FROM item WHERE product = ${product};`)
-    if ((await result).rowCount === 0) return null
-    return (await result).rows[0]['product']
+    let result = await db.query(SQL `SELECT product, department FROM item 
+                    WHERE product = ${product} AND department = ${department};`)
+    // if (result.rowCount === 0) return null
+    return result.rowCount
 }
 
 export async function get_product_price(product: string){

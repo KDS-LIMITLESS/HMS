@@ -1,3 +1,4 @@
+import { table } from "console";
 import SQL from "sql-template-strings";
 import { dbConnection } from "../connection";
 
@@ -9,28 +10,30 @@ export async function create_Order_Table() {
         id BIGSERIAL PRIMARY KEY, 
         username VARCHAR NOT NULL REFERENCES users(username),
         
-        item VARCHAR NOT NULL REFERENCES item(product),
+        item VARCHAR NOT NULL ,
         price INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
         category VARCHAR NOT NULL,
         image VARCHAR NOT NULL,
+        department VARCHAR NOT NULL,
 
         table_name VARCHAR NOT NULL REFERENCES tables(table_name),
         
-        time VARCHAR
+        time VARCHAR,
+        FOREIGN KEY (department, item ) REFERENCES item(department, product)
     )`)
 }
 
 export async function new_order(username: string, item: string, price: number,
-            quantity: number, category: string, image: string,  
+            quantity: number, category: string, image: string,  department: string,
             table_name: string, time: string) {            
     const db = await dbConnection();
-    let result = db.query(SQL `INSERT INTO 
-    orders (username, item, price, quantity, category, image,
+    let result = await db.query(SQL `INSERT INTO orders (
+        username, item, price, quantity, category, image, department,
             table_name, time)
 
     VALUES (${username}, ${item}, ${price}, ${quantity}, ${category}, 
-            ${image},  ${table_name}, ${time})`);
+            ${image}, ${department}, ${table_name}, ${time})`);
     return result
 }
 
@@ -69,4 +72,11 @@ export async function count_waiters_order(waiter: string) {
 
     let orderCount = await db.query(SQL `SELECT username, item FROM orders WHERE username = ${waiter}`)
     return orderCount
+}
+
+export async function delete_order(table_name: string){
+    const db = await dbConnection();
+
+    let result = await db.query(SQL `DELETE FROM orders WHERE table_name = ${table_name}`)
+    return result.rows
 }

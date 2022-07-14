@@ -20,11 +20,13 @@ function createItemsTable() {
         const db = yield (0, connection_1.dbConnection)();
         db.query(`CREATE TABLE IF NOT EXISTS 
     item(
-        product VARCHAR UNIQUE NOT NULL PRIMARY KEY,
+        department VARCHAR NOT NULL,
+        product VARCHAR NOT NULL,
         price INTEGER NOT NULL,
         category VARCHAR NOT NULL, 
         image VARCHAR NOT NULL,
-        department VARCHAR NOT NULL
+        
+        PRIMARY KEY (department,product)
     )`, (err, result) => {
             if (err)
                 return console.error(err.message);
@@ -41,13 +43,13 @@ function get_all_items() {
     });
 }
 exports.get_all_items = get_all_items;
-function get_item(product) {
+function get_item(product, department) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        let result = db.query((0, sql_template_strings_1.default) `SELECT product FROM item WHERE product = ${product};`);
-        if ((yield result).rowCount === 0)
-            return null;
-        return (yield result).rows[0]['product'];
+        let result = yield db.query((0, sql_template_strings_1.default) `SELECT product, department FROM item 
+                    WHERE product = ${product} AND department = ${department};`);
+        // if (result.rowCount === 0) return null
+        return result.rowCount;
     });
 }
 exports.get_item = get_item;

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.count_waiters_order = exports.get_all_orders = exports.update_order_quantity = exports.get_drinks_in_table = exports.get_table_orders = exports.new_order = exports.create_Order_Table = void 0;
+exports.delete_order = exports.count_waiters_order = exports.get_all_orders = exports.update_order_quantity = exports.get_drinks_in_table = exports.get_table_orders = exports.new_order = exports.create_Order_Table = void 0;
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const connection_1 = require("../connection");
 function create_Order_Table() {
@@ -22,28 +22,30 @@ function create_Order_Table() {
         id BIGSERIAL PRIMARY KEY, 
         username VARCHAR NOT NULL REFERENCES users(username),
         
-        item VARCHAR NOT NULL REFERENCES item(product),
+        item VARCHAR NOT NULL ,
         price INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
         category VARCHAR NOT NULL,
         image VARCHAR NOT NULL,
+        department VARCHAR NOT NULL,
 
         table_name VARCHAR NOT NULL REFERENCES tables(table_name),
         
-        time VARCHAR
+        time VARCHAR,
+        FOREIGN KEY (department, item ) REFERENCES item(department, product)
     )`);
     });
 }
 exports.create_Order_Table = create_Order_Table;
-function new_order(username, item, price, quantity, category, image, table_name, time) {
+function new_order(username, item, price, quantity, category, image, department, table_name, time) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        let result = db.query((0, sql_template_strings_1.default) `INSERT INTO 
-    orders (username, item, price, quantity, category, image,
+        let result = yield db.query((0, sql_template_strings_1.default) `INSERT INTO orders (
+        username, item, price, quantity, category, image, department,
             table_name, time)
 
     VALUES (${username}, ${item}, ${price}, ${quantity}, ${category}, 
-            ${image},  ${table_name}, ${time})`);
+            ${image}, ${department}, ${table_name}, ${time})`);
         return result;
     });
 }
@@ -93,3 +95,11 @@ function count_waiters_order(waiter) {
     });
 }
 exports.count_waiters_order = count_waiters_order;
+function delete_order(table_name) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        let result = yield db.query((0, sql_template_strings_1.default) `DELETE FROM orders WHERE table_name = ${table_name}`);
+        return result.rows;
+    });
+}
+exports.delete_order = delete_order;

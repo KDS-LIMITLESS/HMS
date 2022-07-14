@@ -27,20 +27,17 @@ exports.getItem = getItem;
 function addNewItem(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const reqBody = req.body;
-        if ((yield (0, item_1.get_item)(reqBody['product'])) !== null)
-            return res.status(400)
-                .send(`${reqBody['product']} already exists`);
-        console.log(`found image`);
-        (0, item_1.add_item)(reqBody['product'], reqBody['price'], reqBody['category'], reqBody['image'], reqBody['department'])
-            .catch((err) => {
-            console.log('catching error in db');
+        try {
+            if ((yield (0, item_1.get_item)(reqBody['product'], reqBody['department'])) !== null)
+                return res.status(400)
+                    .send(`${reqBody['product']} already exists`);
+            yield (0, item_1.add_item)(reqBody['product'], reqBody['price'], reqBody['category'], reqBody['image'], reqBody['department']);
+            return res.status(200).send('OK');
+        }
+        catch (err) {
             console.log(err.message);
             return res.status(400).send(err.message);
-        })
-            .then(() => {
-            console.log('OK');
-            return res.status(200).send('OK');
-        });
+        }
     });
 }
 exports.addNewItem = addNewItem;
