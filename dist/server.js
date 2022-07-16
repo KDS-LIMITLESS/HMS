@@ -55,5 +55,5 @@ function startServer() {
         });
     });
 }
-// remove user
+// remove user route
 startServer();

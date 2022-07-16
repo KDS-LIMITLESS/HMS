@@ -26,7 +26,7 @@ export async function placeOrder(req: Request, res: Response, next: NextFunction
 export async function getOpenOrders(req: Request, res: Response) {
     let order = await get_table_orders(req.body.activeUser, req.body.table_name);
     if (!order) return res.status(400).send(`table not found`)
-    console.log(req.body)
+    // console.log(req.body)
     let i: any[] = []
     order?.forEach((item) => {
         

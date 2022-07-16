@@ -30,7 +30,7 @@ function getOpenOrders(req, res) {
         let order = yield (0, order_1.get_table_orders)(req.body.activeUser, req.body.table_name);
         if (!order)
             return res.status(400).send(`table not found`);
-        console.log(req.body);
+        // console.log(req.body)
         let i = [];
         order === null || order === void 0 ? void 0 : order.forEach((item) => {
             let items = {
