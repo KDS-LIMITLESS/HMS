@@ -79,7 +79,7 @@ function closeTable(req, res) {
         // const TABLE_CLOSED = await get_closed_tables(req.body.table_name);
         try {
             if (getTable.rows[0]['status'] === 'OPEN') {
-                yield (0, table_1.close_table)(req.body.activeUser, "CLOSED", req.body.table_name, req.body.payment_method, req.body.total);
+                yield (0, table_1.close_table)(req.body.activeUser, "CLOSED", req.body.table_name, req.body.cash, req.body.pos, req.body.transfer, req.body.credit, req.body.total);
                 return res.status(200).send("Table Closed Successfully");
             }
             return res.status(400).send(`Table already closed or does not exist `);

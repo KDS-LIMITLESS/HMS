@@ -22,9 +22,10 @@ function createTableManager() {
         table_name VARCHAR NOT NULl PRIMARY KEY,
         waiter VARCHAR NOT NULL references users(username),
         status VARCHAR NOT NULL DEFAULT 'OPEN',
-        payment_method VARCHAR NOT NULL DEFAULT '-',
-        pos VARCHAR NOT NULL DEFAULT '-',
-        transfer VARCHAR NOT NULL DEFAULT '-',
+        cash INTEGER NOT NULL DEFAULT 0,
+        pos INTEGER NOT NULL DEFAULT 0,
+        transfer INTEGER NOT NULL DEFAULT 0,
+        credit INTEGER NOT NULL DEFAULT 0,
         total INTEGER NOT NULL DEFAULT 0
     )`);
     });
@@ -42,8 +43,7 @@ exports.create_new_table = create_new_table;
 function get_all_waiter_tables(waiter) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        const result = yield db.query((0, sql_template_strings_1.default) `SELECT table_name, status, payment_method, total 
-            FROM tables WHERE waiter = ${waiter}`);
+        const result = yield db.query((0, sql_template_strings_1.default) `SELECT * FROM tables WHERE waiter = ${waiter}`);
         if (result.rowCount === 0)
             return null;
         return result.rows;
@@ -86,11 +86,11 @@ function delete_table(table_name, waiter) {
     });
 }
 exports.delete_table = delete_table;
-function close_table(waiter, status, tbl_name, payment_method, total) {
+function close_table(waiter, status, tbl_name, cash, pos, credit, transfer, total) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
         let result = yield db.query((0, sql_template_strings_1.default) `UPDATE tables SET status = ${status}, 
-        payment_method = ${payment_method}, total = ${total} 
+        cash = ${cash}, pos = ${pos}, transfer = ${transfer}, credit = ${credit}, total = ${total} 
         WHERE table_name = ${tbl_name} AND waiter = ${waiter}`);
         return result;
     });
@@ -101,17 +101,17 @@ exports.close_table = close_table;
 //     return await db.query(`CREATE TABLE IF NOT EXISTS closedtbl(
 //         waiter VARCHAR NOT NULL references users(username),
 //         table_name VARCHAR NOT NULL REFERENCES tables(table_name) PRIMARY KEY,
-//         payment_method VARCHAR NOT NULL,
+//         cash VARCHAR NOT NULL,
 //         total INTEGER NOT NULL,
 //         time VARCHAR NOT NULL
 //     )`)
 // }
 // 
-// export async function close_order_table(waiter: string, tbl_name: string, payment_method: string, 
+// export async function close_order_table(waiter: string, tbl_name: string, cash: string, 
 //                 total: number, time: string) {
 //     const db = await dbConnection();
-//     let result = await db.query(SQL `INSERT INTO closedtbl ( waiter, table_name, payment_method, total, time ) 
-//         VALUES (${waiter}, ${tbl_name}, ${payment_method}, ${total}, ${time})`)
+//     let result = await db.query(SQL `INSERT INTO closedtbl ( waiter, table_name, cash, total, time ) 
+//         VALUES (${waiter}, ${tbl_name}, ${cash}, ${total}, ${time})`)
 // 
 //     return result;
 // }

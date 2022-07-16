@@ -66,7 +66,8 @@ export async function closeTable(req:Request, res:Response) {
     // const TABLE_CLOSED = await get_closed_tables(req.body.table_name);
     try {
         if (getTable.rows[0]['status'] === 'OPEN'){
-            await close_table(req.body.activeUser, "CLOSED", req.body.table_name, req.body.payment_method, req.body.total);
+            await close_table(req.body.activeUser, "CLOSED", req.body.table_name, req.body.cash,
+                req.body.pos, req.body.transfer, req.body.credit, req.body.total);
             return res.status(200).send("Table Closed Successfully")
         }
         return res.status(400).send(`Table already closed or does not exist `)
