@@ -22,11 +22,12 @@ function createTableManager() {
         table_name VARCHAR NOT NULl PRIMARY KEY,
         waiter VARCHAR NOT NULL references users(username),
         status VARCHAR NOT NULL DEFAULT 'OPEN',
-        cash INTEGER NOT NULL DEFAULT 0,
-        pos INTEGER NOT NULL DEFAULT 0,
-        transfer INTEGER NOT NULL DEFAULT 0,
-        credit INTEGER NOT NULL DEFAULT 0,
-        total INTEGER NOT NULL DEFAULT 0
+        cash INTEGER DEFAULT 0,
+        pos INTEGER  DEFAULT 0,
+        transfer INTEGER  DEFAULT 0,
+        credit INTEGER DEFAULT 0,
+        total INTEGER NOT NULL DEFAULT 0,   
+        discount INTEGER DEFAULT 0
     )`);
     });
 }
@@ -86,11 +87,12 @@ function delete_table(table_name, waiter) {
     });
 }
 exports.delete_table = delete_table;
-function close_table(waiter, status, tbl_name, cash, pos, credit, transfer, total) {
+function close_table(waiter, status, tbl_name, cash, pos, credit, transfer, total, discount) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
         let result = yield db.query((0, sql_template_strings_1.default) `UPDATE tables SET status = ${status}, 
-        cash = ${cash}, pos = ${pos}, transfer = ${transfer}, credit = ${credit}, total = ${total} 
+        cash = ${cash}, pos = ${pos}, transfer = ${transfer}, credit = ${credit}, 
+        total = ${total}, discount = ${discount}
         WHERE table_name = ${tbl_name} AND waiter = ${waiter}`);
         return result;
     });

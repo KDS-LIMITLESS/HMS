@@ -29,21 +29,18 @@ async function startServer(){
     
     // await createUsersTable().then(() => console.log("done creating user table")); 
     // await createItemsTable().then(() => console.log("done creating items tables"));
-    await createTableManager();
-    await create_Order_Table().then(() => console.log("done creating order table"));
+    // await createTableManager();
+    // await create_Order_Table().then(() => console.log("done creating order table"));
 
-    // await db.query(`DROP TABLE orders`)
-    // await db.query(`DROP TABLE tables`)
+    await db.query(`DROP TABLE orders`)
+    await db.query(`DROP TABLE tables`)
     // await db.query(`DROP TABLE item`)
     // await db.query(`DROP TABLE users`)
 
     // await db.query(`ALTER TABLE tables DROP COLUMN payment_method`)
 
     // await db.query(`ALTER TABLE tables 
-    //     ADD cash INTEGER DEFAULT 0,
-    //     ADD pos INTEGER DEFAULT 0,
-    //     ADD transfer INTEGER DEFAULT 0,
-    //     ADD credit INTEGER DEFAULT 0
+    //     ADD discount INTEGER DEFAULT 0
     // `)
     const PORT = process.env.PORT || 3000
 

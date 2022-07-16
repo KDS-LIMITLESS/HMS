@@ -9,11 +9,12 @@ export async function createTableManager(){
         table_name VARCHAR NOT NULl PRIMARY KEY,
         waiter VARCHAR NOT NULL references users(username),
         status VARCHAR NOT NULL DEFAULT 'OPEN',
-        cash INTEGER NOT NULL DEFAULT 0,
-        pos INTEGER NOT NULL DEFAULT 0,
-        transfer INTEGER NOT NULL DEFAULT 0,
-        credit INTEGER NOT NULL DEFAULT 0,
-        total INTEGER NOT NULL DEFAULT 0
+        cash INTEGER DEFAULT 0,
+        pos INTEGER  DEFAULT 0,
+        transfer INTEGER  DEFAULT 0,
+        credit INTEGER DEFAULT 0,
+        total INTEGER NOT NULL DEFAULT 0,   
+        discount INTEGER DEFAULT 0
     )`)
 }
 
@@ -60,10 +61,11 @@ export async function delete_table(table_name: string, waiter: string) {
 }
 
 export async function close_table(waiter:string, status: string, tbl_name: string, cash: number, 
-        pos: number, credit: number, transfer: number, total: number){
+        pos: number, credit: number, transfer: number, total: number, discount: string) {
     const db = await dbConnection();
     let result = await db.query(SQL `UPDATE tables SET status = ${status}, 
-        cash = ${cash}, pos = ${pos}, transfer = ${transfer}, credit = ${credit}, total = ${total} 
+        cash = ${cash}, pos = ${pos}, transfer = ${transfer}, credit = ${credit}, 
+        total = ${total}, discount = ${discount}
         WHERE table_name = ${tbl_name} AND waiter = ${waiter}`)
     return result
 }
