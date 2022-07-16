@@ -47,10 +47,10 @@ function get_item(product, department) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
         let result = yield db.query((0, sql_template_strings_1.default) `SELECT product, department FROM item 
-                    WHERE product = ${product} AND department = ${department};`);
+                WHERE product = ${product} AND department = ${department};`);
         if (result.rowCount === 0)
             return null;
-        return result.rows;
+        return result;
     });
 }
 exports.get_item = get_item;

@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.delete_order = exports.count_waiters_order = exports.get_all_orders = exports.update_order_quantity = exports.get_drinks_in_table = exports.get_table_orders = exports.new_order = exports.create_Order_Table = void 0;
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const connection_1 = require("../connection");
+const table_1 = require("./table");
 function create_Order_Table() {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
@@ -40,13 +41,25 @@ exports.create_Order_Table = create_Order_Table;
 function new_order(username, item, price, quantity, category, image, department, table_name, time) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        let result = yield db.query((0, sql_template_strings_1.default) `INSERT INTO orders (
-        username, item, price, quantity, category, image, department,
-            table_name, time)
-
-    VALUES (${username}, ${item}, ${price}, ${quantity}, ${category}, 
-            ${image}, ${department}, ${table_name}, ${time})`);
-        return result;
+        try {
+            yield db.query('BEGIN');
+            let result = yield db.query((0, sql_template_strings_1.default) `INSERT INTO orders (
+            username, item, price, quantity, category, image, department,
+                table_name, time)
+    
+        VALUES (${username}, ${item}, ${price}, ${quantity}, ${category}, 
+                ${image}, ${department}, ${table_name}, ${time})`);
+            yield db.query('COMMIT');
+            console.log('Committing ');
+            return result;
+        }
+        catch (e) {
+            yield db.query('ROLLBACK');
+            yield delete_order(table_name);
+            yield (0, table_1.delete_table)(table_name, username);
+            console.log('Rolling back');
+            throw e;
+        }
     });
 }
 exports.new_order = new_order;
@@ -99,7 +112,7 @@ function delete_order(table_name) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
         let result = yield db.query((0, sql_template_strings_1.default) `DELETE FROM orders WHERE table_name = ${table_name}`);
-        return result.rows;
+        return result;
     });
 }
 exports.delete_order = delete_order;

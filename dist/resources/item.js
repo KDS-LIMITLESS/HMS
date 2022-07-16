@@ -68,10 +68,10 @@ function deleteItem(req, res) {
             const ITEM = yield (0, item_1.get_item)(req.body.product, req.body.department);
             console.log(ITEM);
             if (ITEM !== null) {
-                yield (0, item_1.delete_item)(ITEM[0]['product'], ITEM[0]['department']);
+                yield (0, item_1.delete_item)(req.body.product, req.body.department);
                 return res.status(200).send("OK");
             }
-            return res.status(400).send(`Error`);
+            return res.status(400).send(`Error. Item does not exist.`);
         }
         catch (err) {
             return res.status(400).send(err.message);

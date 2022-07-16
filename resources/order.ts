@@ -1,8 +1,9 @@
 import { Response, Request, NextFunction } from "express";
+import { exit } from "process";
 import { get_item } from "../models/item";
 import {new_order, get_table_orders, get_drinks_in_table, 
     update_order_quantity, get_all_orders, count_waiters_order} from "../models/order";
-import { delete_rows, get_one_waiter_table } from "../models/table";
+
 
 export async function placeOrder(req: Request, res: Response, next: NextFunction){
     let time = new Date();    
@@ -11,25 +12,11 @@ export async function placeOrder(req: Request, res: Response, next: NextFunction
     const ORDER: [] = req.body.order;
     
     ORDER.forEach(async order => {
-       let item = await get_item(order['item']['product'], order['item']['department'])
-       console.log(order['item']['product'])
-        
-       // Delete table in table databases if error occurs here
-       // make serial data type count sequentially
-       // come back here!!!!!!!
-       
-        if (!item) {
-            await delete_rows(req.body.table_name)
-            console.log(' deleted table')
-
-            return res.status(400).end(`Item does not exist`)
-        } else {
-            await new_order(req.body.activeUser, order['item']['product'], 
-                order['item']['price'], order['quantity'], order['item']['category'],  
-                order['item']['image'], order['item']['department'], req.body.table_name,
-                time.toLocaleTimeString()
-            )
-        }
+        await new_order(req.body.activeUser, order['item']['product'], 
+            order['item']['price'], order['quantity'], order['item']['category'],  
+            order['item']['image'], order['item']['department'], req.body.table_name,
+            time.toLocaleTimeString()
+        )
     });
     console.log(`new order created!`)
     res.status(200).send('OK');  
@@ -49,7 +36,8 @@ export async function getOpenOrders(req: Request, res: Response) {
                 "product": item.item,
                 "price": item.price,
                 "category": item.category,
-                "image": item.image
+                "image": item.image,
+                "department": item.department
             }
         }
         

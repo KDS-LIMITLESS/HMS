@@ -12,6 +12,6 @@ router.post('/items/category', getItemsInCategory)
 
 router.post('/new-item', authorizeSuperAdminNext, addNewItem)
 router.post('/upload', uploadPicture)
-router.delete('/item', deleteItem )
+router.delete('/delete-item', deleteItem )
 
 module.exports = router;

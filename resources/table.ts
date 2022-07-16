@@ -1,23 +1,38 @@
 import { Request, Response, NextFunction } from "express";
 import { create_new_table, get_table, get_all_waiter_tables, 
-        get_one_waiter_table, close_table, get_all_tables } from "../models/table";
+        get_one_waiter_table, close_table, get_all_tables, delete_table } from "../models/table";
+import { get_item } from "../models/item";        
+import { exit } from "process";
 // import { close_order_table, get_closed_tables } from "../models/table";
 
 
 export async function createTable(req:Request, res: Response, next: NextFunction) {
-    try {
-        let table = await get_table(req.body.table)
+   
+    const ORDER: [] = req.body.order;
+    let table = await get_table(req.body.table_name)
+    let order;
 
-        // if (table.rowCount === 1 ) return res.status(400).send(`Table already exists`)
-
-        await create_new_table(req.body.table_name, req.body.activeUser)
-        console.log(`Created table ${req.body.table_name}` )
-        
-        next();
-    }catch(err: any){
-        console.log(err.message + ` in createTable resource`)
-        return res.status(400).send(`Table already exists`)
+    if (table.rowCount === 1) {
+        console.log(`table exists`)
+        return res.status(400).end(`Table already exists`)
+    } 
+    if (table.rowCount === 0) {
+        for (order of ORDER){
+            let item = await get_item(order['item']['product'], order['item']['department']);
+            
+            if (item === null)  {     
+                console.log(item)
+                console.log(`${order['item']['product']} Not found`)
+                res.status(404).end(`Not Found!`); 
+                exit()
+                //stop crashing the server here!!
+            };
+            continue
+        }
     }
+    await create_new_table(req.body.table_name, req.body.activeUser)
+    console.log(`Created table ${req.body.table_name}` )     
+    next();
 }
 
 export async function getAllTables(req:Request, res: Response) {

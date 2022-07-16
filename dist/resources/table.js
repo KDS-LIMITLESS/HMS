@@ -11,20 +11,35 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.closeTable = exports.getWaiterTables = exports.getAllTables = exports.createTable = void 0;
 const table_1 = require("../models/table");
+const item_1 = require("../models/item");
+const process_1 = require("process");
 // import { close_order_table, get_closed_tables } from "../models/table";
 function createTable(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
-        try {
-            let table = yield (0, table_1.get_table)(req.body.table);
-            // if (table.rowCount === 1 ) return res.status(400).send(`Table already exists`)
-            yield (0, table_1.create_new_table)(req.body.table_name, req.body.activeUser);
-            console.log(`Created table ${req.body.table_name}`);
-            next();
+        const ORDER = req.body.order;
+        let table = yield (0, table_1.get_table)(req.body.table_name);
+        let order;
+        if (table.rowCount === 1) {
+            console.log(`table exists`);
+            return res.status(400).end(`Table already exists`);
         }
-        catch (err) {
-            console.log(err.message + ` in createTable resource`);
-            return res.status(400).send(`Table already exists`);
+        if (table.rowCount === 0) {
+            for (order of ORDER) {
+                let item = yield (0, item_1.get_item)(order['item']['product'], order['item']['department']);
+                if (item === null) {
+                    console.log(item);
+                    console.log(`${order['item']['product']} Not found`);
+                    res.status(404).end(`Not Found!`);
+                    (0, process_1.exit)();
+                    //stop crashing the server here!!
+                }
+                ;
+                continue;
+            }
         }
+        yield (0, table_1.create_new_table)(req.body.table_name, req.body.activeUser);
+        console.log(`Created table ${req.body.table_name}`);
+        next();
     });
 }
 exports.createTable = createTable;

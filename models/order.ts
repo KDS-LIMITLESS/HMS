@@ -1,6 +1,7 @@
 import { table } from "console";
 import SQL from "sql-template-strings";
 import { dbConnection } from "../connection";
+import { delete_table } from "./table";
 
 
 export async function create_Order_Table() {
@@ -28,13 +29,24 @@ export async function new_order(username: string, item: string, price: number,
             quantity: number, category: string, image: string,  department: string,
             table_name: string, time: string) {            
     const db = await dbConnection();
-    let result = await db.query(SQL `INSERT INTO orders (
-        username, item, price, quantity, category, image, department,
-            table_name, time)
-
-    VALUES (${username}, ${item}, ${price}, ${quantity}, ${category}, 
-            ${image}, ${department}, ${table_name}, ${time})`);
-    return result
+    try {
+        await db.query('BEGIN')
+        let result = await db.query(SQL `INSERT INTO orders (
+            username, item, price, quantity, category, image, department,
+                table_name, time)
+    
+        VALUES (${username}, ${item}, ${price}, ${quantity}, ${category}, 
+                ${image}, ${department}, ${table_name}, ${time})`);
+        await db.query('COMMIT')
+        console.log('Committing ')
+        return result
+    } catch (e) {
+        await db.query('ROLLBACK')
+        await delete_order(table_name);
+        await delete_table(table_name, username)
+        console.log('Rolling back')
+        throw e;
+    }
 }
 
 export async function get_table_orders(name:string, tbl: string){
@@ -78,5 +90,5 @@ export async function delete_order(table_name: string){
     const db = await dbConnection();
 
     let result = await db.query(SQL `DELETE FROM orders WHERE table_name = ${table_name}`)
-    return result.rows
+    return result
 }

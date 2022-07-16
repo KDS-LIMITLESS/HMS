@@ -10,28 +10,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.countWaitersOrder = exports.getAllOrder = exports.updateOrder = exports.getOpenOrders = exports.placeOrder = void 0;
-const item_1 = require("../models/item");
 const order_1 = require("../models/order");
-const table_1 = require("../models/table");
 function placeOrder(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         let time = new Date();
         console.log(req.body.order);
         const ORDER = req.body.order;
         ORDER.forEach((order) => __awaiter(this, void 0, void 0, function* () {
-            let item = yield (0, item_1.get_item)(order['item']['product'], order['item']['department']);
-            console.log(order['item']['product']);
-            // Delete table in table databases if error occurs here
-            // make serial data type count sequentially
-            // come back here!!!!!!!
-            if (!item) {
-                yield (0, table_1.delete_rows)(req.body.table_name);
-                console.log(' deleted table');
-                return res.status(400).end(`Item does not exist`);
-            }
-            else {
-                yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], order['item']['department'], req.body.table_name, time.toLocaleTimeString());
-            }
+            yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], order['item']['department'], req.body.table_name, time.toLocaleTimeString());
         }));
         console.log(`new order created!`);
         res.status(200).send('OK');
@@ -53,7 +39,8 @@ function getOpenOrders(req, res) {
                     "product": item.item,
                     "price": item.price,
                     "category": item.category,
-                    "image": item.image
+                    "image": item.image,
+                    "department": item.department
                 }
             };
             i.push(items);
