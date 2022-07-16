@@ -42,13 +42,13 @@ function startServer() {
         // await db.query(`DROP TABLE item`)
         // await db.query(`DROP TABLE tables`)
         // await db.query(`DROP TABLE users`)
-        yield db.query(`ALTER TABLE tables DROP COLUMN payment_method`);
-        yield db.query(`ALTER TABLE tables 
-        ADD cash INTEGER DEFAULT 0,
-        ADD pos INTEGER DEFAULT 0,
-        ADD transfer INTEGER DEFAULT 0,
-        ADD credit INTEGER DEFAULT 0
-    `);
+        // await db.query(`ALTER TABLE tables DROP COLUMN payment_method`)
+        // await db.query(`ALTER TABLE tables 
+        //     ADD cash INTEGER DEFAULT 0,
+        //     ADD pos INTEGER DEFAULT 0,
+        //     ADD transfer INTEGER DEFAULT 0,
+        //     ADD credit INTEGER DEFAULT 0
+        // `)
         const PORT = process.env.PORT || 3000;
         app.listen(PORT, () => {
             console.log('Server Listening on port 3000');
