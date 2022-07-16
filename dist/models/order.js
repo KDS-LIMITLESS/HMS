@@ -66,7 +66,7 @@ exports.new_order = new_order;
 function get_table_orders(name, tbl) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        const result = db.query((0, sql_template_strings_1.default) `SELECT item, price, quantity, category, image FROM orders 
+        const result = db.query((0, sql_template_strings_1.default) `SELECT item, price, quantity, category, image, department FROM orders 
             WHERE username = ${name} AND table_name = ${tbl}`);
         if ((yield result).rowCount === 0)
             return null;
