@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.closeTable = exports.getWaiterTables = exports.getAllTables = exports.createTable = void 0;
+exports.getTableDiscount = exports.closeTable = exports.getWaiterTables = exports.getAllTables = exports.createTable = void 0;
 const table_1 = require("../models/table");
 const item_1 = require("../models/item");
 const process_1 = require("process");
@@ -92,3 +92,21 @@ function closeTable(req, res) {
     });
 }
 exports.closeTable = closeTable;
+function getTableDiscount(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            let result = yield (0, table_1.get_table_discount)(req.body.table_name);
+            if (result.rowCount === 1)
+                return res.status(200).json({
+                    waiter: result.rows[0]['waiter'],
+                    discount: result.rows[0]['discount']
+                });
+            return res.status(404).send('TABLE NOT FOUND!');
+        }
+        catch (e) {
+            console.log(e.message);
+            return res.status(400).send(e.message);
+        }
+    });
+}
+exports.getTableDiscount = getTableDiscount;

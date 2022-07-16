@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { create_new_table, get_table, get_all_waiter_tables, 
-        get_one_waiter_table, close_table, get_all_tables, delete_table } from "../models/table";
+        get_one_waiter_table, close_table, get_all_tables, get_table_discount } from "../models/table";
 import { get_item } from "../models/item";        
 import { exit } from "process";
 // import { close_order_table, get_closed_tables } from "../models/table";
@@ -76,4 +76,20 @@ export async function closeTable(req:Request, res:Response) {
         console.log(err.message);
         return res.status(400).send(err.message)
     }   
+}
+
+export async function getTableDiscount(req:Request, res: Response) {
+    try{
+        let result = await get_table_discount(req.body.table_name)
+        if (result.rowCount === 1) return res.status(200).json({
+            
+            waiter: result.rows[0]['waiter'],
+            discount: result.rows[0]['discount']
+        })
+        return res.status(404).send('TABLE NOT FOUND!')
+        
+    }catch (e:any){
+        console.log(e.message);
+        return res.status(400).send(e.message)
+    } 
 }

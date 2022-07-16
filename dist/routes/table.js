@@ -8,4 +8,5 @@ exports.router = (0, express_1.Router)();
 exports.router.post('/tables', table_1.getWaiterTables);
 exports.router.post('/close-table', user_1.authorizeUser, table_1.closeTable);
 exports.router.post('/all-tables', user_1.authorizeAuditor, table_1.getAllTables);
+exports.router.post('/table', table_1.getTableDiscount);
 module.exports = exports.router;
