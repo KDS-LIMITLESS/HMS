@@ -72,7 +72,7 @@ exports.get_table = get_table;
 function get_table_discount(table_name) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        let result = yield db.query((0, sql_template_strings_1.default) `SELECT waiter, discount FROM tables WHERE table_name = ${table_name}`);
+        let result = yield db.query((0, sql_template_strings_1.default) `SELECT waiter, discount, total FROM tables WHERE table_name = ${table_name}`);
         return result;
     });
 }
