@@ -84,7 +84,8 @@ export async function getTableDiscount(req:Request, res: Response) {
         if (result.rowCount === 1) return res.status(200).json({
             
             waiter: result.rows[0]['waiter'],
-            discount: result.rows[0]['discount']
+            discount: result.rows[0]['discount'],
+            total: result.rows[0]['total']
         })
         return res.status(404).send('TABLE NOT FOUND!')
         
