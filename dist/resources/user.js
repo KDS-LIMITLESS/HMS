@@ -39,8 +39,8 @@ function login(req, res) {
         let userExists = yield (0, user_1.get_user)(req.body.username);
         const PSW = bcrypt_1.default.compare(req.body.password, userExists === null || userExists === void 0 ? void 0 : userExists.rows[0]['password']);
         if (userExists && (yield PSW)) {
-            return res.status(200).send(`${userExists.rows[0]['username']}, 
-            ${userExists.rows[0]['role']}, ${userExists.rows[0]['passcode']} `);
+            return res.status(200).json({ username: userExists.rows[0]['username'],
+                passcode: userExists.rows[0]['passcode'], role: userExists.rows[0]['role'] });
         }
         console.log(JSON.stringify(req.body) + " Invalid login details");
         return res.status(400).send(`Invalid login details`);
