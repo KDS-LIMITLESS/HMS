@@ -26,7 +26,8 @@ export async function login(req:Request, res:Response) {
     
     if (userExists && await PSW) {
         
-        return res.status(200).send(`${userExists.rows[0]['username']} `)
+        return res.status(200).send(`${userExists.rows[0]['username']}, 
+            ${userExists.rows[0]['role']}, ${userExists.rows[0]['passcode']} `)
     }
     console.log(JSON.stringify(req.body) + " Invalid login details")
     return res.status(400).send(`Invalid login details`);
