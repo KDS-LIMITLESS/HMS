@@ -45,7 +45,7 @@ function getOpenOrders(req, res) {
             };
             i.push(items);
         });
-        console.log(i);
+        // console.log(i)
         return res.status(200).send(i);
     });
 }
