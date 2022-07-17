@@ -75,7 +75,7 @@ export async function close_table(waiter:string, status: string, tbl_name: strin
     let result = await db.query(SQL `UPDATE tables SET status = ${status}, 
         cash = ${cash}, pos = ${pos}, transfer = ${transfer}, credit = ${credit}, 
         total = ${total}, discount = ${discount}, 
-        complimentary = ${complimentary_drink}, complementary_qty = ${complimentary_qty}
+        complimentary = ${complimentary_drink}, complimentary_qty = ${complimentary_qty}
         WHERE table_name = ${tbl_name} AND waiter = ${waiter}`)
     return result
 }
