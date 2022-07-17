@@ -29,9 +29,9 @@ async function startServer(){
     
     // await createUsersTable().then(() => console.log("done creating user table")); 
     // await createItemsTable().then(() => console.log("done creating items tables"));
-    await createTableManager();
-    await create_Order_Table().then(() => console.log("done creating order table"));
-
+    // await createTableManager();
+    // await create_Order_Table().then(() => console.log("done creating order table"));
+ 
     // await db.query(`DROP TABLE orders`)
     // await db.query(`DROP TABLE tables`)
     // await db.query(`DROP TABLE item`)
@@ -39,9 +39,10 @@ async function startServer(){
 
     // await db.query(`ALTER TABLE tables DROP COLUMN payment_method`)
 
-    // await db.query(`ALTER TABLE tables 
-    //     ADD discount INTEGER DEFAULT 0
-    // `)
+    await db.query(`ALTER TABLE tables 
+        ADD  complementary_drink VARCHAR DEFAULT ' ',
+        ADD complementary_qty INTEGER DEFAULT 0
+    `)
     const PORT = process.env.PORT || 3000
 
     app.listen(PORT, () => {
