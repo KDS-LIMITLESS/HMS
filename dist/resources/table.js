@@ -80,7 +80,7 @@ function closeTable(req, res) {
         try {
             if (getTable.rows[0]['status'] === 'OPEN') {
                 console.log(req.body);
-                yield (0, table_1.close_table)(req.body.activeUser, "CLOSED", req.body.table_name, req.body.cash, req.body.pos, req.body.credit, req.body.transfer, req.body.total, req.body.discount, req.body.complementary, req.body.complementary_quantity);
+                yield (0, table_1.close_table)(req.body.activeUser, "CLOSED", req.body.table_name, req.body.cash, req.body.pos, req.body.credit, req.body.transfer, req.body.total, req.body.discount, req.body.complimentary, req.body.complimentary_quantity);
                 // console.log(req.body)
                 return res.status(200).send("Table Closed Successfully");
             }

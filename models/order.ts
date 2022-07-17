@@ -51,11 +51,20 @@ export async function new_order(username: string, item: string, price: number,
 
 export async function get_table_orders(name:string, tbl: string){
     const db = await dbConnection();
-    const result = db.query(SQL `SELECT item, price, quantity, category, image, department FROM orders 
+    const result = db.query(SQL `SELECT username, item, price, quantity, category, image, department FROM orders 
             WHERE username = ${name} AND table_name = ${tbl}`)
     if ((await result).rowCount === 0) return null;
     return (await result).rows
 }
+
+export async function get_table_orders_for_admin(tbl_name:string) {
+    const db = await dbConnection();
+    const result = db.query(SQL `SELECT username, item, price, quantity, category, image, department FROM orders 
+        WHERE table_name = ${tbl_name}`)
+    if ((await result).rowCount === 0) return null;
+    return (await result).rows
+}
+
 
 export async function get_drinks_in_table(item: string, col: string ){
     const db = await dbConnection();

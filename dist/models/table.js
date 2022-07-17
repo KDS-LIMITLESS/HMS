@@ -28,8 +28,8 @@ function createTableManager() {
         credit INTEGER DEFAULT 0,
         total INTEGER NOT NULL DEFAULT 0,   
         discount INTEGER DEFAULT 0,
-        complementary_drink VARCHAR DEFAULT ' ',
-        complementary_qty INTEGER DEFAULT 0
+        complimentary_drink VARCHAR DEFAULT ' ',
+        complimentary_qty INTEGER DEFAULT 0
     )`);
     });
 }
@@ -97,13 +97,13 @@ function delete_table(table_name, waiter) {
     });
 }
 exports.delete_table = delete_table;
-function close_table(waiter, status, tbl_name, cash, pos, credit, transfer, total, discount, complementary_drink, complementary_qty) {
+function close_table(waiter, status, tbl_name, cash, pos, credit, transfer, total, discount, complimentary_drink, complimentary_qty) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
         let result = yield db.query((0, sql_template_strings_1.default) `UPDATE tables SET status = ${status}, 
         cash = ${cash}, pos = ${pos}, transfer = ${transfer}, credit = ${credit}, 
         total = ${total}, discount = ${discount}, 
-        complementary = ${complementary_drink}, complementary_qty = ${complementary_qty}
+        complimentary = ${complimentary_drink}, complementary_qty = ${complimentary_qty}
         WHERE table_name = ${tbl_name} AND waiter = ${waiter}`);
         return result;
     });

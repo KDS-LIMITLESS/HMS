@@ -11,7 +11,7 @@ const table_1 = require("../resources/table");
 exports.router = express_1.default.Router();
 exports.router.get('/all-orders', order_1.getAllOrder);
 exports.router.post('/order', user_1.authorizeUser, table_1.createTable, order_1.placeOrder);
-exports.router.post('/open-tables', user_1.authorizeUser, order_1.getOpenOrders);
+exports.router.post('/table-orders', user_1.authorizeUser, order_1.getTableOrders);
 exports.router.post('/update-order', user_1.authorizeUser, order_1.updateOrder);
 exports.router.post('/order-count', user_1.authorizeUser, order_1.countWaitersOrder);
 module.exports = exports.router;

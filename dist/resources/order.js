@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.countWaitersOrder = exports.getAllOrder = exports.updateOrder = exports.getOpenOrders = exports.placeOrder = void 0;
+exports.countWaitersOrder = exports.getAllOrder = exports.updateOrder = exports.getTableOrders = exports.placeOrder = void 0;
 const order_1 = require("../models/order");
 function placeOrder(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -25,15 +25,22 @@ function placeOrder(req, res, next) {
 }
 exports.placeOrder = placeOrder;
 // get order history within a table
-function getOpenOrders(req, res) {
+function getTableOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        let order = yield (0, order_1.get_table_orders)(req.body.activeUser, req.body.table_name);
-        if (!order)
+        let TABLE_ORDERS;
+        if (req.body.role === 'Super Admin' || req.body.role === 'Auditor') {
+            TABLE_ORDERS = yield (0, order_1.get_table_orders_for_admin)(req.body.table_name);
+        }
+        else {
+            TABLE_ORDERS = yield (0, order_1.get_table_orders)(req.body.activeUser, req.body.table_name);
+        }
+        if (!TABLE_ORDERS)
             return res.status(400).send(`table not found`);
-        // console.log(req.body)
+        // converting return type from db to [{}] required by the client.
         let i = [];
-        order === null || order === void 0 ? void 0 : order.forEach((item) => {
+        TABLE_ORDERS === null || TABLE_ORDERS === void 0 ? void 0 : TABLE_ORDERS.forEach((item) => {
             let items = {
+                "username": item.username,
                 "quantity": item.quantity,
                 "item": {
                     "product": item.item,
@@ -45,11 +52,10 @@ function getOpenOrders(req, res) {
             };
             i.push(items);
         });
-        // console.log(i)
         return res.status(200).send(i);
     });
 }
-exports.getOpenOrders = getOpenOrders;
+exports.getTableOrders = getTableOrders;
 // check if table is closed and do not do anything.....
 function updateOrder(req, res) {
     return __awaiter(this, void 0, void 0, function* () {

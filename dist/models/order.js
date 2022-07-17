@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.delete_order = exports.count_waiters_order = exports.get_all_orders = exports.update_order_quantity = exports.get_drinks_in_table = exports.get_table_orders = exports.new_order = exports.create_Order_Table = void 0;
+exports.delete_order = exports.count_waiters_order = exports.get_all_orders = exports.update_order_quantity = exports.get_drinks_in_table = exports.get_table_orders_for_admin = exports.get_table_orders = exports.new_order = exports.create_Order_Table = void 0;
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const connection_1 = require("../connection");
 const table_1 = require("./table");
@@ -66,7 +66,7 @@ exports.new_order = new_order;
 function get_table_orders(name, tbl) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        const result = db.query((0, sql_template_strings_1.default) `SELECT item, price, quantity, category, image, department FROM orders 
+        const result = db.query((0, sql_template_strings_1.default) `SELECT username, item, price, quantity, category, image, department FROM orders 
             WHERE username = ${name} AND table_name = ${tbl}`);
         if ((yield result).rowCount === 0)
             return null;
@@ -74,6 +74,17 @@ function get_table_orders(name, tbl) {
     });
 }
 exports.get_table_orders = get_table_orders;
+function get_table_orders_for_admin(tbl_name) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        const result = db.query((0, sql_template_strings_1.default) `SELECT username, item, price, quantity, category, image, department FROM orders 
+        WHERE table_name = ${tbl_name}`);
+        if ((yield result).rowCount === 0)
+            return null;
+        return (yield result).rows;
+    });
+}
+exports.get_table_orders_for_admin = get_table_orders_for_admin;
 function get_drinks_in_table(item, col) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
