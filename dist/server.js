@@ -43,10 +43,10 @@ function startServer() {
         // await db.query(`DROP TABLE item`)
         // await db.query(`DROP TABLE users`)
         // await db.query(`ALTER TABLE tables DROP COLUMN payment_method`)
-        // await db.query(`ALTER TABLE tables 
-        //     ADD  complementary_drink VARCHAR DEFAULT ' ',
-        //     ADD complementary_qty INTEGER DEFAULT 0
-        // `)
+        yield db.query(`ALTER TABLE tables 
+        ADD  complimentary_drink VARCHAR DEFAULT ' ',
+        ADD complimentary_qty INTEGER DEFAULT 0
+    `);
         const PORT = process.env.PORT || 3000;
         app.listen(PORT, () => {
             console.log('Server Listening on port 3000');
