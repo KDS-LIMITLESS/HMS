@@ -70,12 +70,12 @@ export async function delete_table(table_name: string, waiter: string) {
 
 export async function close_table(waiter:string, status: string, tbl_name: string, cash: number, 
         pos: number, credit: number, transfer: number, total: number, 
-        discount: string, complimentary_drink: string, complimentary_qty: string) {
+        discount: string, complimentary_drink: string, complimentary_qty: number ) {
     const db = await dbConnection();
     let result = await db.query(SQL `UPDATE tables SET status = ${status}, 
         cash = ${cash}, pos = ${pos}, transfer = ${transfer}, credit = ${credit}, 
         total = ${total}, discount = ${discount}, 
-        complimentary = ${complimentary_drink}, complimentary_qty = ${complimentary_qty}
+        complimentary_drink = ${complimentary_drink}, complimentary_qty = ${complimentary_qty}
         WHERE table_name = ${tbl_name} AND waiter = ${waiter}`)
     return result
 }
