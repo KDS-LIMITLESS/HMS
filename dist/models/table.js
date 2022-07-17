@@ -29,7 +29,7 @@ function createTableManager() {
         total INTEGER NOT NULL DEFAULT 0,   
         discount INTEGER DEFAULT 0,
         complementary_drink VARCHAR DEFAULT ' ',
-        complementary_qty INGTEGER DEFAULT 0
+        complementary_qty INTEGER DEFAULT 0
     )`);
     });
 }
