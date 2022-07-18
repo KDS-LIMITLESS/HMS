@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeOrdersFromTable = exports.countWaitersOrder = exports.getAllOrder = exports.updateOrder = exports.getTableOrders = exports.placeOrder = void 0;
+exports.deleteOrder = exports.removeOrdersFromTable = exports.countWaitersOrder = exports.getAllOrder = exports.updateOrder = exports.getTableOrders = exports.placeOrder = void 0;
 const order_1 = require("../models/order");
 function placeOrder(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -111,24 +111,30 @@ function countWaitersOrder(req, res) {
 exports.countWaitersOrder = countWaitersOrder;
 function removeOrdersFromTable(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        let time = new Date();
-        // console.log(req.body)
         const ORDER = req.body.order;
-        // console.log(JSON.stringify(req.body) + ` REEEEEEEEEEEEEEEEEEEEEE`)
         let order;
         for (order of ORDER) {
             console.log(order);
             let item = yield (0, order_1.get_drinks_in_table)(order['item']['product'], req.body.table_name);
-            console.log(item.rows);
             if (item.rowCount !== 0) {
                 let update = yield (0, order_1.update_order_quantity)(order['item']['product'], order['quantity'], req.body.table_name);
             }
-            // continue
         }
         return res.status(200).send(`OK`);
     });
 }
 exports.removeOrdersFromTable = removeOrdersFromTable;
+function deleteOrder(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let order = yield (0, order_1.get_order)(req.body.table_name, req.body.waiter, req.body.product);
+        if (order.rowCount === 1) {
+            yield (0, order_1.delete_order)(req.body.table_name, req.body.product);
+            return res.status(200).send(`OK`);
+        }
+        return res.status(400).send(`ERROR!`);
+    });
+}
+exports.deleteOrder = deleteOrder;
 // cors should only direct to the frontend
 // order status table status
 // add automatic total amount check 

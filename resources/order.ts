@@ -2,7 +2,7 @@ import { Response, Request, NextFunction } from "express";
 import { exit } from "process";
 import { get_item } from "../models/item";
 import {new_order, get_table_orders, get_drinks_in_table, 
-    update_order_quantity, get_all_orders, delete_order,
+    update_order_quantity, get_all_orders, delete_order, get_order,
     count_waiters_order, get_table_orders_for_admin} from "../models/order";
 
 
@@ -112,20 +112,26 @@ export async function countWaitersOrder(req: Request, res: Response) {
 export async function removeOrdersFromTable(req: Request, res: Response) {
     
     const ORDER: [] = req.body.order
-    // console.log(JSON.stringify(req.body) + ` REEEEEEEEEEEEEEEEEEEEEE`)
     let order;
    
     for (order of ORDER) {
         console.log(order)
-        let item = await get_drinks_in_table(order['item']['product'], req.body.table_name)
-        //console.log(item.rows)
-        
+        let item = await get_drinks_in_table(order['item']['product'], req.body.table_name)        
         if (item.rowCount !== 0 ) {
             let update = await update_order_quantity(order['item']['product'], 
                 order['quantity'], req.body.table_name)
         }
     }
     return res.status(200).send(`OK`)
+}
+
+export async function deleteOrder(req:Request, res:Response) {
+    let order = await get_order(req.body.table_name, req.body.waiter, req.body.product);
+    if (order.rowCount === 1){
+        await delete_order(req.body.table_name, req.body.product)
+        return res.status(200).send(`OK`)
+    }
+    return res.status(400).send(`ERROR!`)
 }
 
 

@@ -1,6 +1,6 @@
 import express from 'express'
 import { placeOrder, getTableOrders, updateOrder, getAllOrder, 
-    countWaitersOrder, removeOrdersFromTable } from '../resources/order'
+    countWaitersOrder, removeOrdersFromTable, deleteOrder } from '../resources/order'
 import { authorizeUser, authorizeAuditor } from '../middlewares/user';
 import { createTable } from '../resources/table';
 
@@ -13,5 +13,6 @@ router.post('/table-orders', authorizeUser, getTableOrders);
 router.post('/update-order', authorizeUser, updateOrder);
 router.post('/order-count', authorizeUser, countWaitersOrder)
 router.post('/return-order', authorizeAuditor, removeOrdersFromTable)
+router.delete('/delete-order', authorizeAuditor, deleteOrder)
 
 module.exports = router;

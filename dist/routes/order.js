@@ -15,4 +15,5 @@ exports.router.post('/table-orders', user_1.authorizeUser, order_1.getTableOrder
 exports.router.post('/update-order', user_1.authorizeUser, order_1.updateOrder);
 exports.router.post('/order-count', user_1.authorizeUser, order_1.countWaitersOrder);
 exports.router.post('/return-order', user_1.authorizeAuditor, order_1.removeOrdersFromTable);
+exports.router.delete('/delete-order', user_1.authorizeAuditor, order_1.deleteOrder);
 module.exports = exports.router;

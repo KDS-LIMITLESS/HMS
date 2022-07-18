@@ -104,3 +104,10 @@ export async function delete_order(table_name: string, item: string){
     WHERE table_name = ${table_name} AND item = ${item}`)
     return result
 }
+
+export async function get_order(table_name: string, waiter: string, product: string) {
+    const db = await dbConnection();
+    let result = await db.query(SQL `SELECT item, username, table_name FROM orders 
+        WHERE table_name = ${table_name} AND item = ${product} AND username = ${waiter}`)
+    return result;
+}

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.delete_order = exports.count_waiters_order = exports.get_all_orders = exports.update_order_quantity = exports.get_drinks_in_table = exports.get_table_orders_for_admin = exports.get_table_orders = exports.new_order = exports.create_Order_Table = void 0;
+exports.get_order = exports.delete_order = exports.count_waiters_order = exports.get_all_orders = exports.update_order_quantity = exports.get_drinks_in_table = exports.get_table_orders_for_admin = exports.get_table_orders = exports.new_order = exports.create_Order_Table = void 0;
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const connection_1 = require("../connection");
 const table_1 = require("./table");
@@ -130,3 +130,12 @@ function delete_order(table_name, item) {
     });
 }
 exports.delete_order = delete_order;
+function get_order(table_name, waiter, product) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        let result = yield db.query((0, sql_template_strings_1.default) `SELECT item, username, table_name FROM orders 
+        WHERE table_name = ${table_name} AND item = ${product} AND username = ${waiter}`);
+        return result;
+    });
+}
+exports.get_order = get_order;
