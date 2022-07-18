@@ -49,7 +49,8 @@ export async function get_table(table_name:string) {
 
 export async function get_table_discount(table_name:string) {
     const db = await dbConnection();
-    let result = await db.query(SQL `SELECT waiter, discount, total FROM tables WHERE table_name = ${table_name}`)
+    let result = await db.query(SQL `SELECT waiter, discount, total, complimentary_drink,
+        complimentary_qty FROM tables WHERE table_name = ${table_name}`)
     return result
 }
 

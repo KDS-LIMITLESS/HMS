@@ -87,7 +87,9 @@ export async function getTableDiscount(req:Request, res: Response) {
             
             waiter: result.rows[0]['waiter'],
             discount: result.rows[0]['discount'],
-            total: result.rows[0]['total']
+            total: result.rows[0]['total'],
+            complimentary_drink: result.rows[0]['complimentary_drink'],
+            complimentary_qty: result.rows[0]['complimentary_qty']
         })
         return res.status(404).send('TABLE NOT FOUND!')
         
