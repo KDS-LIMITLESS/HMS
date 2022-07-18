@@ -41,7 +41,7 @@ export async function getTableOrders(req: Request, res: Response) {
     TABLE_ORDERS?.forEach((item) => {
         
         let items = {
-            "username": item.username,
+            // "username": item.username,
             "quantity": item.quantity,
             "item": {
                 "product": item.item,
@@ -115,11 +115,12 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
     console.log(req.body)
     
     const ORDER: [] = req.body.order;
-    console.log(req.body)
+    console.log(req.body + ` REEEEEEEEEEEEEEEEEEEEEE`)
     let order: any; 
     for (order in ORDER) {
     
         let item = await get_drinks_in_table(order['item']['product'], req.body.table_name)
+        console.log(item.rows)
         
         if (item.rowCount !== 0 ) {
             let update = await update_order_quantity(order['item']['product'], 
@@ -127,9 +128,11 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
             if (update.rows[0]['quantity'] === 1){
                 await delete_order(req.body.table_name, order['item']['product'])
             }
+            continue
         }
-        
+        continue
     }
+    return res.status(200).send(`OK`)
 }
 
 

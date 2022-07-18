@@ -40,7 +40,7 @@ function getTableOrders(req, res) {
         let i = [];
         TABLE_ORDERS === null || TABLE_ORDERS === void 0 ? void 0 : TABLE_ORDERS.forEach((item) => {
             let items = {
-                "username": item.username,
+                // "username": item.username,
                 "quantity": item.quantity,
                 "item": {
                     "product": item.item,
@@ -114,17 +114,21 @@ function removeOrdersFromTable(req, res) {
         let time = new Date();
         console.log(req.body);
         const ORDER = req.body.order;
-        console.log(req.body);
+        console.log(req.body + ` REEEEEEEEEEEEEEEEEEEEEE`);
         let order;
         for (order in ORDER) {
             let item = yield (0, order_1.get_drinks_in_table)(order['item']['product'], req.body.table_name);
+            console.log(item.rows);
             if (item.rowCount !== 0) {
                 let update = yield (0, order_1.update_order_quantity)(order['item']['product'], order['quantity'], req.body.table_name);
                 if (update.rows[0]['quantity'] === 1) {
                     yield (0, order_1.delete_order)(req.body.table_name, order['item']['product']);
                 }
+                continue;
             }
+            continue;
         }
+        return res.status(200).send(`OK`);
     });
 }
 exports.removeOrdersFromTable = removeOrdersFromTable;
