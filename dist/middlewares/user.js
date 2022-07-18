@@ -76,12 +76,13 @@ function authorizeDiscount(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         const USERS = ['Auditor', 'Super Admin', 'Admin'];
         try {
-            let userExists = yield (0, user_1.get_passcode)(req.body.activePasscode);
+            let userExists = yield (0, user_1.get_passcode)(req.body.passcode);
             if (req.body.credit !== 0 || req.body.complimentary_qty !== 0 || req.body.discount !== 0) {
                 if ((userExists === null || userExists === void 0 ? void 0 : userExists.rowCount) === 1 && USERS.includes(userExists.rows[0]['role'])) {
                     next();
                 }
                 else {
+                    console.log(req.body);
                     return res.status(401).send(`Not Authorized`);
                 }
             }

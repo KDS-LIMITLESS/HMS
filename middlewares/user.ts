@@ -62,13 +62,14 @@ export async function authorizeAuditor(req: Request, res: Response, next: NextFu
 export async function authorizeDiscount(req:Request, res:Response, next:NextFunction) {
     const USERS = ['Auditor', 'Super Admin', 'Admin']
     try {
-        let userExists = await get_passcode(req.body.activePasscode)
+        let userExists = await get_passcode(req.body.passcode)
         
         if ( req.body.credit !== 0 || req.body.complimentary_qty !== 0 || req.body.discount !== 0 ){
             if (userExists?.rowCount === 1 && USERS.includes(userExists.rows[0]['role'])){
                 next();
 
             } else {
+                console.log(req.body)
                 return res.status(401).send(`Not Authorized`)
             }
 
@@ -76,7 +77,7 @@ export async function authorizeDiscount(req:Request, res:Response, next:NextFunc
             console.log('finally')
             next();
         }
-        
+
     }catch(err) {
         console.log(err);
         return res.status(500).send("An error Occured!")
