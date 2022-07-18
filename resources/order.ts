@@ -2,7 +2,7 @@ import { Response, Request, NextFunction } from "express";
 import { exit } from "process";
 import { get_item } from "../models/item";
 import {new_order, get_table_orders, get_drinks_in_table, 
-    update_order_quantity, get_all_orders, 
+    update_order_quantity, get_all_orders, delete_order,
     count_waiters_order, get_table_orders_for_admin} from "../models/order";
 
 
@@ -107,9 +107,30 @@ export async function countWaitersOrder(req: Request, res: Response) {
         console.log(err.message)
         return res.status(400).send(err.message)
     }
-    
 }
 
+export async function removeOrdersFromTable(req: Request, res: Response) {
+    let time = new Date()
+
+    console.log(req.body)
+    
+    const ORDER: [] = req.body.order;
+    console.log(req.body)
+    let order: any; 
+    for (order in ORDER) {
+    
+        let item = await get_drinks_in_table(order['item']['product'], req.body.table_name)
+        
+        if (item.rowCount !== 0 ) {
+            let update = await update_order_quantity(order['item']['product'], 
+                order['quantity'], req.body.table_name)
+            if (update.rows[0]['quantity'] === 1){
+                await delete_order(req.body.table_name, order['item']['product'])
+            }
+        }
+        
+    }
+}
 
 
 // cors should only direct to the frontend

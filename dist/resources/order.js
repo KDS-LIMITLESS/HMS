@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.countWaitersOrder = exports.getAllOrder = exports.updateOrder = exports.getTableOrders = exports.placeOrder = void 0;
+exports.removeOrdersFromTable = exports.countWaitersOrder = exports.getAllOrder = exports.updateOrder = exports.getTableOrders = exports.placeOrder = void 0;
 const order_1 = require("../models/order");
 function placeOrder(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -109,6 +109,25 @@ function countWaitersOrder(req, res) {
     });
 }
 exports.countWaitersOrder = countWaitersOrder;
+function removeOrdersFromTable(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let time = new Date();
+        console.log(req.body);
+        const ORDER = req.body.order;
+        console.log(req.body);
+        let order;
+        for (order in ORDER) {
+            let item = yield (0, order_1.get_drinks_in_table)(order['item']['product'], req.body.table_name);
+            if (item.rowCount !== 0) {
+                let update = yield (0, order_1.update_order_quantity)(order['item']['product'], order['quantity'], req.body.table_name);
+                if (update.rows[0]['quantity'] === 1) {
+                    yield (0, order_1.delete_order)(req.body.table_name, order['item']['product']);
+                }
+            }
+        }
+    });
+}
+exports.removeOrdersFromTable = removeOrdersFromTable;
 // cors should only direct to the frontend
 // order status table status
 // add automatic total amount check 

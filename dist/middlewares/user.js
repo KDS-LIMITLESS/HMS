@@ -53,9 +53,10 @@ function authorizeSuperAdminNext(req, res, next) {
 exports.authorizeSuperAdminNext = authorizeSuperAdminNext;
 function authorizeAuditor(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
+        const USERS = ['Auditor', 'Super Admin', 'Admin'];
         try {
             let userExists = yield (0, user_1.get_user)(req.body.activeUser);
-            if (userExists && (userExists.rows[0]['role'] === 'Auditor' || userExists.rows[0]['role'] === 'Super Admin')
+            if (userExists && USERS.includes(userExists.rows[0]['role'])
                 && (req.body.activePasscode === userExists.rows[0]['passcode'])) {
                 console.log("calling Next");
                 next();

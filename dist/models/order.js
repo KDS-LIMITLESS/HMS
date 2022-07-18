@@ -55,7 +55,7 @@ function new_order(username, item, price, quantity, category, image, department,
         }
         catch (e) {
             yield db.query('ROLLBACK');
-            yield delete_order(table_name);
+            // await delete_order(table_name);
             yield (0, table_1.delete_table)(table_name, username);
             console.log('Rolling back');
             throw e;
@@ -88,7 +88,7 @@ exports.get_table_orders_for_admin = get_table_orders_for_admin;
 function get_drinks_in_table(item, col) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        let result = db.query((0, sql_template_strings_1.default) `SELECT item, price, quantity, category, image FROM orders 
+        let result = yield db.query((0, sql_template_strings_1.default) `SELECT item, price, quantity, category, image FROM orders 
             WHERE item = ${item} AND table_name = ${col}`);
         return result;
     });
@@ -97,7 +97,7 @@ exports.get_drinks_in_table = get_drinks_in_table;
 function update_order_quantity(item, quantity, tbl) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        let result = db.query((0, sql_template_strings_1.default) `UPDATE orders SET quantity = ${quantity} 
+        let result = yield db.query((0, sql_template_strings_1.default) `UPDATE orders SET quantity = ${quantity} 
         WHERE item = ${item} AND table_name = ${tbl}`);
         return result;
     });
@@ -119,10 +119,11 @@ function count_waiters_order(waiter) {
     });
 }
 exports.count_waiters_order = count_waiters_order;
-function delete_order(table_name) {
+function delete_order(table_name, item) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        let result = yield db.query((0, sql_template_strings_1.default) `DELETE FROM orders WHERE table_name = ${table_name}`);
+        let result = yield db.query((0, sql_template_strings_1.default) `DELETE FROM orders 
+    WHERE table_name = ${table_name} AND item = ${item}`);
         return result;
     });
 }

@@ -42,7 +42,7 @@ export async function new_order(username: string, item: string, price: number,
         return result
     } catch (e) {
         await db.query('ROLLBACK')
-        await delete_order(table_name);
+        // await delete_order(table_name);
         await delete_table(table_name, username)
         console.log('Rolling back')
         throw e;
@@ -68,7 +68,7 @@ export async function get_table_orders_for_admin(tbl_name:string) {
 
 export async function get_drinks_in_table(item: string, col: string ){
     const db = await dbConnection();
-    let result = db.query(SQL `SELECT item, price, quantity, category, image FROM orders 
+    let result = await db.query(SQL `SELECT item, price, quantity, category, image FROM orders 
             WHERE item = ${item} AND table_name = ${col}`);
     return result;
 }
@@ -76,7 +76,7 @@ export async function get_drinks_in_table(item: string, col: string ){
 export async function update_order_quantity(item:string, quantity: string, tbl: string) {
     const db = await dbConnection();
 
-    let result = db.query(SQL `UPDATE orders SET quantity = ${quantity} 
+    let result = await db.query(SQL `UPDATE orders SET quantity = ${quantity} 
         WHERE item = ${item} AND table_name = ${tbl}`)
     return result;
 }
@@ -95,9 +95,10 @@ export async function count_waiters_order(waiter: string) {
     return orderCount
 }
 
-export async function delete_order(table_name: string){
+export async function delete_order(table_name: string, item: string){
     const db = await dbConnection();
 
-    let result = await db.query(SQL `DELETE FROM orders WHERE table_name = ${table_name}`)
+    let result = await db.query(SQL `DELETE FROM orders 
+    WHERE table_name = ${table_name} AND item = ${item}`)
     return result
 }
