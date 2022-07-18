@@ -112,21 +112,18 @@ exports.countWaitersOrder = countWaitersOrder;
 function removeOrdersFromTable(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let time = new Date();
-        console.log(req.body);
+        // console.log(req.body)
         const ORDER = req.body.order;
-        console.log(req.body + ` REEEEEEEEEEEEEEEEEEEEEE`);
+        // console.log(JSON.stringify(req.body) + ` REEEEEEEEEEEEEEEEEEEEEE`)
         let order;
-        for (order in ORDER) {
+        for (order of ORDER) {
+            console.log(order);
             let item = yield (0, order_1.get_drinks_in_table)(order['item']['product'], req.body.table_name);
             console.log(item.rows);
             if (item.rowCount !== 0) {
                 let update = yield (0, order_1.update_order_quantity)(order['item']['product'], order['quantity'], req.body.table_name);
-                if (update.rows[0]['quantity'] === 1) {
-                    yield (0, order_1.delete_order)(req.body.table_name, order['item']['product']);
-                }
-                continue;
             }
-            continue;
+            // continue
         }
         return res.status(200).send(`OK`);
     });

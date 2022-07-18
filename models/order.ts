@@ -70,6 +70,7 @@ export async function get_drinks_in_table(item: string, col: string ){
     const db = await dbConnection();
     let result = await db.query(SQL `SELECT item, price, quantity, category, image FROM orders 
             WHERE item = ${item} AND table_name = ${col}`);
+    // if (result.rowCount === 0) return null;
     return result;
 }
 
@@ -78,6 +79,7 @@ export async function update_order_quantity(item:string, quantity: string, tbl: 
 
     let result = await db.query(SQL `UPDATE orders SET quantity = ${quantity} 
         WHERE item = ${item} AND table_name = ${tbl}`)
+    // if (result.rowCount === 0) return null;
     return result;
 }
 

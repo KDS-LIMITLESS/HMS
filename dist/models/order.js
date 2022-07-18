@@ -90,6 +90,7 @@ function get_drinks_in_table(item, col) {
         const db = yield (0, connection_1.dbConnection)();
         let result = yield db.query((0, sql_template_strings_1.default) `SELECT item, price, quantity, category, image FROM orders 
             WHERE item = ${item} AND table_name = ${col}`);
+        // if (result.rowCount === 0) return null;
         return result;
     });
 }
@@ -99,6 +100,7 @@ function update_order_quantity(item, quantity, tbl) {
         const db = yield (0, connection_1.dbConnection)();
         let result = yield db.query((0, sql_template_strings_1.default) `UPDATE orders SET quantity = ${quantity} 
         WHERE item = ${item} AND table_name = ${tbl}`);
+        // if (result.rowCount === 0) return null;
         return result;
     });
 }
