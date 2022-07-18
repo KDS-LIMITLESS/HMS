@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_user = exports.create_new_user = exports.createUsersTable = void 0;
+exports.get_passcode = exports.get_user = exports.create_new_user = exports.createUsersTable = void 0;
 const connection_1 = require("../connection");
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 function createUsersTable() {
@@ -22,7 +22,7 @@ function createUsersTable() {
         username VARCHAR NOT NULL PRIMARY KEY,
         password VARCHAR NOT NULL,
         role VARCHAR NOT NULL,
-        passcode INTEGER NOT NULL
+        passcode INTEGER NOT NULL UNIQUE
     ) `);
     });
 }
@@ -47,3 +47,13 @@ function get_user(username) {
     });
 }
 exports.get_user = get_user;
+function get_passcode(passcode) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        let result = db.query((0, sql_template_strings_1.default) `SELECT * FROM users WHERE passcode = ${passcode}`);
+        if ((yield result).rowCount === 0)
+            return null;
+        return result;
+    });
+}
+exports.get_passcode = get_passcode;

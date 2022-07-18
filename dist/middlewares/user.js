@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authorizeAuditor = exports.authorizeSuperAdminNext = exports.authorizeUser = void 0;
+exports.authorizeDiscount = exports.authorizeAuditor = exports.authorizeSuperAdminNext = exports.authorizeUser = void 0;
 const user_1 = require("../models/user");
 function authorizeUser(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -53,7 +53,6 @@ function authorizeSuperAdminNext(req, res, next) {
 exports.authorizeSuperAdminNext = authorizeSuperAdminNext;
 function authorizeAuditor(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
-        const USERS = ['Auditor', 'Super Admin'];
         try {
             let userExists = yield (0, user_1.get_user)(req.body.activeUser);
             if (userExists && (userExists.rows[0]['role'] === 'Auditor' || userExists.rows[0]['role'] === 'Super Admin')
@@ -73,3 +72,28 @@ function authorizeAuditor(req, res, next) {
     });
 }
 exports.authorizeAuditor = authorizeAuditor;
+function authorizeDiscount(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const USERS = ['Auditor', 'Super Admin', 'Admin'];
+        try {
+            let userExists = yield (0, user_1.get_passcode)(req.body.activePasscode);
+            if (req.body.credit !== 0 || req.body.complimentary_qty !== 0 || req.body.discount !== 0) {
+                if ((userExists === null || userExists === void 0 ? void 0 : userExists.rowCount) === 1 && USERS.includes(userExists.rows[0]['role'])) {
+                    next();
+                }
+                else {
+                    return res.status(401).send(`Not Authorized`);
+                }
+            }
+            else {
+                console.log('finally');
+                next();
+            }
+        }
+        catch (err) {
+            console.log(err);
+            return res.status(500).send("An error Occured!");
+        }
+    });
+}
+exports.authorizeDiscount = authorizeDiscount;
