@@ -1,4 +1,5 @@
 import { Response, Request, NextFunction } from "express";
+import { nextTick } from "process";
 import { get_user, get_passcode } from "../models/user";
 
 
@@ -82,4 +83,13 @@ export async function authorizeDiscount(req:Request, res:Response, next:NextFunc
         console.log(err);
         return res.status(500).send("An error Occured!")
     }     
+}
+
+export async function checkIsUserSuspended(req:Request, res: Response, next: NextFunction) {
+    let user = await get_user(req.body.username)
+    if (user?.rowCount === 1 && user.rows[0]['status'] === 'SUSPENDED') {
+        return res.status(401).send(`You have been suspended!`)
+    }
+    next();
+    
 }

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authorizeDiscount = exports.authorizeAuditor = exports.authorizeSuperAdminNext = exports.authorizeUser = void 0;
+exports.checkIsUserSuspended = exports.authorizeDiscount = exports.authorizeAuditor = exports.authorizeSuperAdminNext = exports.authorizeUser = void 0;
 const user_1 = require("../models/user");
 function authorizeUser(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -99,3 +99,13 @@ function authorizeDiscount(req, res, next) {
     });
 }
 exports.authorizeDiscount = authorizeDiscount;
+function checkIsUserSuspended(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let user = yield (0, user_1.get_user)(req.body.username);
+        if ((user === null || user === void 0 ? void 0 : user.rowCount) === 1 && user.rows[0]['status'] === 'SUSPENDED') {
+            return res.status(401).send(`You have been suspended!`);
+        }
+        next();
+    });
+}
+exports.checkIsUserSuspended = checkIsUserSuspended;

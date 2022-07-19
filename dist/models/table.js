@@ -75,8 +75,7 @@ function get_table_discount(table_name) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
         let result = yield db.query((0, sql_template_strings_1.default) `SELECT waiter, discount, total, complimentary_drink,
-        complimentary_qty,
-     FROM tables WHERE table_name = ${table_name}`);
+        complimentary_qty FROM tables WHERE table_name = ${table_name}`);
         return result;
     });
 }

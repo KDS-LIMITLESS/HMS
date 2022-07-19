@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { get_user, create_new_user } from "../models/user";
+import { get_user, create_new_user, suspend_user, delete_user } from "../models/user";
 import { Response, Request } from "express";
 
 export async function newUser(req: Request, res: Response) {
@@ -46,4 +46,25 @@ export async function checkPasscode(req: Request, res: Response){
         console.log(err);
         return res.status(500).send("An error Occured!")
     }
+}
+
+export async function suspendUser(req: Request, res: Response) {
+    let findUser = await get_user(req.body.username);
+    if (findUser?.rowCount === 1){
+        await suspend_user(req.body.username, "SUSPENDED");
+        return res.status(200).send(`USER SUSPENDED!`)
+    }
+    return res.status(404).send(`User Not Found`);
+}
+
+// check if user is suspended
+// reactivate user
+
+export async function removeUser(req: Request, res: Response) {
+    let findUser = await get_user(req.body.username)
+    if (findUser?.rowCount === 1){
+        await delete_user(req.body.username);
+        return res.status(200).send(`USER DELETED`)
+    }
+    return res.status(404).send(`User Not Found`);
 }

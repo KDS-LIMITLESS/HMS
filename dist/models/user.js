@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_passcode = exports.get_user = exports.create_new_user = exports.createUsersTable = void 0;
+exports.delete_user = exports.suspend_user = exports.get_passcode = exports.get_user = exports.create_new_user = exports.createUsersTable = void 0;
 const connection_1 = require("../connection");
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 function createUsersTable() {
@@ -22,7 +22,8 @@ function createUsersTable() {
         username VARCHAR NOT NULL PRIMARY KEY,
         password VARCHAR NOT NULL,
         role VARCHAR NOT NULL,
-        passcode INTEGER NOT NULL UNIQUE
+        passcode INTEGER NOT NULL UNIQUE,
+        status VARCHAR NOT NULL DEFAULT 'ACTIVE'
     ) `);
     });
 }
@@ -57,3 +58,20 @@ function get_passcode(passcode) {
     });
 }
 exports.get_passcode = get_passcode;
+function suspend_user(user, status) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        const USER = yield db.query((0, sql_template_strings_1.default) `UPDATE users SET status = ${status}  
+        WHERE username = ${user}`);
+        return USER;
+    });
+}
+exports.suspend_user = suspend_user;
+function delete_user(user) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        const USER = yield db.query((0, sql_template_strings_1.default) ` DELETE FROM users WHERE username = ${user}`);
+        return USER;
+    });
+}
+exports.delete_user = delete_user;
