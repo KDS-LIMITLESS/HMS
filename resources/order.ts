@@ -9,7 +9,6 @@ import {new_order, get_table_orders, get_drinks_in_table,
 export async function placeOrder(req: Request, res: Response, next: NextFunction){
     let time = new Date();    
        
-    console.log(req.body.order)
     const ORDER: [] = req.body.order;
     
     ORDER.forEach(async order => {
@@ -60,8 +59,6 @@ export async function getTableOrders(req: Request, res: Response) {
 // check if table is closed and do not do anything.....
 export async function updateOrder(req: Request, res: Response) {
     let time = new Date()
-
-    console.log(req.body)
     
     const ORDER: [] = req.body.order;
     let update;
@@ -70,15 +67,13 @@ export async function updateOrder(req: Request, res: Response) {
     ORDER.forEach(async order => {
     
         let item = await get_drinks_in_table(order['item']['product'], req.body.table_name)
-        console.log(item.rowCount)
+        // console.log(item.rowCount)
         if (item.rowCount !== 0 ) {
              update = await update_order_quantity(order['item']['product'], 
                                      order['quantity'], req.body.table_name)
         } else {
             const TOTAL =  req.body.price*req.body.quantity
-            // const PRODUCT_PRICE = await get_product_price(order['item']['product'])
-            // add total and total amount
-             
+           
             newOrder = await new_order(req.body.activeUser, order['item']['product'], 
                  order['item']['price'], order['quantity'], order['item']['category'],  
                  order['item']['image'], order['item']['department'], req.body.table_name,time.toLocaleTimeString()
@@ -115,7 +110,7 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
     let order;
    
     for (order of ORDER) {
-        console.log(order)
+        
         let item = await get_drinks_in_table(order['item']['product'], req.body.table_name)        
         if (item.rowCount !== 0 ) {
             await update_order_quantity(order['item']['product'], 

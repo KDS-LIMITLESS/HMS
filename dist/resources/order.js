@@ -14,7 +14,6 @@ const order_1 = require("../models/order");
 function placeOrder(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         let time = new Date();
-        console.log(req.body.order);
         const ORDER = req.body.order;
         ORDER.forEach((order) => __awaiter(this, void 0, void 0, function* () {
             yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], order['item']['department'], req.body.table_name, time.toLocaleTimeString());
@@ -60,20 +59,17 @@ exports.getTableOrders = getTableOrders;
 function updateOrder(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let time = new Date();
-        console.log(req.body);
         const ORDER = req.body.order;
         let update;
         let newOrder;
         ORDER.forEach((order) => __awaiter(this, void 0, void 0, function* () {
             let item = yield (0, order_1.get_drinks_in_table)(order['item']['product'], req.body.table_name);
-            console.log(item.rowCount);
+            // console.log(item.rowCount)
             if (item.rowCount !== 0) {
                 update = yield (0, order_1.update_order_quantity)(order['item']['product'], order['quantity'], req.body.table_name);
             }
             else {
                 const TOTAL = req.body.price * req.body.quantity;
-                // const PRODUCT_PRICE = await get_product_price(order['item']['product'])
-                // add total and total amount
                 newOrder = yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], order['item']['department'], req.body.table_name, time.toLocaleTimeString());
             }
         }));
@@ -114,7 +110,6 @@ function removeOrdersFromTable(req, res) {
         const ORDER = req.body.order;
         let order;
         for (order of ORDER) {
-            console.log(order);
             let item = yield (0, order_1.get_drinks_in_table)(order['item']['product'], req.body.table_name);
             if (item.rowCount !== 0) {
                 yield (0, order_1.update_order_quantity)(order['item']['product'], order['quantity'], req.body.table_name);

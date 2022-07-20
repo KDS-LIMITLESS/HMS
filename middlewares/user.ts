@@ -9,7 +9,6 @@ export async function authorizeUser(req:Request, res:Response, next:NextFunction
         let userExists = await get_user(req.body.activeUser)
         
         if (userExists && (req.body.activePasscode === userExists.rows[0]['passcode'])){
-            console.log(`calling next done...`)
             next();
         } else {
             console.log(JSON.stringify(req.body) + " Error from authorize User")
@@ -26,7 +25,6 @@ export async function authorizeSuperAdminNext(req: Request, res: Response, next:
     try {
         let userExists = await get_user(req.body.activeUser)
         if (userExists && ( userExists.rows[0]['role'] === 'Super Admin') && (req.body.activePasscode === userExists.rows[0]['passcode']) ){
-            console.log("calling Next")
             next();
         }else {
             console.log(req.body)
@@ -47,7 +45,6 @@ export async function authorizeAuditor(req: Request, res: Response, next: NextFu
                  && (req.body.activePasscode === userExists.rows[0]['passcode']) 
             ) 
         {
-            console.log("calling Next")
             next();
         }else {
             console.log(req.body)

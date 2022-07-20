@@ -16,7 +16,6 @@ function authorizeUser(req, res, next) {
         try {
             let userExists = yield (0, user_1.get_user)(req.body.activeUser);
             if (userExists && (req.body.activePasscode === userExists.rows[0]['passcode'])) {
-                console.log(`calling next done...`);
                 next();
             }
             else {
@@ -36,7 +35,6 @@ function authorizeSuperAdminNext(req, res, next) {
         try {
             let userExists = yield (0, user_1.get_user)(req.body.activeUser);
             if (userExists && (userExists.rows[0]['role'] === 'Super Admin') && (req.body.activePasscode === userExists.rows[0]['passcode'])) {
-                console.log("calling Next");
                 next();
             }
             else {
@@ -58,7 +56,6 @@ function authorizeAuditor(req, res, next) {
             let userExists = yield (0, user_1.get_user)(req.body.activeUser);
             if (userExists && USERS.includes(userExists.rows[0]['role'])
                 && (req.body.activePasscode === userExists.rows[0]['passcode'])) {
-                console.log("calling Next");
                 next();
             }
             else {
