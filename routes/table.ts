@@ -5,7 +5,7 @@ import { authorizeUser, authorizeAuditor, authorizeDiscount } from '../middlewar
 export const router = Router();
 
 router.post('/tables', getWaiterTables); // rename to my-tables
-router.post('/close-table', authorizeDiscount, closeTable);
+router.put('/close-table', authorizeDiscount, closeTable);
 // admin table to see all tables 
 router.post('/all-tables', authorizeAuditor, getAllTables);
 router.post('/table', getTableDiscount)

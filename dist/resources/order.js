@@ -117,7 +117,7 @@ function removeOrdersFromTable(req, res) {
             console.log(order);
             let item = yield (0, order_1.get_drinks_in_table)(order['item']['product'], req.body.table_name);
             if (item.rowCount !== 0) {
-                let update = yield (0, order_1.update_order_quantity)(order['item']['product'], order['quantity'], req.body.table_name);
+                yield (0, order_1.update_order_quantity)(order['item']['product'], order['quantity'], req.body.table_name);
             }
         }
         return res.status(200).send(`OK`);

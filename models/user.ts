@@ -33,6 +33,13 @@ export async function get_user(username:string) {
     return result;
 }
 
+export async function get_all_users() {
+    const db = await dbConnection();
+
+    let result = db.query(SQL `SELECT * FROM users `)
+    return result;    
+}
+
 export async function get_passcode(passcode:string) {
     const db = await dbConnection();
 
@@ -52,6 +59,6 @@ export async function suspend_user(user: string, status: string) {
 export async function delete_user(user: string) {
     const db = await dbConnection();
 
-    const USER = await db.query(SQL ` DELETE FROM users WHERE username = ${user}`);
+    const USER = await db.query(SQL `DELETE FROM users WHERE username = ${user}`);
     return USER
 }

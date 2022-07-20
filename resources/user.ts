@@ -1,11 +1,9 @@
 import bcrypt from 'bcrypt'
-import { get_user, create_new_user, suspend_user, delete_user } from "../models/user";
+import { get_user, create_new_user, suspend_user, delete_user, get_all_users } from "../models/user";
 import { Response, Request } from "express";
 
 export async function newUser(req: Request, res: Response) {
     let userExists = await get_user(req.body.username)
-
-    // console.log(userExists?.rows[0]['username'])
 
     if (userExists) return res.status(400).send(`User ${req.body.username} already exists.`)
     try{
@@ -57,8 +55,14 @@ export async function suspendUser(req: Request, res: Response) {
     return res.status(404).send(`User Not Found`);
 }
 
-// check if user is suspended
-// reactivate user
+export async function reactivateUser(req: Request, res: Response) {
+    let findUser = await get_user(req.body.username)
+    if (findUser?.rowCount === 1) {
+        await suspend_user(req.body.username, "ACTIVE");
+        return res.status(200).send(`USER RE-ACTIVATED`);
+    }
+    return res.status(404).send(`USER NOT FOUND!`)
+}
 
 export async function removeUser(req: Request, res: Response) {
     let findUser = await get_user(req.body.username)
@@ -66,5 +70,13 @@ export async function removeUser(req: Request, res: Response) {
         await delete_user(req.body.username);
         return res.status(200).send(`USER DELETED`)
     }
-    return res.status(404).send(`User Not Found`);
+    return res.status(404).send(`USER NOT FOUND!`);
+}
+
+export async function getAllUsers(req: Request, res: Response) {
+    let user = await get_all_users();
+    if (user.rowCount === 0) {
+        return res.status(404).send(`Empty`)
+    }
+    return res.status(200).send(user.rows)
 }

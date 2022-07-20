@@ -12,13 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeUser = exports.suspendUser = exports.checkPasscode = exports.login = exports.newUser = void 0;
+exports.getAllUsers = exports.removeUser = exports.reactivateUser = exports.suspendUser = exports.checkPasscode = exports.login = exports.newUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = require("../models/user");
 function newUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let userExists = yield (0, user_1.get_user)(req.body.username);
-        // console.log(userExists?.rows[0]['username'])
         if (userExists)
             return res.status(400).send(`User ${req.body.username} already exists.`);
         try {
@@ -75,8 +74,17 @@ function suspendUser(req, res) {
     });
 }
 exports.suspendUser = suspendUser;
-// check if user is suspended
-// reactivate user
+function reactivateUser(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let findUser = yield (0, user_1.get_user)(req.body.username);
+        if ((findUser === null || findUser === void 0 ? void 0 : findUser.rowCount) === 1) {
+            yield (0, user_1.suspend_user)(req.body.username, "ACTIVE");
+            return res.status(200).send(`USER RE-ACTIVATED`);
+        }
+        return res.status(404).send(`USER NOT FOUND!`);
+    });
+}
+exports.reactivateUser = reactivateUser;
 function removeUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let findUser = yield (0, user_1.get_user)(req.body.username);
@@ -84,7 +92,17 @@ function removeUser(req, res) {
             yield (0, user_1.delete_user)(req.body.username);
             return res.status(200).send(`USER DELETED`);
         }
-        return res.status(404).send(`User Not Found`);
+        return res.status(404).send(`USER NOT FOUND!`);
     });
 }
 exports.removeUser = removeUser;
+function getAllUsers(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let user = yield (0, user_1.get_all_users)();
+        if (user.rowCount === 0) {
+            return res.status(404).send(`Empty`);
+        }
+        return res.status(200).send(user.rows);
+    });
+}
+exports.getAllUsers = getAllUsers;
