@@ -43,9 +43,18 @@ function startServer() {
         // await db.query(`DROP TABLE item`)
         // await db.query(`DROP TABLE users`)
         // await db.query(`ALTER TABLE tables DROP COLUMN payment_method`)
-        // await db.query(`ALTER TABLE users
-        //     ADD status VARCHAR NOT NULL DEFAULT 'ACTIVE'
-        // `)
+        yield db.query(`ALTER TABLE tables
+        DROP CONSTRAINT tables_waiter_fkey,
+        ALTER waiter DROP NOT NULL,
+        ADD CONSTRAINT tables_waiter_fkey FOREIGN KEY (waiter)
+        REFERENCES users(username) ON DELETE SET NULL
+    `);
+        yield db.query(`ALTER TABLE orders
+        DROP CONSTRAINT orders_username_fkey,
+        ALTER username DROP NOT NULL,
+        ADD CONSTRAINT orders_username_fkey FOREIGN KEY (username)
+        REFERENCES users(username) ON DELETE SET NULL
+    `);
         const PORT = process.env.PORT || 3000;
         app.listen(PORT, () => {
             console.log('Server Listening on port 3000');

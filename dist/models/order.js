@@ -21,7 +21,7 @@ function create_Order_Table() {
         const db = yield (0, connection_1.dbConnection)();
         return yield db.query(`CREATE TABLE IF NOT EXISTS orders (
         id BIGSERIAL PRIMARY KEY, 
-        username VARCHAR NOT NULL REFERENCES users(username),
+        username VARCHAR REFERENCES users(username) ON DELETE SET NULL,
         
         item VARCHAR NOT NULL ,
         price INTEGER NOT NULL,

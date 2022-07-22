@@ -1,7 +1,7 @@
 import { dbConnection } from "../connection";
 import SQL from "sql-template-strings";
 
-export async function createUsersTable(){
+export async function createUsersTable() {
     const db = await dbConnection()
 
     db.query(` CREATE TABLE IF NOT EXISTS users (
