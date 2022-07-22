@@ -33,7 +33,6 @@ export async function get_item(product: string, department: string) {
 
     let result = await db.query(SQL `SELECT product, department FROM item 
                 WHERE product = ${product} AND department = ${department};`)
-    if (result.rowCount === 0) return null
     return result
 }
 
@@ -71,4 +70,11 @@ export async function delete_item(item:string, department: string) {
     let result = await db.query(SQL `DELETE FROM item WHERE product = ${item} AND department = ${department}`)
     return result;
     
+}
+
+export async function update_item(product: string, price:number) {
+    const db = await dbConnection();
+
+    let result = await db.query(SQL`UPDATE item SET price = ${price} WHERE product = ${product}`);
+    return result;
 }

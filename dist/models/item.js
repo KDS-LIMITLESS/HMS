@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.delete_item = exports.get_drinks_in_department = exports.add_item = exports.get_all_items_with_category = exports.get_product_price = exports.get_item = exports.get_all_items = exports.createItemsTable = void 0;
+exports.update_item = exports.delete_item = exports.get_drinks_in_department = exports.add_item = exports.get_all_items_with_category = exports.get_product_price = exports.get_item = exports.get_all_items = exports.createItemsTable = void 0;
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const connection_1 = require("../connection");
 function createItemsTable() {
@@ -48,8 +48,6 @@ function get_item(product, department) {
         const db = yield (0, connection_1.dbConnection)();
         let result = yield db.query((0, sql_template_strings_1.default) `SELECT product, department FROM item 
                 WHERE product = ${product} AND department = ${department};`);
-        if (result.rowCount === 0)
-            return null;
         return result;
     });
 }
@@ -98,3 +96,11 @@ function delete_item(item, department) {
     });
 }
 exports.delete_item = delete_item;
+function update_item(product, price) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        let result = yield db.query((0, sql_template_strings_1.default) `UPDATE item SET price = ${price} WHERE product = ${product}`);
+        return result;
+    });
+}
+exports.update_item = update_item;

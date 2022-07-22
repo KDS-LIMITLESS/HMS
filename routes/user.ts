@@ -12,6 +12,7 @@ router.post('/new-user', newUser)
 router.post('/add-user', authorizeSuperAdminNext, newUser)
 router.post('/login', checkIsUserSuspended, login)
 router.post('/check-passcode', checkPasscode)
+
 router.delete('/delete-user', authorizeAuditor, removeUser)
 
 router.put('/suspend-user', authorizeAuditor, suspendUser)

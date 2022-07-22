@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteItem = exports.getAllDrinksDepartment = exports.getItemsInCategory = exports.addNewItem = exports.getItem = void 0;
+exports.updateItem = exports.deleteItem = exports.getAllDrinksDepartment = exports.getItemsInCategory = exports.addNewItem = exports.getItem = void 0;
 const item_1 = require("../models/item");
 function getItem(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -67,7 +67,7 @@ function deleteItem(req, res) {
         try {
             const ITEM = yield (0, item_1.get_item)(req.body.product, req.body.department);
             console.log(ITEM);
-            if (ITEM !== null) {
+            if (ITEM.rowCount === 1) {
                 yield (0, item_1.delete_item)(req.body.product, req.body.department);
                 return res.status(200).send("OK");
             }
@@ -79,3 +79,19 @@ function deleteItem(req, res) {
     });
 }
 exports.deleteItem = deleteItem;
+function updateItem(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const ITEM = yield (0, item_1.get_item)(req.body.product, req.body.department);
+            if (ITEM.rowCount === 1) {
+                yield (0, item_1.update_item)(req.body.product, req.body.price);
+                return res.status(200).send(`ITEM UPDATED`);
+            }
+            return res.status(404).send(`Item not found in department!`);
+        }
+        catch (err) {
+            return res.status(400).send(err.message);
+        }
+    });
+}
+exports.updateItem = updateItem;

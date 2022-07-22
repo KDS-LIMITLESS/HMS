@@ -90,3 +90,7 @@ export async function updateUserRole(req: Request, res: Response) {
     }
     return res.status(404).send(`USER NOT FOUND IN DATABASE`);
 }
+
+export async function grantAdminCredit(req:Request, res:Response) {
+    
+}

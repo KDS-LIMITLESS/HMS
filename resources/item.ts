@@ -1,5 +1,6 @@
 import { get_all_items, add_item, get_item, 
-        get_all_items_with_category, get_drinks_in_department, delete_item
+        get_all_items_with_category, get_drinks_in_department, 
+        delete_item, update_item
 } from "../models/item";
 import { Request, Response } from "express";
 
@@ -52,7 +53,7 @@ export async function deleteItem(req: Request,res: Response){
     try {
         const ITEM = await get_item(req.body.product, req.body.department)
         console.log(ITEM)
-        if (ITEM !== null) {
+        if (ITEM.rowCount === 1) {
             await delete_item(req.body.product, req.body.department)
             return res.status(200).send("OK")
         }
@@ -61,4 +62,17 @@ export async function deleteItem(req: Request,res: Response){
     } catch(err: any) {
         return res.status(400).send(err.message)
     }
+}
+
+export async function updateItem(req:Request, res: Response) {
+    try{
+        const ITEM = await get_item(req.body.product, req.body.department)
+        if (ITEM.rowCount === 1) {
+            await update_item(req.body.product, req.body.price);
+            return res.status(200).send(`ITEM UPDATED`)
+        }
+        return res.status(404).send(`Item not found in department!`);
+    } catch (err: any) {
+        return res.status(400).send(err.message)
+    }   
 }
