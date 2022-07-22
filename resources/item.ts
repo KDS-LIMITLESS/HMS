@@ -52,12 +52,12 @@ export async function getAllDrinksDepartment(req:Request, res:Response) {
 export async function deleteItem(req: Request,res: Response){
     try {
         const ITEM = await get_item(req.body.product, req.body.department)
-        console.log(ITEM)
+        console.log(ITEM.rows)
+        console.log(req.body)
         if (ITEM.rowCount === 1) {
             await delete_item(req.body.product, req.body.department)
             return res.status(200).send("OK")
         }
-       
         return res.status(400).send(`Error. Item does not exist.`)
     } catch(err: any) {
         return res.status(400).send(err.message)
