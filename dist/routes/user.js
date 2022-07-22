@@ -16,4 +16,5 @@ exports.router.post('/check-passcode', user_1.checkPasscode);
 exports.router.delete('/delete-user', user_2.authorizeAuditor, user_1.removeUser);
 exports.router.put('/suspend-user', user_2.authorizeAuditor, user_1.suspendUser);
 exports.router.put('/reactivate', user_2.authorizeAuditor, user_1.reactivateUser);
+exports.router.put('/update-role', user_2.authorizeAuditor, user_1.updateUserRole);
 module.exports = exports.router;

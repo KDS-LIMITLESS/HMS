@@ -1,5 +1,6 @@
 import express from 'express'
-import { newUser, login, checkPasscode, suspendUser, removeUser, reactivateUser, getAllUsers } from "../resources/user";
+import { newUser, login, checkPasscode, suspendUser, removeUser, 
+    reactivateUser, getAllUsers, updateUserRole } from "../resources/user";
 import { authorizeSuperAdminNext, authorizeAuditor, checkIsUserSuspended } from "../middlewares/user";
 
 
@@ -15,5 +16,6 @@ router.delete('/delete-user', authorizeAuditor, removeUser)
 
 router.put('/suspend-user', authorizeAuditor, suspendUser)
 router.put('/reactivate', authorizeAuditor, reactivateUser)
+router.put('/update-role', authorizeAuditor, updateUserRole)
 
 module.exports = router;

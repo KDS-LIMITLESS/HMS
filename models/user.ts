@@ -62,3 +62,9 @@ export async function delete_user(user: string) {
     const USER = await db.query(SQL `DELETE FROM users WHERE username = ${user}`);
     return USER
 }
+
+export async function update_user_role(user:string, role: string) {
+    const db = await dbConnection();
+    const USER = await db.query(SQL `UPDATE users SET role = ${role} WHERE username = ${user}`)
+    return USER;
+}

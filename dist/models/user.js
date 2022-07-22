@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.delete_user = exports.suspend_user = exports.get_passcode = exports.get_all_users = exports.get_user = exports.create_new_user = exports.createUsersTable = void 0;
+exports.update_user_role = exports.delete_user = exports.suspend_user = exports.get_passcode = exports.get_all_users = exports.get_user = exports.create_new_user = exports.createUsersTable = void 0;
 const connection_1 = require("../connection");
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 function createUsersTable() {
@@ -83,3 +83,11 @@ function delete_user(user) {
     });
 }
 exports.delete_user = delete_user;
+function update_user_role(user, role) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        const USER = yield db.query((0, sql_template_strings_1.default) `UPDATE users SET role = ${role} WHERE username = ${user}`);
+        return USER;
+    });
+}
+exports.update_user_role = update_user_role;
