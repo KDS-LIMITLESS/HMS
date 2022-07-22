@@ -40,10 +40,10 @@ async function startServer(){
     // await db.query(`ALTER TABLE tables DROP COLUMN payment_method`)
 
 
-    await db.query(`ALTER TABLE tables
+    await db.query(`ALTER TABLE person
         DROP CONSTRAINT tables_waiter_fkey,
         ALTER waiter DROP NOT NULL,
-        ADD CONSTRAINT tables_waiter_fkey FOREIGN KEY (waiter)
+        ADD CONSTRAINT person_waiter_fkey FOREIGN KEY (waiter)
         REFERENCES users(username) ON DELETE SET NULL
     `)
 

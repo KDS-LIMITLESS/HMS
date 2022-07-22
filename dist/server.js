@@ -43,10 +43,10 @@ function startServer() {
         // await db.query(`DROP TABLE item`)
         // await db.query(`DROP TABLE users`)
         // await db.query(`ALTER TABLE tables DROP COLUMN payment_method`)
-        yield db.query(`ALTER TABLE tables
+        yield db.query(`ALTER TABLE person
         DROP CONSTRAINT tables_waiter_fkey,
         ALTER waiter DROP NOT NULL,
-        ADD CONSTRAINT tables_waiter_fkey FOREIGN KEY (waiter)
+        ADD CONSTRAINT person_waiter_fkey FOREIGN KEY (waiter)
         REFERENCES users(username) ON DELETE SET NULL
     `);
         yield db.query(`ALTER TABLE orders
