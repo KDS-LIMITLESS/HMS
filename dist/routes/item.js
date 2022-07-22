@@ -15,5 +15,5 @@ exports.router.post('/items/category', item_1.getItemsInCategory);
 exports.router.post('/new-item', user_1.authorizeSuperAdminNext, item_1.addNewItem);
 exports.router.post('/upload', imageloader_1.uploadPicture);
 exports.router.put('/update-item', user_1.authorizeSuperAdminNext, item_1.updateItem);
-exports.router.delete('/delete-item', item_1.deleteItem);
+exports.router.delete('/delete-item', user_1.authorizeSuperAdminNext, item_1.deleteItem);
 module.exports = exports.router;

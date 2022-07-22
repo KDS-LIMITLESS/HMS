@@ -16,6 +16,6 @@ router.post('/upload', uploadPicture)
 
 router.put('/update-item', authorizeSuperAdminNext, updateItem)
 
-router.delete('/delete-item', deleteItem )
+router.delete('/delete-item', authorizeSuperAdminNext, deleteItem )
 
 module.exports = router;
