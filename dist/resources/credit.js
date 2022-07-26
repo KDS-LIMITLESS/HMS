@@ -13,7 +13,7 @@ exports.getcreditStatus = exports.grantStaffCredit = void 0;
 const credit_1 = require("../models/credit");
 function grantStaffCredit(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (0, credit_1.grant_credit)(req.body.user, req.body.amount);
+        yield (0, credit_1.grant_credit)(req.body.username, req.body.amount);
         return res.status(200).send(`DONE`);
     });
 }

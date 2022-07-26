@@ -2,7 +2,7 @@ import { grant_credit, get_admin_users } from "../models/credit"
 import { Request, Response } from "express"
 
 export async function grantStaffCredit(req:Request, res: Response) {
-    await grant_credit(req.body.user, req.body.amount)
+    await grant_credit(req.body.username, req.body.amount)
     return res.status(200).send(`DONE`)
 }
 
