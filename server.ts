@@ -6,6 +6,7 @@ import { createItemsTable } from './models/item';
 import { create_Order_Table } from './models/order';
 import { createUsersTable } from './models/user';
 import { createTableManager} from './models/table';
+import { create_credit_table } from './models/credit';
 
 // set depeartment foreign key in order to automatically get value form items(department)
 const app = express();
@@ -18,6 +19,7 @@ app.use('', require('./routes/item'));
 app.use('', require('./routes/user'));
 app.use('', require('./routes/order'));
 app.use('', require('./routes/table'))
+app.use('', require('./routes/credit'))
 
 
 async function startServer(){
@@ -29,13 +31,14 @@ async function startServer(){
     
     // await createUsersTable().then(() => console.log("done creating user table")); 
     // await createItemsTable().then(() => console.log("done creating items tables"));
-    await createTableManager();
-    await create_Order_Table().then(() => console.log("done creating order table"));
- 
+    // heawait createTableManager();
+    // await create_Order_Table().then(() => console.log("done creating order table"));
+    await create_credit_table();
     // await db.query(`DROP TABLE orders`)
     // await db.query(`DROP TABLE tables`)
     // await db.query(`DROP TABLE item`)
     // await db.query(`DROP TABLE users`)
+    // await db.query(`DROP TABLE credit`)
 
     // await db.query(`ALTER TABLE tables DROP COLUMN payment_method`)
 

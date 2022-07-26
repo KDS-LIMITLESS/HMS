@@ -7,7 +7,7 @@ export async function createTableManager(){
 
     return db.query(`CREATE TABLE IF NOT EXISTS tables (
         table_name VARCHAR NOT NULl PRIMARY KEY,
-        waiter VARCHAR references users(username) ON DELETE SET NULL,
+        waiter VARCHAR REFERENCES users(username) ON DELETE SET NULL,
         status VARCHAR NOT NULL DEFAULT 'OPEN',
         cash INTEGER DEFAULT 0,
         pos INTEGER  DEFAULT 0,
