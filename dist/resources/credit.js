@@ -30,7 +30,7 @@ function getcreditStatus(req, res) {
 exports.getcreditStatus = getcreditStatus;
 function UserCreditStatus(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        let user = yield (0, credit_1.get_credit_status)(req.body.username);
+        let user = yield (0, credit_1.get_credit_status)(req.body.activeUser);
         if (user.rowCount >= 1) {
             return res.status(200).send(user.rows);
         }
