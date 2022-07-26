@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.grantAdminCredit = exports.updateUserRole = exports.getAllUsers = exports.removeUser = exports.reactivateUser = exports.suspendUser = exports.checkPasscode = exports.login = exports.newUser = void 0;
+exports.getAllAuthorizedAdmins = exports.updateUserRole = exports.getAllUsers = exports.removeUser = exports.reactivateUser = exports.suspendUser = exports.checkPasscode = exports.login = exports.newUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = require("../models/user");
 function newUser(req, res) {
@@ -117,8 +117,13 @@ function updateUserRole(req, res) {
     });
 }
 exports.updateUserRole = updateUserRole;
-function grantAdminCredit(req, res) {
+function getAllAuthorizedAdmins(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        let users = yield (0, user_1.get_admins)();
+        if (users) {
+            return res.status(200).send(users.rows);
+        }
+        return res.status(404).send(`Not Found!`);
     });
 }
-exports.grantAdminCredit = grantAdminCredit;
+exports.getAllAuthorizedAdmins = getAllAuthorizedAdmins;

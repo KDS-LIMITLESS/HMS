@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.update_user_role = exports.delete_user = exports.suspend_user = exports.get_passcode = exports.get_all_users = exports.get_user = exports.create_new_user = exports.createUsersTable = void 0;
+exports.update_user_role = exports.delete_user = exports.suspend_user = exports.get_passcode = exports.get_all_users = exports.get_admins = exports.get_user = exports.create_new_user = exports.createUsersTable = void 0;
 const connection_1 = require("../connection");
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 function createUsersTable() {
@@ -48,6 +48,15 @@ function get_user(username) {
     });
 }
 exports.get_user = get_user;
+function get_admins() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        let result = yield db.query(`SELECT * FROM USERS WHERE role = 'Admin' 
+        OR role = 'Super Admin' OR role = 'Auditor' `);
+        return result;
+    });
+}
+exports.get_admins = get_admins;
 function get_all_users() {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();

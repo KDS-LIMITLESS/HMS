@@ -9,6 +9,7 @@ const user_1 = require("../resources/user");
 const user_2 = require("../middlewares/user");
 exports.router = express_1.default.Router();
 exports.router.get('/users', user_1.getAllUsers);
+exports.router.get('/authorized-admins', user_1.getAllAuthorizedAdmins);
 exports.router.post('/new-user', user_1.newUser);
 exports.router.post('/add-user', user_2.authorizeSuperAdminNext, user_1.newUser);
 exports.router.post('/login', user_2.checkIsUserSuspended, user_1.login);

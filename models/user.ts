@@ -33,6 +33,13 @@ export async function get_user(username:string) {
     return result;
 }
 
+export async function get_admins() {
+    const db = await dbConnection();
+    let result = await db.query(`SELECT * FROM USERS WHERE role = 'Admin' 
+        OR role = 'Super Admin' OR role = 'Auditor' `);
+    return result;
+}
+
 export async function get_all_users() {
     const db = await dbConnection();
 

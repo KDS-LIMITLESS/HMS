@@ -1,12 +1,13 @@
 import express from 'express'
 import { newUser, login, checkPasscode, suspendUser, removeUser, 
-    reactivateUser, getAllUsers, updateUserRole } from "../resources/user";
+    reactivateUser, getAllUsers, updateUserRole, getAllAuthorizedAdmins } from "../resources/user";
 import { authorizeSuperAdminNext, authorizeAuditor, checkIsUserSuspended } from "../middlewares/user";
 
 
 export const router = express.Router()
 
 router.get('/users', getAllUsers)
+router.get('/authorized-admins', getAllAuthorizedAdmins)
 
 router.post('/new-user', newUser)
 router.post('/add-user', authorizeSuperAdminNext, newUser)
