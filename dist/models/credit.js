@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_admin_users = exports.grant_credit = exports.create_credit_table = void 0;
+exports.get_credit_status = exports.get_admin_users = exports.grant_credit = exports.create_credit_table = void 0;
 const connection_1 = require("../connection");
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 function create_credit_table() {
@@ -53,3 +53,12 @@ function get_admin_users() {
     });
 }
 exports.get_admin_users = get_admin_users;
+function get_credit_status(user) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        let _ = yield db.query((0, sql_template_strings_1.default) `SELECT credit_remaining, credit_granted, opening_credit
+        FROM credit WHERE username = ${user}`);
+        return _;
+    });
+}
+exports.get_credit_status = get_credit_status;

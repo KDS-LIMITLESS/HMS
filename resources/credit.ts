@@ -1,4 +1,4 @@
-import { grant_credit, get_admin_users } from "../models/credit"
+import { grant_credit, get_admin_users, get_credit_status } from "../models/credit"
 import { Request, Response } from "express"
 
 export async function grantStaffCredit(req:Request, res: Response) {
@@ -15,3 +15,10 @@ export async function getcreditStatus(req: Request, res: Response) {
     return res.status(404).send(`Not Found!`)
 }
 
+export async function UserCreditStatus(req:Request, res: Response) {
+    let user = await get_credit_status(req.body.username)
+    if (user.rowCount >= 1) {
+        return res.status(200).send(user.rows)
+    }
+    return res.status(400).send(`Null`)
+}

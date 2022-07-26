@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getcreditStatus = exports.grantStaffCredit = void 0;
+exports.UserCreditStatus = exports.getcreditStatus = exports.grantStaffCredit = void 0;
 const credit_1 = require("../models/credit");
 function grantStaffCredit(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -28,3 +28,13 @@ function getcreditStatus(req, res) {
     });
 }
 exports.getcreditStatus = getcreditStatus;
+function UserCreditStatus(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let user = yield (0, credit_1.get_credit_status)(req.body.username);
+        if (user.rowCount >= 1) {
+            return res.status(200).send(user.rows);
+        }
+        return res.status(400).send(`Null`);
+    });
+}
+exports.UserCreditStatus = UserCreditStatus;

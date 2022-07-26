@@ -33,3 +33,10 @@ export async function get_admin_users() {
         `);
     return _
 }
+
+export async function get_credit_status(user: string) {
+    const db = await dbConnection();
+    let _ = await db.query(SQL`SELECT credit_remaining, credit_granted, opening_credit
+        FROM credit WHERE username = ${user}`)
+    return _
+}
