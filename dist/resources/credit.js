@@ -32,7 +32,11 @@ function UserCreditStatus(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let user = yield (0, credit_1.get_credit_status)(req.body.activeUser);
         if (user.rowCount >= 1) {
-            return res.status(200).send(user.rows);
+            return res.status(200).json({
+                credit_remaining: user.rows[0]['credit_remaining'],
+                opening_credit: user.rows[0]['opening_credit'],
+                credit_granted: user.rows[0]['credit_granted']
+            });
         }
         return res.status(400).send(`Null`);
     });

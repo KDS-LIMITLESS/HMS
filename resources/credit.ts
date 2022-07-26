@@ -18,7 +18,11 @@ export async function getcreditStatus(req: Request, res: Response) {
 export async function UserCreditStatus(req:Request, res: Response) {
     let user = await get_credit_status(req.body.activeUser)
     if (user.rowCount >= 1) {
-        return res.status(200).send(user.rows)
+        return res.status(200).json({
+            credit_remaining: user.rows[0]['credit_remaining'],
+            opening_credit: user.rows[0]['opening_credit'],
+            credit_granted: user.rows[0]['credit_granted']
+        })
     }
     return res.status(400).send(`Null`)
 }
