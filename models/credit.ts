@@ -25,10 +25,10 @@ export async function get_admin_users() {
     let _ = await db.query(`SELECT users.username, opening_credit, 
         credit_granted, credit_remaining FROM users
         
-        INNER JOIN credit 
+        LEFT JOIN credit 
 
-        ON credit.username = users.username
-        
+        ON users.username = credit.username
+
         WHERE users.role = 'Super Admin' OR users.role = 'Auditor' OR users.role = 'Admin'
         `);
     return _
