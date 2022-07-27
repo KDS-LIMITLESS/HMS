@@ -20,16 +20,16 @@ function grantStaffCredit(req, res) {
         //  if (isUserAdmin.rows[0]['role'] != ROLES.includes(isUserAdmin.rows[0]['role'])){
         //      return res.status(200).send(`Who are You?`)
         //  }
-        const CREDIT_STATUS = yield (0, credit_1.get_credit_status)(req.body.activeUser);
+        const CREDIT_STATUS = yield (0, credit_1.get_credit_status)(req.body.username);
         let creditRemaining;
         if (CREDIT_STATUS.rowCount === 1) {
             req.body.opening_credit += CREDIT_STATUS.rows[0]['opening_credit'];
             creditRemaining = req.body.opening_credit - CREDIT_STATUS.rows[0]['credit_granted'];
-            yield (0, credit_1.update_credit_status)(req.body.activeUser, req.body.opening_credit, creditRemaining);
+            yield (0, credit_1.update_credit_status)(req.body.username, req.body.opening_credit, creditRemaining);
             return res.status(200).send(`OK`);
         }
         creditRemaining = req.body.opening_credit;
-        yield (0, credit_1.grant_credit)(req.body.activeUser, req.body.opening_credit, creditRemaining);
+        yield (0, credit_1.grant_credit)(req.body.username, req.body.opening_credit, creditRemaining);
         return res.status(200).send(`DONE`);
     });
 }

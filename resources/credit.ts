@@ -10,16 +10,17 @@ export async function grantStaffCredit(req:Request, res: Response) {
    //  if (isUserAdmin.rows[0]['role'] != ROLES.includes(isUserAdmin.rows[0]['role'])){
    //      return res.status(200).send(`Who are You?`)
    //  }
-    const CREDIT_STATUS = await get_credit_status(req.body.activeUser);
+   
+    const CREDIT_STATUS = await get_credit_status(req.body.username);
     let creditRemaining;
     if (CREDIT_STATUS.rowCount === 1){
         req.body.opening_credit += CREDIT_STATUS.rows[0]['opening_credit']
         creditRemaining = req.body.opening_credit - CREDIT_STATUS.rows[0]['credit_granted']
-        await update_credit_status(req.body.activeUser, req.body.opening_credit, creditRemaining)
+        await update_credit_status(req.body.username, req.body.opening_credit, creditRemaining)
         return res.status(200).send(`OK`)
     }
     creditRemaining = req.body.opening_credit 
-    await grant_credit(req.body.activeUser, req.body.opening_credit, creditRemaining)
+    await grant_credit(req.body.username, req.body.opening_credit, creditRemaining)
     return res.status(200).send(`DONE`)
 }
 
