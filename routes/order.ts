@@ -9,7 +9,7 @@ export const router = express.Router();
 
 router.get('/all-orders', getAllOrder);
 router.post('/order', authorizeUser, createTable, placeOrder);
-router.post('/table-orders', authorizeUser, getTableOrders);
+router.post('/get-orders', authorizeUser, getTableOrders);
 router.post('/update-order', authorizeUser, updateOrder);
 router.post('/order-count', authorizeUser, countWaitersOrder)
 router.post('/return-order', authorizeAuditor, removeOrdersFromTable)
