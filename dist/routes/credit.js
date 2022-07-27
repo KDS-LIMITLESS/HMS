@@ -8,6 +8,6 @@ const express_1 = __importDefault(require("express"));
 const credit_1 = require("../resources/credit");
 exports.router = express_1.default.Router();
 exports.router.get('/credit-status', credit_1.getcreditStatus);
-exports.router.post('/grant-credit', credit_1.grantStaffCredit);
+exports.router.post('/grant-credit', credit_1.setStaffCreditLimit);
 exports.router.post('/user-credit', credit_1.UserCreditStatus);
 module.exports = exports.router;

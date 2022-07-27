@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_credit_status = exports.get_admin_users = exports.update_credit_status = exports.grant_credit = exports.create_credit_table = void 0;
+exports.get_credit_balance = exports.get_credit_status = exports.get_admin_users = exports.calculate_credit_balance = exports.update_credit_status = exports.grant_credit = exports.create_credit_table = void 0;
 const connection_1 = require("../connection");
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 function create_credit_table() {
@@ -47,6 +47,15 @@ function update_credit_status(user, opening_credit, credit_remaining) {
     });
 }
 exports.update_credit_status = update_credit_status;
+function calculate_credit_balance(user, credit_remaining, credit_granted) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        let updateBalance = yield db.query((0, sql_template_strings_1.default) `UPDATE credit SET credit_remaining = ${credit_remaining},
+        credit_granted = ${credit_granted} WHERE username = ${user}`);
+        return updateBalance;
+    });
+}
+exports.calculate_credit_balance = calculate_credit_balance;
 function get_admin_users() {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
@@ -72,3 +81,11 @@ function get_credit_status(user) {
     });
 }
 exports.get_credit_status = get_credit_status;
+function get_credit_balance(user) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        let balance = yield db.query((0, sql_template_strings_1.default) `SELECT * FROM credit WHERE user = ${user}`);
+        return balance;
+    });
+}
+exports.get_credit_balance = get_credit_balance;

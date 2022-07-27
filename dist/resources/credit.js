@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserCreditStatus = exports.getcreditStatus = exports.grantStaffCredit = void 0;
+exports.UserCreditStatus = exports.getcreditStatus = exports.setStaffCreditLimit = void 0;
 const credit_1 = require("../models/credit");
-function grantStaffCredit(req, res) {
+function setStaffCreditLimit(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         //  const ROLES = ['Admin', 'Super Admin', 'Auditor']
         //  const isUserAdmin = await get_admin_user(req.body.activeUser)
@@ -33,7 +33,7 @@ function grantStaffCredit(req, res) {
         return res.status(200).send(`DONE`);
     });
 }
-exports.grantStaffCredit = grantStaffCredit;
+exports.setStaffCreditLimit = setStaffCreditLimit;
 function getcreditStatus(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let users = yield (0, credit_1.get_admin_users)();

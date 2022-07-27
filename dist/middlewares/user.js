@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkIsUserSuspended = exports.authorizeDiscount = exports.authorizeAuditor = exports.authorizeSuperAdminNext = exports.authorizeUser = void 0;
+exports.checkIsUserSuspended = exports.authorizeCredit = exports.authorizeDiscount = exports.authorizeAuditor = exports.authorizeSuperAdminNext = exports.authorizeUser = void 0;
 const user_1 = require("../models/user");
+const credit_1 = require("../models/credit");
 function authorizeUser(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -72,15 +73,15 @@ function authorizeAuditor(req, res, next) {
 exports.authorizeAuditor = authorizeAuditor;
 function authorizeDiscount(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
-        const USERS = ['Auditor', 'Super Admin'];
         try {
             let userExists = yield (0, user_1.get_passcode)(req.body.passcode);
-            if (req.body.credit !== 0 || req.body.complimentary_qty !== 0 || req.body.discount !== 0) {
-                if ((userExists === null || userExists === void 0 ? void 0 : userExists.rowCount) === 1 && USERS.includes(userExists.rows[0]['role'])) {
+            if (req.body.complimentary_qty !== 0 || req.body.discount !== 0) {
+                const USERS = ['Auditor', 'Super Admin', 'Admin'];
+                if ((userExists === null || userExists === void 0 ? void 0 : userExists.rowCount) === 1 && USERS.includes(userExists === null || userExists === void 0 ? void 0 : userExists.rows[0]['role'])) {
                     next();
                 }
                 else {
-                    console.log(req.body);
+                    console.log(userExists === null || userExists === void 0 ? void 0 : userExists.rows);
                     return res.status(401).send(`Not Authorized`);
                 }
             }
@@ -96,6 +97,32 @@ function authorizeDiscount(req, res, next) {
     });
 }
 exports.authorizeDiscount = authorizeDiscount;
+function authorizeCredit(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (req.body.credit !== 0) {
+            const USERS = ['Auditor', 'Super Admin'];
+            let userExists = yield (0, user_1.get_passcode)(req.body.passcode);
+            const USER_HAS_CREDIT = yield (0, credit_1.get_credit_status)(userExists === null || userExists === void 0 ? void 0 : userExists.rows[0]['username']);
+            if (USER_HAS_CREDIT.rows[0]['credit_remaining'] >= req.body.credit) {
+                // subtract credit from credit remaining
+                // console.log(USER_HAS_CREDIT.rows[0]['credit_remaining'] >= req.body.credit)
+                // console.log(USER_HAS_CREDIT.rows[0]['credit_remaining'])
+                let credit_granted = USER_HAS_CREDIT.rows[0]['credit_granted'] + req.body.credit;
+                let remaining_credit = USER_HAS_CREDIT.rows[0]['credit_remaining'] - req.body.credit;
+                yield (0, credit_1.calculate_credit_balance)(userExists === null || userExists === void 0 ? void 0 : userExists.rows[0]['username'], remaining_credit, credit_granted);
+                next();
+            }
+            else {
+                console.log(req.body);
+                return res.status(401).send(`Credit limit is too low`);
+            }
+        }
+        else {
+            next();
+        }
+    });
+}
+exports.authorizeCredit = authorizeCredit;
 function checkIsUserSuspended(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         let user = yield (0, user_1.get_user)(req.body.username);

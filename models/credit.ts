@@ -28,6 +28,14 @@ export async function update_credit_status(user: string, opening_credit: number,
     return creditResult
 }
 
+export async function calculate_credit_balance(user:string, credit_remaining: number, credit_granted: number) {
+    const db = await dbConnection();
+
+    let updateBalance = await db.query(SQL `UPDATE credit SET credit_remaining = ${credit_remaining},
+        credit_granted = ${credit_granted} WHERE username = ${user}`);
+    return updateBalance;
+}
+
 export async function get_admin_users() {
     const db = await dbConnection();
 
@@ -48,4 +56,11 @@ export async function get_credit_status(user: string) {
     let _ = await db.query(SQL`SELECT credit_remaining, credit_granted, opening_credit
         FROM credit WHERE username = ${user}`)
     return _
+}
+
+export async function get_credit_balance(user: string) {
+    const db = await dbConnection();
+
+    let balance = await db.query(SQL `SELECT * FROM credit WHERE user = ${user}`)
+    return balance
 }

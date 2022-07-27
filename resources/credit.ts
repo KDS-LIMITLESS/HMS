@@ -2,7 +2,7 @@ import { grant_credit, get_admin_users, get_credit_status, update_credit_status 
 import { get_admin_user } from "../models/user";
 import { Request, Response } from "express"
 
-export async function grantStaffCredit(req:Request, res: Response) {
+export async function setStaffCreditLimit(req:Request, res: Response) {
    //  const ROLES = ['Admin', 'Super Admin', 'Auditor']
    //  const isUserAdmin = await get_admin_user(req.body.activeUser)
    //  console.log(isUserAdmin.rows)
@@ -10,7 +10,7 @@ export async function grantStaffCredit(req:Request, res: Response) {
    //  if (isUserAdmin.rows[0]['role'] != ROLES.includes(isUserAdmin.rows[0]['role'])){
    //      return res.status(200).send(`Who are You?`)
    //  }
-   
+
     const CREDIT_STATUS = await get_credit_status(req.body.username);
     let creditRemaining;
     if (CREDIT_STATUS.rowCount === 1){

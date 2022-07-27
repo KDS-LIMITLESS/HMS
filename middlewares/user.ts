@@ -1,6 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import { nextTick } from "process";
 import { get_user, get_passcode } from "../models/user";
+import { get_credit_balance, calculate_credit_balance, get_credit_status } from "../models/credit";
 
 
 export async function authorizeUser(req:Request, res:Response, next:NextFunction){
@@ -58,16 +59,16 @@ export async function authorizeAuditor(req: Request, res: Response, next: NextFu
 }
 
 export async function authorizeDiscount(req:Request, res:Response, next:NextFunction) {
-    const USERS = ['Auditor', 'Super Admin']
     try {
         let userExists = await get_passcode(req.body.passcode)
         
-        if ( req.body.credit !== 0 || req.body.complimentary_qty !== 0 || req.body.discount !== 0 ){
-            if (userExists?.rowCount === 1 && USERS.includes(userExists.rows[0]['role'])){
+        if (req.body.complimentary_qty !== 0 || req.body.discount !== 0 ){
+            const USERS = ['Auditor', 'Super Admin', 'Admin']
+            if (userExists?.rowCount === 1 && USERS.includes(userExists?.rows[0]['role'])){
                 next();
 
             } else {
-                console.log(req.body)
+                console.log(userExists?.rows)
                 return res.status(401).send(`Not Authorized`)
             }
 
@@ -80,6 +81,35 @@ export async function authorizeDiscount(req:Request, res:Response, next:NextFunc
         console.log(err);
         return res.status(500).send("An error Occured!")
     }     
+}
+
+export async function authorizeCredit(req: Request, res:Response, next:NextFunction){
+    if (req.body.credit !== 0){
+        
+        const USERS = ['Auditor', 'Super Admin']
+        let userExists = await get_passcode(req.body.passcode)
+        const USER_HAS_CREDIT = await get_credit_status(userExists?.rows[0]['username'])
+        
+
+        if ( USER_HAS_CREDIT.rows[0]['credit_remaining'] >= req.body.credit){
+            // subtract credit from credit remaining
+            // console.log(USER_HAS_CREDIT.rows[0]['credit_remaining'] >= req.body.credit)
+            // console.log(USER_HAS_CREDIT.rows[0]['credit_remaining'])
+
+            let credit_granted = USER_HAS_CREDIT.rows[0]['credit_granted'] + req.body.credit
+            let remaining_credit = USER_HAS_CREDIT.rows[0]['credit_remaining'] - req.body.credit
+            
+            await calculate_credit_balance(userExists?.rows[0]['username'], 
+                remaining_credit, credit_granted)
+            next();
+
+        } else {
+            console.log(req.body)
+            return res.status(401).send(`Credit limit is too low`)
+        }
+    } else {
+        next();
+    }
 }
 
 export async function checkIsUserSuspended(req:Request, res: Response, next: NextFunction) {
