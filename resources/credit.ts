@@ -1,8 +1,25 @@
-import { grant_credit, get_admin_users, get_credit_status } from "../models/credit"
+import { grant_credit, get_admin_users, get_credit_status, update_credit_status } from "../models/credit"
+import { get_admin_user } from "../models/user";
 import { Request, Response } from "express"
 
 export async function grantStaffCredit(req:Request, res: Response) {
-    await grant_credit(req.body.username, req.body.amount)
+   //  const ROLES = ['Admin', 'Super Admin', 'Auditor']
+   //  const isUserAdmin = await get_admin_user(req.body.activeUser)
+   //  console.log(isUserAdmin.rows)
+   //  
+   //  if (isUserAdmin.rows[0]['role'] != ROLES.includes(isUserAdmin.rows[0]['role'])){
+   //      return res.status(200).send(`Who are You?`)
+   //  }
+    const CREDIT_STATUS = await get_credit_status(req.body.activeUser);
+    let creditRemaining;
+    if (CREDIT_STATUS.rowCount === 1){
+        req.body.opening_credit += CREDIT_STATUS.rows[0]['opening_credit']
+        creditRemaining = req.body.opening_credit - CREDIT_STATUS.rows[0]['credit_granted']
+        await update_credit_status(req.body.activeUser, req.body.opening_credit, creditRemaining)
+        return res.status(200).send(`OK`)
+    }
+    creditRemaining = req.body.opening_credit 
+    await grant_credit(req.body.activeUser, req.body.opening_credit, creditRemaining)
     return res.status(200).send(`DONE`)
 }
 

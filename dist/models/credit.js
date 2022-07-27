@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_credit_status = exports.get_admin_users = exports.grant_credit = exports.create_credit_table = void 0;
+exports.get_credit_status = exports.get_admin_users = exports.update_credit_status = exports.grant_credit = exports.create_credit_table = void 0;
 const connection_1 = require("../connection");
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 function create_credit_table() {
@@ -28,15 +28,25 @@ function create_credit_table() {
     });
 }
 exports.create_credit_table = create_credit_table;
-function grant_credit(user, amount) {
+function grant_credit(user, opening_credit, credit_remaining) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        let result = yield db.query((0, sql_template_strings_1.default) `INSERT INTO credit(username, opening_credit)
-        VALUES(${user}, ${amount})`);
+        let result = yield db.query((0, sql_template_strings_1.default) `INSERT INTO credit(username, opening_credit, credit_remaining)
+        VALUES(${user}, ${opening_credit}, ${credit_remaining})`);
         return result;
     });
 }
 exports.grant_credit = grant_credit;
+function update_credit_status(user, opening_credit, credit_remaining) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        let creditResult = yield db.query((0, sql_template_strings_1.default) `UPDATE credit SET 
+        opening_credit = ${opening_credit}, credit_remaining = ${credit_remaining}
+        WHERE username = ${user}`);
+        return creditResult;
+    });
+}
+exports.update_credit_status = update_credit_status;
 function get_admin_users() {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();

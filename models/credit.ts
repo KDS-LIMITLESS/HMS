@@ -12,11 +12,20 @@ export async function create_credit_table() {
     )`)
 }
 
-export async function grant_credit(user: string, amount: number) {
+export async function grant_credit(user: string, opening_credit: number, credit_remaining: number) {
     const db = await dbConnection();
-    let result = await db.query(SQL `INSERT INTO credit(username, opening_credit)
-        VALUES(${user}, ${amount})`);
+    let result = await db.query(SQL `INSERT INTO credit(username, opening_credit, credit_remaining)
+        VALUES(${user}, ${opening_credit}, ${credit_remaining})`);
     return result;
+}
+
+export async function update_credit_status(user: string, opening_credit: number, credit_remaining: number){
+    const db = await dbConnection();
+
+    let creditResult = await db.query(SQL `UPDATE credit SET 
+        opening_credit = ${opening_credit}, credit_remaining = ${credit_remaining}
+        WHERE username = ${user}`);
+    return creditResult
 }
 
 export async function get_admin_users() {

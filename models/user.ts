@@ -33,6 +33,12 @@ export async function get_user(username:string) {
     return result;
 }
 
+export async function get_admin_user(user: string){
+    const db = await dbConnection();
+    let role = await db.query(SQL `SELECT role FROM users WHERE username = ${user}`);
+    return role
+}
+
 export async function get_admins() {
     const db = await dbConnection();
     let result = await db.query(`SELECT * FROM USERS WHERE role = 'Admin' 
