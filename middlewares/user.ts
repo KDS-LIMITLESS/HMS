@@ -58,7 +58,7 @@ export async function authorizeAuditor(req: Request, res: Response, next: NextFu
 }
 
 export async function authorizeDiscount(req:Request, res:Response, next:NextFunction) {
-    const USERS = ['Auditor', 'Super Admin', 'Admin']
+    const USERS = ['Auditor', 'Super Admin']
     try {
         let userExists = await get_passcode(req.body.passcode)
         
@@ -71,7 +71,7 @@ export async function authorizeDiscount(req:Request, res:Response, next:NextFunc
                 return res.status(401).send(`Not Authorized`)
             }
 
-        }else {
+        } else {
             console.log('finally')
             next();
         }

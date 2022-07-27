@@ -72,7 +72,7 @@ function authorizeAuditor(req, res, next) {
 exports.authorizeAuditor = authorizeAuditor;
 function authorizeDiscount(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
-        const USERS = ['Auditor', 'Super Admin', 'Admin'];
+        const USERS = ['Auditor', 'Super Admin'];
         try {
             let userExists = yield (0, user_1.get_passcode)(req.body.passcode);
             if (req.body.credit !== 0 || req.body.complimentary_qty !== 0 || req.body.discount !== 0) {
