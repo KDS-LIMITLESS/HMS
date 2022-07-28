@@ -40,8 +40,8 @@ function startServer() {
         // await createTableManager();
         // await create_Order_Table().then(() => console.log("done creating order table"));
         // await create_credit_table();
-        // await db.query(`DROP TABLE orders`)
-        // await db.query(`DROP TABLE tables`)
+        yield db.query(`DROP TABLE orders`);
+        yield db.query(`DROP TABLE tables`);
         // await db.query(`DROP TABLE item`)
         // await db.query(`DROP TABLE users`)
         // await db.query(`DROP TABLE credit`)

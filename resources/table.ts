@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { create_new_table, get_table, get_all_waiter_tables, 
-        get_one_waiter_table, close_table, get_all_tables, get_table_discount } from "../models/table";
+        get_one_waiter_table, close_table, get_all_tables, get_table_discount, get_date } from "../models/table";
 import { get_item } from "../models/item";        
 import { exit } from "process";
 // import { close_order_table, get_closed_tables } from "../models/table";
@@ -66,12 +66,19 @@ export async function closeTable(req:Request, res:Response) {
     // const TABLE_CLOSED = await get_closed_tables(req.body.table_name);
     try {
         if (getTable.rows[0]['status'] === 'OPEN'){
-            console.log(req.body)
+            // console.log(req.body)
+            
             await close_table(req.body.activeUser, "CLOSED", req.body.table_name, req.body.cash,
                 req.body.pos, req.body.credit, req.body.transfer, req.body.total, req.body.discount,
                 req.body.complimentary_drink, req.body.complimentary_qty);
-            // console.log(req.body)
-            return res.status(200).send("Table Closed Successfully")
+            let date = await get_date(req.body.table_name)
+            console.log(date.rows)
+            return res.status(200).json({
+                table_name: req.body.table_name,
+                status: "Closed",
+                date: date.rows[0]['date']
+                
+            })
         }
         return res.status(400).send(`Table already closed or does not exist `)
     }catch(err: any){

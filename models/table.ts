@@ -16,7 +16,8 @@ export async function createTableManager(){
         total INTEGER NOT NULL DEFAULT 0,   
         discount INTEGER DEFAULT 0,
         complimentary_drink VARCHAR DEFAULT ' ',
-        complimentary_qty INTEGER DEFAULT 0
+        complimentary_qty INTEGER DEFAULT 0,
+        date VARCHAR
     )`)
 }
 
@@ -61,6 +62,13 @@ export async function get_one_waiter_table(tbl_name:string, waiter: string) {
     return result
 }
 
+export async function get_date(table_name: string) {
+    const db = await dbConnection();
+
+    const date = await db.query(SQL`SELECT date FROM tables WHERE table_name = ${table_name}`);
+    return date
+}
+
 export async function delete_table(table_name: string, waiter: string) {
     const db = await dbConnection();
 
@@ -76,9 +84,11 @@ export async function close_table(waiter:string, status: string, tbl_name: strin
     let result = await db.query(SQL `UPDATE tables SET status = ${status}, 
         cash = ${cash}, pos = ${pos}, transfer = ${transfer}, credit = ${credit}, 
         total = ${total}, discount = ${discount}, 
-        complimentary_drink = ${complimentary_drink}, complimentary_qty = ${complimentary_qty}
+        complimentary_drink = ${complimentary_drink},
+        complimentary_qty = ${complimentary_qty}, date = TO_CHAR(CURRENT_TIMESTAMP, 'DD-MM-YYYY')
+
         WHERE table_name = ${tbl_name} AND waiter = ${waiter}`)
-    return result
+    return result.rows[0]
 }
 
 // export async function closed_Tables_db() {
