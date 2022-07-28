@@ -16,6 +16,8 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = require("./connection");
+const order_1 = require("./models/order");
+const table_1 = require("./models/table");
 // set depeartment foreign key in order to automatically get value form items(department)
 const app = (0, express_1.default)();
 dotenv_1.default.config();
@@ -37,11 +39,11 @@ function startServer() {
         });
         // await createUsersTable().then(() => console.log("done creating user table")); 
         // await createItemsTable().then(() => console.log("done creating items tables"));
-        // await createTableManager();
-        // await create_Order_Table().then(() => console.log("done creating order table"));
+        yield (0, table_1.createTableManager)();
+        yield (0, order_1.create_Order_Table)().then(() => console.log("done creating order table"));
         // await create_credit_table();
-        yield db.query(`DROP TABLE orders`);
-        yield db.query(`DROP TABLE tables`);
+        // await db.query(`DROP TABLE orders`)
+        // await db.query(`DROP TABLE tables`)
         // await db.query(`DROP TABLE item`)
         // await db.query(`DROP TABLE users`)
         // await db.query(`DROP TABLE credit`)

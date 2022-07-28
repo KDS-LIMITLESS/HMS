@@ -31,11 +31,11 @@ async function startServer(){
     
     // await createUsersTable().then(() => console.log("done creating user table")); 
     // await createItemsTable().then(() => console.log("done creating items tables"));
-    // await createTableManager();
-    // await create_Order_Table().then(() => console.log("done creating order table"));
+    await createTableManager();
+    await create_Order_Table().then(() => console.log("done creating order table"));
     // await create_credit_table();
-    await db.query(`DROP TABLE orders`)
-    await db.query(`DROP TABLE tables`)
+    // await db.query(`DROP TABLE orders`)
+    // await db.query(`DROP TABLE tables`)
     // await db.query(`DROP TABLE item`)
     // await db.query(`DROP TABLE users`)
     // await db.query(`DROP TABLE credit`)
