@@ -33,7 +33,7 @@ export async function addNewItem(req:Request, res: Response) {
 
 export async function getItemsInCategory(req:Request, res:Response) {
     const reqBody = req.body;
-    const result = await get_all_items_with_category(reqBody['category'])
+    const result = await get_all_items_with_category(reqBody['category'], reqBody['department'])
     return res.status(200).send(result.rows)
 }
 

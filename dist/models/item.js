@@ -62,10 +62,11 @@ function get_product_price(product) {
     });
 }
 exports.get_product_price = get_product_price;
-function get_all_items_with_category(itemCategory) {
+function get_all_items_with_category(itemCategory, department) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        let result = db.query((0, sql_template_strings_1.default) `SELECT * FROM item WHERE category = ${itemCategory};`);
+        let result = db.query((0, sql_template_strings_1.default) `SELECT * FROM item WHERE category = ${itemCategory} 
+            AND department = ${department};`);
         return result;
     });
 }

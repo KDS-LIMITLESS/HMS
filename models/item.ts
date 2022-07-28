@@ -43,9 +43,10 @@ export async function get_product_price(product: string){
     return (await result).rows[0]['price']
 }
  
-export async function get_all_items_with_category(itemCategory: string){
+export async function get_all_items_with_category(itemCategory: string, department: string){
     const db = await dbConnection();
-    let result = db.query(SQL `SELECT * FROM item WHERE category = ${itemCategory};`)
+    let result = db.query(SQL `SELECT * FROM item WHERE category = ${itemCategory} 
+            AND department = ${department};`)
     return result
 }
 
