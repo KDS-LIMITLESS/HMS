@@ -19,12 +19,13 @@ export async function getItem(req: Request, res: Response){
 export async function addNewItem(req:Request, res: Response) {
     const reqBody = req.body;
     try{
-        if (await get_item(reqBody['product'], reqBody['department']) !== null) return res.status(400)
-        .send(`${reqBody['product']} already exists`)
-
-        await add_item(reqBody['product'], reqBody['price'], reqBody['category'], reqBody['image'], reqBody['department'])
-        return res.status(200).send('OK');  
+        let getItem = await get_item(reqBody['product'], reqBody['department'])
+        if (getItem.rowCount === 1) return res.status(400).send(`${reqBody['product']} already exists`)
         
+        await add_item(reqBody['product'], reqBody['price'], 
+        reqBody['category'], reqBody['image'], reqBody['department'])
+        return res.status(200).send('OK');  
+           
     } catch (err: any) {
         console.log(err.message);
         return res.status(400).send(err.message)

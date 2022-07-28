@@ -28,9 +28,9 @@ function addNewItem(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const reqBody = req.body;
         try {
-            if ((yield (0, item_1.get_item)(reqBody['product'], reqBody['department'])) !== null)
-                return res.status(400)
-                    .send(`${reqBody['product']} already exists`);
+            let getItem = yield (0, item_1.get_item)(reqBody['product'], reqBody['department']);
+            if (getItem.rowCount === 1)
+                return res.status(400).send(`${reqBody['product']} already exists`);
             yield (0, item_1.add_item)(reqBody['product'], reqBody['price'], reqBody['category'], reqBody['image'], reqBody['department']);
             return res.status(200).send('OK');
         }

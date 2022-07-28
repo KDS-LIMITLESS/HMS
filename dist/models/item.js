@@ -74,7 +74,7 @@ exports.get_all_items_with_category = get_all_items_with_category;
 function add_item(product, price, category, image, department) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        let result = db.query((0, sql_template_strings_1.default) `INSERT INTO item(product, price, category, image, department) 
+        let result = yield db.query((0, sql_template_strings_1.default) `INSERT INTO item(product, price, category, image, department) 
         VALUES(${product}, ${price}, ${category}, ${image}, ${department});`);
         return result;
     });

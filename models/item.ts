@@ -52,7 +52,7 @@ export async function get_all_items_with_category(itemCategory: string, departme
 
 export async function add_item(product:string, price:number, category:string, image: string, department: string) {
     const db = await dbConnection();
-    let result = db.query(SQL `INSERT INTO item(product, price, category, image, department) 
+    let result = await db.query(SQL `INSERT INTO item(product, price, category, image, department) 
         VALUES(${product}, ${price}, ${category}, ${image}, ${department});`)
     return result   
 }
