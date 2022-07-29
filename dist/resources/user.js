@@ -36,19 +36,13 @@ exports.newUser = newUser;
 function login(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let userExists = yield (0, user_1.get_user)(req.body.username);
-        try {
-            const PSW = bcrypt_1.default.compare(req.body.password, userExists === null || userExists === void 0 ? void 0 : userExists.rows[0]['password']);
-            if (userExists && (yield PSW)) {
-                return res.status(200).json({ username: userExists.rows[0]['username'],
-                    passcode: userExists.rows[0]['passcode'], role: userExists.rows[0]['role'] });
-            }
-            console.log(JSON.stringify(req.body) + " Invalid login details");
-            return res.status(400).send(`Invalid login details`);
+        const PSW = bcrypt_1.default.compareSync(req.body.password, userExists === null || userExists === void 0 ? void 0 : userExists.rows[0]['password']);
+        if (userExists && PSW) {
+            return res.status(200).json({ username: userExists.rows[0]['username'],
+                passcode: userExists.rows[0]['passcode'], role: userExists.rows[0]['role'] });
         }
-        catch (e) {
-            console.log(e.message);
-            return res.status(400).send(`Invalid Login details`);
-        }
+        console.log(JSON.stringify(req.body) + " Invalid login details");
+        return res.status(400).send(`Invalid login details`);
     });
 }
 exports.login = login;
