@@ -130,7 +130,8 @@ function updateUserPassword(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let findUser = yield (0, user_1.get_user)(req.body.username);
         if ((findUser === null || findUser === void 0 ? void 0 : findUser.rowCount) === 1) {
-            yield (0, user_1.update_user_password)(req.body.username, req.body.password);
+            const PSW = yield bcrypt_1.default.hash(req.body.password, 12);
+            yield (0, user_1.update_user_password)(req.body.username, PSW);
             return res.status(200).send(`USER UPDATED`);
         }
         return res.status(404).send(`USER NOT FOUND IN DATABASE`);
