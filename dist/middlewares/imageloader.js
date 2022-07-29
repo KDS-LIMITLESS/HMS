@@ -38,18 +38,24 @@ const uploadS3 = (0, multer_1.default)({
                 + '-' + Date.now() + path_1.default.extname(file.originalname));
         },
     }),
-    limits: { fileSize: 1000000 }
+    limits: { fileSize: 2000000 }
 }).single('image');
 function uploadPicture(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        uploadS3(req, res, (err) => {
-            if (err) {
-                console.log(err);
-                return res.status(200).send(`An error occured!`);
-            }
-            console.log(req.file.location);
-            return res.status(200).json({ imgPath: req.file.location });
-        });
+        try {
+            uploadS3(req, res, (err) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(200).send(`An error occured!`);
+                }
+                console.log(req.file.location);
+                return res.status(200).json({ imgPath: req.file.location });
+            });
+        }
+        catch (e) {
+            console.log(e.message);
+            res.status(400).send(e.message);
+        }
     });
 }
 exports.uploadPicture = uploadPicture;

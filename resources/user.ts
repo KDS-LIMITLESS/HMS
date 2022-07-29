@@ -21,15 +21,21 @@ export async function newUser(req: Request, res: Response) {
 export async function login(req:Request, res:Response) {
     let userExists = await get_user(req.body.username)
 
-    const PSW = bcrypt.compare(req.body.password, userExists?.rows[0]['password'])
+    try{
+        const PSW = bcrypt.compare(req.body.password, userExists?.rows[0]['password'])   
     
-    if (userExists && await PSW) {
+        if (userExists && await PSW) {
+
+            return res.status(200).json({username: userExists.rows[0]['username'], 
+                    passcode: userExists.rows[0]['passcode'], role: userExists.rows[0]['role']}); 
+        }
+        console.log(JSON.stringify(req.body) + " Invalid login details")
+        return res.status(400).send(`Invalid login details`);
         
-        return res.status(200).json({username: userExists.rows[0]['username'], 
-                passcode: userExists.rows[0]['passcode'], role: userExists.rows[0]['role']}); 
+    } catch (e: any) {
+        console.log(e.message)
+        return res.status(400).send(`Invalid Login details`)
     }
-    console.log(JSON.stringify(req.body) + " Invalid login details")
-    return res.status(400).send(`Invalid login details`);
 }
 
 export async function checkPasscode(req: Request, res: Response){

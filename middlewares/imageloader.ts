@@ -29,16 +29,22 @@ const uploadS3  = multer({
           + '-' + Date.now() + path.extname(file.originalname));
         },
     }),
-    limits: {fileSize: 1000000}
+    limits: {fileSize: 2000000}
 }).single('image')
 
 export async function uploadPicture(req: any, res: Response) {
-    uploadS3(req, res, (err) =>{
-        if (err) {
-            console.log(err);
-            return res.status(200).send(`An error occured!`)
-        }
-        console.log(req.file.location);
-        return res.status(200).json({imgPath: req.file.location})
-    })
+    try {
+        uploadS3(req, res, (err) =>{
+            if (err) {
+                console.log(err);
+                return res.status(200).send(`An error occured!`)
+            }
+            console.log(req.file.location);
+            return res.status(200).json({imgPath: req.file.location})
+        })
+    } catch (e: any) {
+        console.log(e.message)
+        res.status(400).send(e.message)
+    }
+    
 }

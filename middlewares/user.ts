@@ -86,12 +86,13 @@ export async function authorizeDiscount(req:Request, res:Response, next:NextFunc
 export async function authorizeCredit(req: Request, res:Response, next:NextFunction){
     if (req.body.credit !== 0){
         
-        const USERS = ['Auditor', 'Super Admin']
-        let userExists = await get_passcode(req.body.passcode)
-        const USER_HAS_CREDIT = await get_credit_status(userExists?.rows[0]['username'])
+        try{ 
+            const USERS = ['Auditor', 'Super Admin']
+            let userExists = await get_passcode(req.body.passcode)
+            const USER_HAS_CREDIT = await get_credit_status(userExists?.rows[0]['username'])
         
 
-        if ( USER_HAS_CREDIT.rows[0]['credit_remaining'] >= req.body.credit){
+            if ( USER_HAS_CREDIT.rows[0]['credit_remaining'] >= req.body.credit){
             // subtract credit from credit remaining
             // console.log(USER_HAS_CREDIT.rows[0]['credit_remaining'] >= req.body.credit)
             // console.log(USER_HAS_CREDIT.rows[0]['credit_remaining'])
@@ -103,10 +104,15 @@ export async function authorizeCredit(req: Request, res:Response, next:NextFunct
                 remaining_credit, credit_granted)
             next();
 
-        } else {
-            console.log(req.body)
-            return res.status(401).send(`Credit limit is too low`)
+            } else {
+                console.log(req.body)
+                return res.status(401).send(`Credit limit is too low`)
+            }
+        } catch (e: any) {
+            console.log(e.message);
+            return res.status(400).send(e.message)
         }
+        
     } else {
         next();
     }

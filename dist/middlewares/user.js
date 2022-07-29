@@ -100,21 +100,27 @@ exports.authorizeDiscount = authorizeDiscount;
 function authorizeCredit(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         if (req.body.credit !== 0) {
-            const USERS = ['Auditor', 'Super Admin'];
-            let userExists = yield (0, user_1.get_passcode)(req.body.passcode);
-            const USER_HAS_CREDIT = yield (0, credit_1.get_credit_status)(userExists === null || userExists === void 0 ? void 0 : userExists.rows[0]['username']);
-            if (USER_HAS_CREDIT.rows[0]['credit_remaining'] >= req.body.credit) {
-                // subtract credit from credit remaining
-                // console.log(USER_HAS_CREDIT.rows[0]['credit_remaining'] >= req.body.credit)
-                // console.log(USER_HAS_CREDIT.rows[0]['credit_remaining'])
-                let credit_granted = USER_HAS_CREDIT.rows[0]['credit_granted'] + req.body.credit;
-                let remaining_credit = USER_HAS_CREDIT.rows[0]['credit_remaining'] - req.body.credit;
-                yield (0, credit_1.calculate_credit_balance)(userExists === null || userExists === void 0 ? void 0 : userExists.rows[0]['username'], remaining_credit, credit_granted);
-                next();
+            try {
+                const USERS = ['Auditor', 'Super Admin'];
+                let userExists = yield (0, user_1.get_passcode)(req.body.passcode);
+                const USER_HAS_CREDIT = yield (0, credit_1.get_credit_status)(userExists === null || userExists === void 0 ? void 0 : userExists.rows[0]['username']);
+                if (USER_HAS_CREDIT.rows[0]['credit_remaining'] >= req.body.credit) {
+                    // subtract credit from credit remaining
+                    // console.log(USER_HAS_CREDIT.rows[0]['credit_remaining'] >= req.body.credit)
+                    // console.log(USER_HAS_CREDIT.rows[0]['credit_remaining'])
+                    let credit_granted = USER_HAS_CREDIT.rows[0]['credit_granted'] + req.body.credit;
+                    let remaining_credit = USER_HAS_CREDIT.rows[0]['credit_remaining'] - req.body.credit;
+                    yield (0, credit_1.calculate_credit_balance)(userExists === null || userExists === void 0 ? void 0 : userExists.rows[0]['username'], remaining_credit, credit_granted);
+                    next();
+                }
+                else {
+                    console.log(req.body);
+                    return res.status(401).send(`Credit limit is too low`);
+                }
             }
-            else {
-                console.log(req.body);
-                return res.status(401).send(`Credit limit is too low`);
+            catch (e) {
+                console.log(e.message);
+                return res.status(400).send(e.message);
             }
         }
         else {
