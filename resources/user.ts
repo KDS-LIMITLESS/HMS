@@ -21,11 +21,10 @@ export async function newUser(req: Request, res: Response) {
 export async function login(req:Request, res:Response) {
     let userExists = await get_user(req.body.username)
 
-    const PSW = bcrypt.compareSync(req.body.password, userExists?.rows[0]['password'])   
-
-    if (userExists && PSW) {
+    if ((userExists?.rowCount === 1) && (await bcrypt.compare(req.body.password, userExists?.rows[0]['password']))) {
+        
         return res.status(200).json({username: userExists.rows[0]['username'], 
-                passcode: userExists.rows[0]['passcode'], role: userExists.rows[0]['role']}); 
+            passcode: userExists.rows[0]['passcode'], role: userExists.rows[0]['role']}); 
     }
     console.log(JSON.stringify(req.body) + " Invalid login details")
     return res.status(400).send(`Invalid login details`);    

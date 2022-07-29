@@ -28,8 +28,8 @@ export async function create_new_user(username:string, password:string,
 export async function get_user(username:string) {
     const db = await dbConnection();
 
-    let result = db.query(SQL `SELECT * FROM users WHERE username = ${username}`)
-    if ((await result).rowCount === 0) return null;
+    let result = await db.query(SQL `SELECT * FROM users WHERE username = ${username}`)
+    // if ((await result).rowCount === 0) return null;
     return result;
 }
 

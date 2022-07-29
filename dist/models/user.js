@@ -41,9 +41,8 @@ exports.create_new_user = create_new_user;
 function get_user(username) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        let result = db.query((0, sql_template_strings_1.default) `SELECT * FROM users WHERE username = ${username}`);
-        if ((yield result).rowCount === 0)
-            return null;
+        let result = yield db.query((0, sql_template_strings_1.default) `SELECT * FROM users WHERE username = ${username}`);
+        // if ((await result).rowCount === 0) return null;
         return result;
     });
 }
