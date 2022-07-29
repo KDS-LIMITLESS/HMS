@@ -88,7 +88,7 @@ export async function update_user_password(user: string, password: string) {
     return USER
 }
 
-export async function update_user_passcode(user: string, passcode: string) {
+export async function update_user_passcode(user: string, passcode: number) {
     const db = await dbConnection();
     const USER = await db.query(SQL `UPDATE users SET passcode = ${passcode} WHERE username = ${user}`)
     return USER
