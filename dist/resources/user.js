@@ -18,7 +18,7 @@ const user_1 = require("../models/user");
 function newUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let userExists = yield (0, user_1.get_user)(req.body.username);
-        if (userExists)
+        if (userExists.rowCount === 1)
             return res.status(400).send(`User ${req.body.username} already exists.`);
         try {
             const PSW = yield bcrypt_1.default.hash(req.body.password, 12);
@@ -49,7 +49,7 @@ function checkPasscode(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let userExists = yield (0, user_1.get_user)(req.body.username);
         try {
-            if (userExists && (userExists.rows[0]['role'] === 'Super Admin') && (req.body.passcode === userExists.rows[0]['passcode'])) {
+            if ((userExists.rowCount === 1) && (userExists.rows[0]['role'] === 'Super Admin') && (req.body.passcode === userExists.rows[0]['passcode'])) {
                 return res.status(200).send("OK");
             }
             console.log(JSON.stringify(req.body));
@@ -65,7 +65,7 @@ exports.checkPasscode = checkPasscode;
 function suspendUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let findUser = yield (0, user_1.get_user)(req.body.username);
-        if ((findUser === null || findUser === void 0 ? void 0 : findUser.rowCount) === 1) {
+        if (findUser.rowCount === 1) {
             yield (0, user_1.suspend_user)(req.body.username, "SUSPENDED");
             return res.status(200).send(`USER SUSPENDED!`);
         }

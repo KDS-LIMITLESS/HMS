@@ -6,7 +6,7 @@ import { Response, Request } from "express";
 export async function newUser(req: Request, res: Response) {
     let userExists = await get_user(req.body.username)
 
-    if (userExists) return res.status(400).send(`User ${req.body.username} already exists.`)
+    if (userExists.rowCount === 1)  return res.status(400).send(`User ${req.body.username} already exists.`)
     try{
         const PSW = await bcrypt.hash(req.body.password, 12)
         await create_new_user(req.body.username, PSW, req.body.passcode, req.body.role)
@@ -33,7 +33,7 @@ export async function login(req:Request, res:Response) {
 export async function checkPasscode(req: Request, res: Response){
     let userExists = await get_user(req.body.username)
     try {
-        if (userExists && ( userExists.rows[0]['role'] === 'Super Admin') && (req.body.passcode === userExists.rows[0]['passcode'])){
+        if ((userExists.rowCount === 1) && ( userExists.rows[0]['role'] === 'Super Admin') && (req.body.passcode === userExists.rows[0]['passcode'])){
             return res.status(200).send("OK") 
         } 
         console.log(JSON.stringify(req.body))
@@ -47,7 +47,7 @@ export async function checkPasscode(req: Request, res: Response){
 
 export async function suspendUser(req: Request, res: Response) {
     let findUser = await get_user(req.body.username);
-    if (findUser?.rowCount === 1){
+    if (findUser.rowCount === 1){
         await suspend_user(req.body.username, "SUSPENDED");
         return res.status(200).send(`USER SUSPENDED!`)
     }
