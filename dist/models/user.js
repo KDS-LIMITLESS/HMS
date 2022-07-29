@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.update_user_role = exports.delete_user = exports.suspend_user = exports.get_passcode = exports.get_all_users = exports.get_admins = exports.get_admin_user = exports.get_user = exports.create_new_user = exports.createUsersTable = void 0;
+exports.update_user_passcode = exports.update_user_password = exports.update_user_role = exports.delete_user = exports.suspend_user = exports.get_passcode = exports.get_all_users = exports.get_admins = exports.get_admin_user = exports.get_user = exports.create_new_user = exports.createUsersTable = void 0;
 const connection_1 = require("../connection");
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 function createUsersTable() {
@@ -107,3 +107,19 @@ function update_user_role(user, role) {
     });
 }
 exports.update_user_role = update_user_role;
+function update_user_password(user, password) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        const USER = yield db.query((0, sql_template_strings_1.default) `UPDATE users SET password = ${password} WHERE username = ${user}`);
+        return USER;
+    });
+}
+exports.update_user_password = update_user_password;
+function update_user_passcode(user, passcode) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const db = yield (0, connection_1.dbConnection)();
+        const USER = yield db.query((0, sql_template_strings_1.default) `UPDATE users SET passcode = ${passcode} WHERE username = ${user}`);
+        return USER;
+    });
+}
+exports.update_user_passcode = update_user_passcode;

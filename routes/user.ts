@@ -1,6 +1,7 @@
 import express from 'express'
-import { newUser, login, checkPasscode, suspendUser, removeUser, 
-    reactivateUser, getAllUsers, updateUserRole, getAllAuthorizedAdmins } from "../resources/user";
+import { newUser, login, checkPasscode, suspendUser, removeUser, updateUserPassword, 
+    updateUserPasscode, reactivateUser, getAllUsers, 
+    updateUserRole, getAllAuthorizedAdmins } from "../resources/user";
 import { authorizeSuperAdminNext, authorizeAuditor, checkIsUserSuspended } from "../middlewares/user";
 
 
@@ -19,5 +20,7 @@ router.delete('/delete-user', authorizeAuditor, removeUser)
 router.put('/suspend-user', authorizeAuditor, suspendUser)
 router.put('/reactivate', authorizeAuditor, reactivateUser)
 router.put('/update-role', authorizeAuditor, updateUserRole)
+router.put('/update-password', authorizeAuditor, updateUserPassword)
+router.put('/update-passcode', authorizeAuditor, updateUserPasscode)
 
 module.exports = router;

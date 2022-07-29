@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllAuthorizedAdmins = exports.updateUserRole = exports.getAllUsers = exports.removeUser = exports.reactivateUser = exports.suspendUser = exports.checkPasscode = exports.login = exports.newUser = void 0;
+exports.updateUserPasscode = exports.updateUserPassword = exports.getAllAuthorizedAdmins = exports.updateUserRole = exports.getAllUsers = exports.removeUser = exports.reactivateUser = exports.suspendUser = exports.checkPasscode = exports.login = exports.newUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = require("../models/user");
 function newUser(req, res) {
@@ -126,3 +126,25 @@ function getAllAuthorizedAdmins(req, res) {
     });
 }
 exports.getAllAuthorizedAdmins = getAllAuthorizedAdmins;
+function updateUserPassword(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let findUser = yield (0, user_1.get_user)(req.body.username);
+        if ((findUser === null || findUser === void 0 ? void 0 : findUser.rowCount) === 1) {
+            yield (0, user_1.update_user_password)(req.body.username, req.body.password);
+            return res.status(200).send(`USER UPDATED`);
+        }
+        return res.status(404).send(`USER NOT FOUND IN DATABASE`);
+    });
+}
+exports.updateUserPassword = updateUserPassword;
+function updateUserPasscode(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let findUser = yield (0, user_1.get_user)(req.body.username);
+        if ((findUser === null || findUser === void 0 ? void 0 : findUser.rowCount) === 1) {
+            yield (0, user_1.update_user_password)(req.body.username, req.body.passcode);
+            return res.status(200).send(`USER UPDATED`);
+        }
+        return res.status(404).send(`USER NOT FOUND IN DATABASE`);
+    });
+}
+exports.updateUserPasscode = updateUserPasscode;

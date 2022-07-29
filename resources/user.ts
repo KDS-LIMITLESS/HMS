@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import { get_user, create_new_user, suspend_user, delete_user, 
-    get_all_users, update_user_role, get_admins } from "../models/user";
+    get_all_users, update_user_role, get_admins, update_user_password, update_user_passcode } from "../models/user";
 import { Response, Request } from "express";
 
 export async function newUser(req: Request, res: Response) {
@@ -95,4 +95,22 @@ export async function getAllAuthorizedAdmins(req:Request, res:Response) {
         return res.status(200).send(users.rows);
     }
     return res.status(404).send(`Not Found!`)
+}
+
+export async function updateUserPassword(req: Request, res: Response) {
+    let findUser = await get_user(req.body.username);
+    if (findUser?.rowCount === 1) {
+        await update_user_password(req.body.username, req.body.password);
+        return res.status(200).send(`USER UPDATED`);
+    }
+    return res.status(404).send(`USER NOT FOUND IN DATABASE`);
+}
+
+export async function updateUserPasscode(req: Request, res: Response) {
+    let findUser = await get_user(req.body.username);
+    if (findUser?.rowCount === 1) {
+        await update_user_password(req.body.username, req.body.passcode);
+        return res.status(200).send(`USER UPDATED`);
+    }
+    return res.status(404).send(`USER NOT FOUND IN DATABASE`);
 }
