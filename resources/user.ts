@@ -101,6 +101,7 @@ export async function updateUserPassword(req: Request, res: Response) {
     let findUser = await get_user(req.body.username);
     if (findUser?.rowCount === 1) {
         const PSW = await bcrypt.hash(req.body.password, 12)
+        console.log(PSW)
         await update_user_password(req.body.username, PSW);
         return res.status(200).send(`USER UPDATED`);
     }
