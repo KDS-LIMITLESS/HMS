@@ -36,6 +36,7 @@ exports.newUser = newUser;
 function login(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let userExists = yield (0, user_1.get_user)(req.body.username);
+        console.log(userExists.rows[0]['password']);
         if ((userExists.rowCount === 1) && (yield bcrypt_1.default.compare(req.body.password, userExists.rows[0]['password']))) {
             return res.status(200).json({ username: userExists.rows[0]['username'],
                 passcode: userExists.rows[0]['passcode'], role: userExists.rows[0]['role'] });

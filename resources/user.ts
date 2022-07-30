@@ -20,7 +20,7 @@ export async function newUser(req: Request, res: Response) {
 
 export async function login(req:Request, res:Response) {
     let userExists = await get_user(req.body.username)
-
+    console.log(userExists.rows[0]['password'])
     if ((userExists.rowCount === 1) && (await bcrypt.compare(req.body.password, userExists.rows[0]['password']))) {
         
         return res.status(200).json({username: userExists.rows[0]['username'], 
