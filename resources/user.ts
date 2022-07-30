@@ -20,7 +20,7 @@ export async function newUser(req: Request, res: Response) {
 
 export async function login(req:Request, res:Response) {
     let userExists = await get_user(req.body.username)
-    console.log(userExists.rows[0]['password'])
+    console.log(userExists.rows[0])
     if ((userExists.rowCount === 1) && (await bcrypt.compare(req.body.password, userExists.rows[0]['password']))) {
         
         return res.status(200).json({username: userExists.rows[0]['username'], 
@@ -112,7 +112,7 @@ export async function updateUserPassword(req: Request, res: Response) {
 export async function updateUserPasscode(req: Request, res: Response) {
     let findUser = await get_user(req.body.username);
     if (findUser.rowCount === 1) {
-        await update_user_password(req.body.username, req.body.passcode);
+        await update_user_passcode(req.body.username, req.body.passcode);
         return res.status(200).send(`USER UPDATED`);
     }
     return res.status(404).send(`USER NOT FOUND IN DATABASE`);
