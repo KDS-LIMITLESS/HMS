@@ -36,7 +36,7 @@ exports.newUser = newUser;
 function login(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let userExists = yield (0, user_1.get_user)(req.body.username);
-        if (((userExists === null || userExists === void 0 ? void 0 : userExists.rowCount) === 1) && (yield bcrypt_1.default.compare(req.body.password, userExists === null || userExists === void 0 ? void 0 : userExists.rows[0]['password']))) {
+        if ((userExists.rowCount === 1) && (yield bcrypt_1.default.compare(req.body.password, userExists.rows[0]['password']))) {
             return res.status(200).json({ username: userExists.rows[0]['username'],
                 passcode: userExists.rows[0]['passcode'], role: userExists.rows[0]['role'] });
         }
@@ -129,7 +129,7 @@ exports.getAllAuthorizedAdmins = getAllAuthorizedAdmins;
 function updateUserPassword(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let findUser = yield (0, user_1.get_user)(req.body.username);
-        if ((findUser === null || findUser === void 0 ? void 0 : findUser.rowCount) === 1) {
+        if (findUser.rowCount === 1) {
             const PSW = yield bcrypt_1.default.hash(req.body.password, 12);
             console.log(PSW);
             yield (0, user_1.update_user_password)(req.body.username, PSW);
@@ -142,7 +142,7 @@ exports.updateUserPassword = updateUserPassword;
 function updateUserPasscode(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let findUser = yield (0, user_1.get_user)(req.body.username);
-        if ((findUser === null || findUser === void 0 ? void 0 : findUser.rowCount) === 1) {
+        if (findUser.rowCount === 1) {
             yield (0, user_1.update_user_password)(req.body.username, req.body.passcode);
             return res.status(200).send(`USER UPDATED`);
         }

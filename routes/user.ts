@@ -20,7 +20,7 @@ router.delete('/delete-user', authorizeAuditor, removeUser)
 router.put('/suspend-user', authorizeAuditor, suspendUser)
 router.put('/reactivate', authorizeAuditor, reactivateUser)
 router.put('/update-role', authorizeAuditor, updateUserRole)
-router.put('/update-password', authorizeAuditor, updateUserPassword)
-router.put('/update-passcode', authorizeAuditor, updateUserPasscode)
+router.put('/update-password', updateUserPassword)
+router.put('/update-passcode', updateUserPasscode)
 
 module.exports = router;
