@@ -17,7 +17,8 @@ export async function createTableManager(){
         discount INTEGER DEFAULT 0,
         complimentary_drink VARCHAR DEFAULT ' ',
         complimentary_qty INTEGER DEFAULT 0,
-        date VARCHAR
+        date VARCHAR,
+        time VARCHAR
     )`)
 }
 
@@ -44,7 +45,7 @@ export async function get_all_tables() {
 
 export async function get_table(table_name:string) {
     const db = await dbConnection();
-    let result = await db.query(SQL `SELECT table_name FROM tables WHERE table_name = ${table_name}`)
+    let result = await db.query(SQL `SELECT table_name, status FROM tables WHERE table_name = ${table_name}`)
     return result
 }
 
@@ -62,10 +63,10 @@ export async function get_one_waiter_table(tbl_name:string, waiter: string) {
     return result
 }
 
-export async function get_date(table_name: string) {
+export async function get_table_date_and_time(table_name: string) {
     const db = await dbConnection();
 
-    const date = await db.query(SQL`SELECT date FROM tables WHERE table_name = ${table_name}`);
+    const date = await db.query(SQL`SELECT date, time FROM tables WHERE table_name = ${table_name}`);
     return date
 }
 
@@ -85,7 +86,8 @@ export async function close_table(waiter:string, status: string, tbl_name: strin
         cash = ${cash}, pos = ${pos}, transfer = ${transfer}, credit = ${credit}, 
         total = ${total}, discount = ${discount}, 
         complimentary_drink = ${complimentary_drink},
-        complimentary_qty = ${complimentary_qty}, date = TO_CHAR(CURRENT_TIMESTAMP, 'DD-MM-YYYY')
+        complimentary_qty = ${complimentary_qty}, date = TO_CHAR(CURRENT_TIMESTAMP, 'DD MonthYYYY'),
+        time = TO_CHAR(CURRENT_TIMESTAMP, 'HH24:MI')
 
         WHERE table_name = ${tbl_name} AND waiter = ${waiter}`)
     return result.rows[0]

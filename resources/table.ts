@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { create_new_table, get_table, get_all_waiter_tables, 
-        get_one_waiter_table, close_table, get_all_tables, get_table_discount, get_date } from "../models/table";
+    get_one_waiter_table, close_table, get_all_tables, get_table_discount,
+    get_table_date_and_time } from "../models/table";
 import { get_item } from "../models/item";        
 import { exit } from "process";
 // import { close_order_table, get_closed_tables } from "../models/table";
@@ -67,18 +68,11 @@ export async function closeTable(req:Request, res:Response) {
     try {
         if (getTable.rows[0]['status'] === 'OPEN'){
             // console.log(req.body)
-            
             await close_table(req.body.activeUser, "CLOSED", req.body.table_name, req.body.cash,
                 req.body.pos, req.body.credit, req.body.transfer, req.body.total, req.body.discount,
                 req.body.complimentary_drink, req.body.complimentary_qty);
-            let date = await get_date(req.body.table_name)
-            console.log(date.rows)
-            return res.status(200).json({
-                table_name: req.body.table_name,
-                status: "Closed",
-                date: date.rows[0]['date']
-                
-            })
+            // console.log(req.body)
+            return res.status(200).send("Table Closed Successfully")
         }
         return res.status(400).send(`Table already closed or does not exist `)
     }catch(err: any){
@@ -87,9 +81,28 @@ export async function closeTable(req:Request, res:Response) {
     }   
 }
 
+export async function getTableDateAndTime(req: Request, res: Response){
+    try {
+        let table = await get_table(req.body.table_name)
+        console.log(table.rowCount)
+        if (table.rowCount === 1 && table.rows[0]['status'] === "CLOSED") {
+           let dateTime =  await get_table_date_and_time(req.body.table_name)
+            return res.json({
+                date: dateTime.rows[0]['date'],
+                time: dateTime.rows[0]['time']
+            })
+        }
+        return res.status(400).send('Table not closed')
+    } catch (err:any) {
+        console.log(err.message)
+        return res.status(400).send(`Null`)
+    }
+}
+
 export async function getTableDiscount(req:Request, res: Response) {
+    
+    let result = await get_table_discount(req.body.table_name)
     try{
-        let result = await get_table_discount(req.body.table_name)
         if (result.rowCount === 1) return res.status(200).json({
             
             waiter: result.rows[0]['waiter'],

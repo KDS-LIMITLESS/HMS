@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTableDiscount = exports.closeTable = exports.getWaiterTables = exports.getAllTables = exports.createTable = void 0;
+exports.getTableDiscount = exports.getTableDateAndTime = exports.closeTable = exports.getWaiterTables = exports.getAllTables = exports.createTable = void 0;
 const table_1 = require("../models/table");
 const item_1 = require("../models/item");
 const process_1 = require("process");
@@ -81,13 +81,8 @@ function closeTable(req, res) {
             if (getTable.rows[0]['status'] === 'OPEN') {
                 // console.log(req.body)
                 yield (0, table_1.close_table)(req.body.activeUser, "CLOSED", req.body.table_name, req.body.cash, req.body.pos, req.body.credit, req.body.transfer, req.body.total, req.body.discount, req.body.complimentary_drink, req.body.complimentary_qty);
-                let date = yield (0, table_1.get_date)(req.body.table_name);
-                console.log(date.rows);
-                return res.status(200).json({
-                    table_name: req.body.table_name,
-                    status: "Closed",
-                    date: date.rows[0]['date']
-                });
+                // console.log(req.body)
+                return res.status(200).send("Table Closed Successfully");
             }
             return res.status(400).send(`Table already closed or does not exist `);
         }
@@ -98,10 +93,31 @@ function closeTable(req, res) {
     });
 }
 exports.closeTable = closeTable;
-function getTableDiscount(req, res) {
+function getTableDateAndTime(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            let result = yield (0, table_1.get_table_discount)(req.body.table_name);
+            let table = yield (0, table_1.get_table)(req.body.table_name);
+            console.log(table.rowCount);
+            if (table.rowCount === 1 && table.rows[0]['status'] === "CLOSED") {
+                let dateTime = yield (0, table_1.get_table_date_and_time)(req.body.table_name);
+                return res.json({
+                    date: dateTime.rows[0]['date'],
+                    time: dateTime.rows[0]['time']
+                });
+            }
+            return res.status(400).send('Table not closed');
+        }
+        catch (err) {
+            console.log(err.message);
+            return res.status(400).send(`Null`);
+        }
+    });
+}
+exports.getTableDateAndTime = getTableDateAndTime;
+function getTableDiscount(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let result = yield (0, table_1.get_table_discount)(req.body.table_name);
+        try {
             if (result.rowCount === 1)
                 return res.status(200).json({
                     waiter: result.rows[0]['waiter'],

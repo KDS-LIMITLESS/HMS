@@ -10,4 +10,5 @@ exports.router.post('/close-table', user_1.authorizeDiscount, user_1.authorizeCr
 // admin table to see all tables 
 exports.router.post('/all-tables', user_1.authorizeAuditor, table_1.getAllTables);
 exports.router.post('/table', table_1.getTableDiscount);
+exports.router.post('/table-date', table_1.getTableDateAndTime);
 module.exports = exports.router;

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.close_table = exports.delete_table = exports.get_date = exports.get_one_waiter_table = exports.get_table_discount = exports.get_table = exports.get_all_tables = exports.get_all_waiter_tables = exports.create_new_table = exports.createTableManager = void 0;
+exports.close_table = exports.delete_table = exports.get_table_date_and_time = exports.get_one_waiter_table = exports.get_table_discount = exports.get_table = exports.get_all_tables = exports.get_all_waiter_tables = exports.create_new_table = exports.createTableManager = void 0;
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const connection_1 = require("../connection");
 function createTableManager() {
@@ -30,7 +30,8 @@ function createTableManager() {
         discount INTEGER DEFAULT 0,
         complimentary_drink VARCHAR DEFAULT ' ',
         complimentary_qty INTEGER DEFAULT 0,
-        date VARCHAR
+        date VARCHAR,
+        time VARCHAR
     )`);
     });
 }
@@ -67,7 +68,7 @@ exports.get_all_tables = get_all_tables;
 function get_table(table_name) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        let result = yield db.query((0, sql_template_strings_1.default) `SELECT table_name FROM tables WHERE table_name = ${table_name}`);
+        let result = yield db.query((0, sql_template_strings_1.default) `SELECT table_name, status FROM tables WHERE table_name = ${table_name}`);
         return result;
     });
 }
@@ -90,14 +91,14 @@ function get_one_waiter_table(tbl_name, waiter) {
     });
 }
 exports.get_one_waiter_table = get_one_waiter_table;
-function get_date(table_name) {
+function get_table_date_and_time(table_name) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
-        const date = yield db.query((0, sql_template_strings_1.default) `SELECT date FROM tables WHERE table_name = ${table_name}`);
+        const date = yield db.query((0, sql_template_strings_1.default) `SELECT date, time FROM tables WHERE table_name = ${table_name}`);
         return date;
     });
 }
-exports.get_date = get_date;
+exports.get_table_date_and_time = get_table_date_and_time;
 function delete_table(table_name, waiter) {
     return __awaiter(this, void 0, void 0, function* () {
         const db = yield (0, connection_1.dbConnection)();
@@ -114,7 +115,8 @@ function close_table(waiter, status, tbl_name, cash, pos, credit, transfer, tota
         cash = ${cash}, pos = ${pos}, transfer = ${transfer}, credit = ${credit}, 
         total = ${total}, discount = ${discount}, 
         complimentary_drink = ${complimentary_drink},
-        complimentary_qty = ${complimentary_qty}, date = TO_CHAR(CURRENT_TIMESTAMP, 'DD-MM-YYYY')
+        complimentary_qty = ${complimentary_qty}, date = TO_CHAR(CURRENT_TIMESTAMP, 'DD MonthYYYY'),
+        time = TO_CHAR(CURRENT_TIMESTAMP, 'HH24:MI')
 
         WHERE table_name = ${tbl_name} AND waiter = ${waiter}`);
         return result.rows[0];
