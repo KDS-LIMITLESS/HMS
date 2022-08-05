@@ -69,7 +69,7 @@ function startServer() {
         //     ADD CONSTRAINT orders_username_fkey FOREIGN KEY (username)
         //     REFERENCES users(username) ON DELETE SET NULL
         // `)
-        const PORT = process.env.PORT || 3000;
+        const PORT = process.env.PORT  || 3000;
         app.listen(PORT, () => {
             console.log('Server Listening on port 3000');
         });
