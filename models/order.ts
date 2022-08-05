@@ -111,3 +111,11 @@ export async function get_order(table_name: string, waiter: string, product: str
         WHERE table_name = ${table_name} AND item = ${product} AND username = ${waiter}`)
     return result;
 }
+
+export async function get_waiter_order(waiter: string) {
+    const db = await dbConnection();
+
+    let _ = await db.query(SQL `SELECT item, quantity FROM orders WHERE username = ${waiter}`);
+
+    return _
+}

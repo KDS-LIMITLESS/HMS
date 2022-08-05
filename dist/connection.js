@@ -13,28 +13,29 @@ exports.dbConnection = void 0;
 const pg_1 = require("pg");
 function dbConnection() {
     return __awaiter(this, void 0, void 0, function* () {
-        if (process.env.DATABASE_URL) {
-            const pg = new pg_1.Pool({
-                connectionString: process.env.DATABASE_URL,
-                ssl: {
-                    rejectUnauthorized: false
-                }
-            });
-            return pg;
-        }
-        else {
-            const pg = new pg_1.Pool({
-                user: "hope",
-                host: "localhost",
-                database: "ballroom",
-                password: "12345678kds",
-                port: 5432
-            });
-            return pg;
-        }
+        /// if (process.env.DATABASE_URL) {
+        const pg = new pg_1.Pool({
+            host: process.env.RDS_HOSTNAME,
+            port: 5432,
+            database: process.env.RDS_DB_NAME,
+            user: process.env.RDS_USERNAME,
+            password: process.env.RDS_PASSWORD,
+        });
+        return pg;
+        //}else{
+        //  const pg = new Pool({
+        //    user: "hope",
+        //    host: "localhost",
+        //    database: "ballroom",
+        //    password: "12345678kds",
+        //    port: 5432
+        //  });
+        //  return pg
+        //}  
     });
-}
+} //
 exports.dbConnection = dbConnection;
+//
 //export async function dbConnection() {
 //    return open({
 //      filename: './data/ballroom.db',

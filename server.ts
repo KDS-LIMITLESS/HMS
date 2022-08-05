@@ -20,6 +20,7 @@ app.use('', require('./routes/user'));
 app.use('', require('./routes/order'));
 app.use('', require('./routes/table'))
 app.use('', require('./routes/credit'))
+app.use('', require('./routes/reports') )
 
 
 async function startServer(){
@@ -29,11 +30,12 @@ async function startServer(){
         console.log(`Connected to Database!`)
     })
     
-    // await createUsersTable().then(() => console.log("done creating user table")); 
-    // await createItemsTable().then(() => console.log("done creating items tables"));
+    await createUsersTable().then(() => console.log("done creating user table")); 
+    await createItemsTable().then(() => console.log("done creating items tables"));
     await createTableManager();
     await create_Order_Table().then(() => console.log("done creating order table"));
-    // await create_credit_table();
+    await create_credit_table();
+
     // await db.query(`DROP TABLE orders`)
     // await db.query(`DROP TABLE tables`)
     // await db.query(`DROP TABLE item`)
@@ -51,12 +53,16 @@ async function startServer(){
     // `)
 // 
 // 
+    // await db.query(`ALTER TABLE tables
+    //     ADD time VARCHAR
+    // `)
     // await db.query(`ALTER TABLE orders
     //     DROP CONSTRAINT orders_username_fkey,
     //     ALTER username DROP NOT NULL,
     //     ADD CONSTRAINT orders_username_fkey FOREIGN KEY (username)
     //     REFERENCES users(username) ON DELETE SET NULL
     // `)
+
     const PORT = process.env.PORT || 3000
 
     app.listen(PORT, () => {
