@@ -34,8 +34,7 @@ async function startServer(){
     // await createItemsTable().then(() => console.log("done creating items tables"));
     // await createTableManager();
     // await create_Order_Table().then(() => console.log("done creating order table"));
-    // await create_credit_table();
-
+    // await create_credit_table()
     // await db.query(`DROP TABLE orders`)
     // await db.query(`DROP TABLE tables`)
     // await db.query(`DROP TABLE item`)
@@ -62,7 +61,6 @@ async function startServer(){
     //     ADD CONSTRAINT orders_username_fkey FOREIGN KEY (username)
     //     REFERENCES users(username) ON DELETE SET NULL
     // `)
-console.log(process.env.PORT)
     const PORT = process.env.PORT || 3000
 
     app.listen(PORT, () => {
