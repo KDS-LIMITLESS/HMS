@@ -2,7 +2,7 @@ import { Pool} from "pg";
 
 
 export async function dbConnection(){
-  if (process.env.DATABASE_URL) {
+  if (process.env.RDS_HOSTNAME) {
     console.log(`Running Production Database....`)
     const pg = new Pool({
       host: process.env.RDS_HOSTNAME,
