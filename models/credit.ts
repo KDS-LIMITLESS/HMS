@@ -1,8 +1,8 @@
-import { dbConnection } from "../connection";
+import { db } from "../connection";
 import SQL from "sql-template-strings";
 
+
 export async function create_credit_table() {
-    const db = await dbConnection();
     return await db.query(`CREATE TABLE IF NOT EXISTS credit(
         id SERIAL PRIMARY KEY,
         opening_credit INTEGER DEFAULT 0,
@@ -13,14 +13,12 @@ export async function create_credit_table() {
 }
 
 export async function grant_credit(user: string, opening_credit: number, credit_remaining: number) {
-    const db = await dbConnection();
     let result = await db.query(SQL `INSERT INTO credit(username, opening_credit, credit_remaining)
         VALUES(${user}, ${opening_credit}, ${credit_remaining})`);
     return result;
 }
 
 export async function update_credit_status(user: string, opening_credit: number, credit_remaining: number){
-    const db = await dbConnection();
 
     let creditResult = await db.query(SQL `UPDATE credit SET 
         opening_credit = ${opening_credit}, credit_remaining = ${credit_remaining}
@@ -29,7 +27,6 @@ export async function update_credit_status(user: string, opening_credit: number,
 }
 
 export async function calculate_credit_balance(user:string, credit_remaining: number, credit_granted: number) {
-    const db = await dbConnection();
 
     let updateBalance = await db.query(SQL `UPDATE credit SET credit_remaining = ${credit_remaining},
         credit_granted = ${credit_granted} WHERE username = ${user}`);
@@ -37,7 +34,6 @@ export async function calculate_credit_balance(user:string, credit_remaining: nu
 }
 
 export async function get_admin_users() {
-    const db = await dbConnection();
 
     let _ = await db.query(`SELECT users.username, opening_credit, 
         credit_granted, credit_remaining FROM users
@@ -52,14 +48,12 @@ export async function get_admin_users() {
 }
 
 export async function get_credit_status(user: string) {
-    const db = await dbConnection();
     let _ = await db.query(SQL`SELECT credit_remaining, credit_granted, opening_credit
         FROM credit WHERE username = ${user}`)
     return _
 }
 
 export async function get_credit_balance(user: string) {
-    const db = await dbConnection();
 
     let balance = await db.query(SQL `SELECT * FROM credit WHERE user = ${user}`)
     return balance
