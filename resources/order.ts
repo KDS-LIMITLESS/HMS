@@ -36,7 +36,7 @@ export async function getTableOrders(req: Request, res: Response) {
     
    
     // converting return type from db to [{}] required by the client.
-    let i: any[] = []
+    let notification: any[] = []
     TABLE_ORDERS?.forEach((item) => {
         
         let items = {
@@ -51,9 +51,9 @@ export async function getTableOrders(req: Request, res: Response) {
             }
         }
         
-        i.push(items)
+        notification.push(items)
     })
-    return res.status(200).send(i)   
+    return res.status(200).send(notification)   
 }
 
 // check if table is closed and do not do anything.....
@@ -61,27 +61,39 @@ export async function updateOrder(req: Request, res: Response) {
     let time = new Date()
     
     const ORDER: [] = req.body.order;
-    let update;
-    let newOrder;
-    
-    ORDER.forEach(async order => {
+    let payload
+    let notification: any[] = [];
+    // check if table exists
+
+    for (const order of ORDER) {
     
         let item = await get_drinks_in_table(order['item']['product'], req.body.table_name)
-        // console.log(item.rowCount)
         if (item.rowCount !== 0 ) {
-             update = await update_order_quantity(order['item']['product'], 
-                                     order['quantity'], req.body.table_name)
+            let quantity = order['quantity'] + item.rows[0]['quantity']
+            await update_order_quantity(order['item']['product'], 
+                                     quantity, req.body.table_name)
+            // order derails to send to the bar man as notification
+        
+            payload = {
+                waiter: req.body.activeUser,
+                item :order['item']['product'], 
+                "price" : order['item']['price'],
+                "quantity": order['quantity'],                
+            }
+            notification.push(payload)   
+
         } else {
+            // item exists 
             const TOTAL =  req.body.price*req.body.quantity
            
-            newOrder = await new_order(req.body.activeUser, order['item']['product'], 
-                 order['item']['price'], order['quantity'], order['item']['category'],  
-                 order['item']['image'], order['item']['department'], req.body.table_name,time.toLocaleTimeString()
+            await new_order(req.body.activeUser, order['item']['product'], 
+                order['item']['price'], order['quantity'], order['item']['category'],  
+                order['item']['image'], order['item']['department'], 
+                req.body.table_name,time.toLocaleTimeString()
             ); 
         }
-    });
-    if (update === 0 || newOrder === 0) return res.status(400).send(`an error occured`)
-    return res.end(`OK`);
+    };
+    return res.json({notification})
 }
 
 export async function getAllOrder(req:Request, res: Response) {
@@ -137,7 +149,7 @@ export async function deleteOrder(req:Request, res:Response) {
 // specify items for lounge and bar
 // splitting orders into a transaction
 
-// notification
+// payload
 // jwts
 // logout 
 // printing dockets
