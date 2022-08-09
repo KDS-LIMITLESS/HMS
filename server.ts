@@ -34,7 +34,7 @@ app.listen(PORT, () => {
 })
 
 async function startServer() {
-    await create_notifications_table();
+    //await create_notifications_table();
 }
 startServer();
     // console.log(await db.end())

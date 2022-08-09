@@ -24,7 +24,13 @@ export async function update_notification_status(status: string, waiter: string)
     return message;
 }
 
-export async function get_notifications(status:string) {
-    let notification = await db.query(SQL `SELECT waiter, item, quantity FROM notification WHERE status = ${status}`)
+export async function get_notifications(status:string, waiter:string) {
+    let notification = await db.query(SQL `SELECT item, quantity FROM notification WHERE status = ${status} 
+        AND waiter = ${waiter} `)
     return notification;
+}
+
+export async function get_waiter_notification() {
+    let waiter = await db.query(`SELECT waiter FROM notification`)
+    return waiter
 }

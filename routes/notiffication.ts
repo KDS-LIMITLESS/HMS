@@ -1,8 +1,9 @@
 import express from 'express'
-import { notifications } from '../resources/notification'
+import { notifications, waiters } from '../resources/notification'
 
 const router = express.Router()
 
-router.get('/notification', notifications)
+router.get('/waiters', waiters)
+router.post('/notification', notifications)
 
 module.exports = router
