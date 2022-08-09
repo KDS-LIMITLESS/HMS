@@ -19,7 +19,7 @@ export async function send_notification(waiter: string, item: string, quantity: 
 }
 
 export async function update_notification_status(status: string, waiter: string) {
-    let message = await db.query(SQL ` UPDATE notificatons SET status = ${status} 
+    let message = await db.query(SQL`UPDATE notification SET status = ${status} 
         WHERE  waiter = ${waiter}`)
     return message;
 }
@@ -31,6 +31,12 @@ export async function get_notifications(status:string, waiter:string) {
 }
 
 export async function get_waiter_notification() {
-    let waiter = await db.query(`SELECT waiter FROM notification`)
+    let waiter = await db.query(SQL `SELECT waiter FROM notification`)
     return waiter
+}
+
+export async function get_unread_notification_count(status:string) {
+    let count = await db.query(SQL `SELECT waiter, item, status FROM notification 
+        WHERE status = ${status}`)
+    return count
 }

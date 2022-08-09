@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
-import { get_notifications, get_waiter_notification } from '../models/notifiacation'
+import { get_notifications, get_waiter_notification, update_notification_status,
+    get_unread_notification_count } from '../models/notifiacation'
 
 
 export async function notifications(req:Request, res: Response) {
@@ -14,4 +15,16 @@ export async function waiters(req: Request, res: Response) {
     let waiter = await get_waiter_notification();
     if (waiter.rowCount > 0) return res.status(200).send(waiter.rows)
     return res.status(400).send(`none`)
+}
+
+export async function updateNotificationStatus(req:Request, res: Response) {
+    let isWaiter = await update_notification_status("READ", req.body.waiter)
+    if (isWaiter.rowCount === 0) return res.status(404).send(`No such user`)
+    return res.status(200).send(`OK`)
+}
+
+export async function notificationCount(req:Request, res:Response) {
+    let count = await get_unread_notification_count("UNREAD")
+    if (count.rowCount > 0) return res.status(200).send(count.rows)
+    res.status(400).send(`none`)
 }

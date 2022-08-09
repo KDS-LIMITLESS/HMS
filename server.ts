@@ -28,9 +28,9 @@ db.connect((err) => {
     console.log(`Connected to Database!`)
 })
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
-     console.log('Server Listening on port 5000')
+     console.log('Server Listening on port 3000')
 })
 
 async function startServer() {
