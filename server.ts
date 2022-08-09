@@ -7,6 +7,7 @@ import { create_Order_Table } from './models/order';
 import { createUsersTable } from './models/user';
 import { createTableManager} from './models/table';
 import { create_credit_table } from './models/credit';
+import { create_notifications_table } from './models/notifiacation';
 
 const app = express();
 dotenv.config()
@@ -20,6 +21,7 @@ app.use('', require('./routes/order'));
 app.use('', require('./routes/table'))
 app.use('', require('./routes/credit'))
 app.use('', require('./routes/reports'))
+app.use('', require('./routes/notiffication'))
 
 db.connect((err) => {
     if(err) return console.error(err.message)
@@ -31,6 +33,10 @@ app.listen(PORT, () => {
      console.log('Server Listening on port 5000')
 })
 
+async function startServer() {
+    await create_notifications_table();
+}
+startServer();
     // console.log(await db.end())
     
     // const db = dbConnection()
@@ -42,6 +48,7 @@ app.listen(PORT, () => {
     // await createTableManager().then(() => console.log(`Tables done`));
     // await create_Order_Table().then(() => console.log("done creating order table"));
     // await create_credit_table().then(() => console.log(`credit table`))
+   
 
     // await db.query(`DROP TABLE orders`)
     // await db.query(`DROP TABLE tables`)

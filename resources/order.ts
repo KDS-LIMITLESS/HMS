@@ -4,6 +4,7 @@ import { get_item } from "../models/item";
 import {new_order, get_table_orders, get_drinks_in_table, 
     update_order_quantity, get_all_orders, delete_order, get_order,
     count_waiters_order, get_table_orders_for_admin} from "../models/order";
+import { send_notification } from "../models/notifiacation";
 
 
 export async function placeOrder(req: Request, res: Response, next: NextFunction){
@@ -11,13 +12,14 @@ export async function placeOrder(req: Request, res: Response, next: NextFunction
        
     const ORDER: [] = req.body.order;
     
-    ORDER.forEach(async order => {
+    for (const order of ORDER) {
         await new_order(req.body.activeUser, order['item']['product'], 
             order['item']['price'], order['quantity'], order['item']['category'],  
             order['item']['image'], order['item']['department'], req.body.table_name,
             time.toLocaleTimeString()
         )
-    });
+        await send_notification(req.body.activeUser, order['item']['product'], order['quantity'])   
+    };
     console.log(`new order created!`)
     res.status(200).send('OK');  
 }
@@ -59,41 +61,28 @@ export async function getTableOrders(req: Request, res: Response) {
 // check if table is closed and do not do anything.....
 export async function updateOrder(req: Request, res: Response) {
     let time = new Date()
-    
     const ORDER: [] = req.body.order;
-    let payload
-    let notification: any[] = [];
     // check if table exists
-
     for (const order of ORDER) {
-    
         let item = await get_drinks_in_table(order['item']['product'], req.body.table_name)
         if (item.rowCount !== 0 ) {
             let quantity = order['quantity'] + item.rows[0]['quantity']
             await update_order_quantity(order['item']['product'], 
                                      quantity, req.body.table_name)
             // order derails to send to the bar man as notification
-        
-            payload = {
-                waiter: req.body.activeUser,
-                item :order['item']['product'], 
-                "price" : order['item']['price'],
-                "quantity": order['quantity'],                
-            }
-            notification.push(payload)   
-
+            await send_notification(req.body.activeUser, order['item']['product'], order['quantity'])   
         } else {
             // item exists 
             const TOTAL =  req.body.price*req.body.quantity
-           
             await new_order(req.body.activeUser, order['item']['product'], 
                 order['item']['price'], order['quantity'], order['item']['category'],  
                 order['item']['image'], order['item']['department'], 
                 req.body.table_name,time.toLocaleTimeString()
             ); 
+            await send_notification(req.body.activeUser, order['item']['product'], order['quantity'])   
         }
     };
-    return res.json({notification})
+    return res.json(`OK`)
 }
 
 export async function getAllOrder(req:Request, res: Response) {
@@ -140,28 +129,3 @@ export async function deleteOrder(req:Request, res:Response) {
     }
     return res.status(400).send(`ERROR!`)
 }
-
-
-// cors should only direct to the frontend
-// order status table status
-// add automatic total amount check 
-// update item prices
-// specify items for lounge and bar
-// splitting orders into a transaction
-
-// payload
-// jwts
-// logout 
-// printing dockets
-// super admin dashboard
-
-    //  *********** //
-
-// get all waiters tables
-// update drinks in db done
-
-
-
-
- 
-// strong man creates good times, goot times creates weak men, weak men creates bad time
