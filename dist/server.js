@@ -16,7 +16,9 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = require("./connection");
-// set depeartment foreign key in order to automatically get value form items(department)
+const order_1 = require("./models/order");
+const table_1 = require("./models/table");
+const notifiacation_1 = require("./models/notifiacation");
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 app.use(express_1.default.json());
@@ -28,48 +30,21 @@ app.use('', require('./routes/order'));
 app.use('', require('./routes/table'));
 app.use('', require('./routes/credit'));
 app.use('', require('./routes/reports'));
+app.use('', require('./routes/notiffication'));
+connection_1.db.connect((err) => {
+    if (err)
+        return console.error(err.message);
+    console.log(`Connected to Database!`);
+});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log('Server Listening on port 3000');
+});
 function startServer() {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        db.connect((err, client) => {
-            if (err)
-                return console.error(err.message);
-            console.log(`Connected to Database!`);
-        });
-        // await createUsersTable().then(() => console.log("done creating user table")); 
-        // await createItemsTable().then(() => console.log("done creating items tables"));
-        // await createTableManager();
-        // await create_Order_Table().then(() => console.log("done creating order table"));
-        // await create_credit_table();
-        // await db.query(`DROP TABLE orders`)
-        // await db.query(`DROP TABLE tables`)
-        // await db.query(`DROP TABLE item`)
-        // await db.query(`DROP TABLE users`)
-        // await db.query(`DROP TABLE credit`)
-        // await db.query(`ALTER TABLE tables DROP COLUMN payment_method`)
-        // await db.query(`ALTER TABLE person
-        //     DROP CONSTRAINT person_waiter_fkey,
-        //     ALTER waiter DROP NOT NULL,
-        //     ADD CONSTRAINT person_waiter_fkey FOREIGN KEY (waiter)
-        //     REFERENCES users(username) ON DELETE SET NULL
-        // `)
-        // 
-        // 
-        // await db.query(`ALTER TABLE tables
-        //     ADD time VARCHAR
-        // `)
-        // await db.query(`ALTER TABLE orders
-        //     DROP CONSTRAINT orders_username_fkey,
-        //     ALTER username DROP NOT NULL,
-        //     ADD CONSTRAINT orders_username_fkey FOREIGN KEY (username)
-        //     REFERENCES users(username) ON DELETE SET NULL
-        // `)
-        console.log(process.env.PORT);
-        const PORT = process.env.PORT || 3000;
-        app.listen(PORT, () => {
-            console.log('Server Listening on port 3000');
-        });
+        yield (0, table_1.createTableManager)();
+        yield (0, notifiacation_1.create_notifications_table)();
+        yield (0, order_1.create_Order_Table)();
     });
 }
-// remove user route
 startServer();

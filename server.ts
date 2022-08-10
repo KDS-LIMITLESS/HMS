@@ -34,24 +34,10 @@ app.listen(PORT, () => {
 })
 
 async function startServer() {
-    //await create_notifications_table();
+    await createTableManager()
+    await create_notifications_table();
+    await create_Order_Table()
+    
 }
 startServer();
-    // console.log(await db.end())
     
-    // const db = dbConnection()
-    
-    // const d = await db.query(`SELECT * FROM pg_stat_activity`)
-    // console.log(d.rows)
-    // await createUsersTable().then(() => console.log("done creating user table")); 
-    // await createItemsTable().then(() => console.log("done creating items tables"));
-    // await createTableManager().then(() => console.log(`Tables done`));
-    // await create_Order_Table().then(() => console.log("done creating order table"));
-    // await create_credit_table().then(() => console.log(`credit table`))
-   
-
-    // await db.query(`DROP TABLE orders`)
-    // await db.query(`DROP TABLE tables`)
-    // await db.query(`DROP TABLE item`)
-    // await db.query(`DROP TABLE users`)
-    // await db.query(`DROP TABLE credit`)

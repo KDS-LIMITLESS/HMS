@@ -17,8 +17,7 @@ const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const connection_1 = require("../connection");
 function createTableManager() {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        return db.query(`CREATE TABLE IF NOT EXISTS tables (
+        return connection_1.db.query(`CREATE TABLE IF NOT EXISTS tables (
         table_name VARCHAR NOT NULl PRIMARY KEY,
         waiter VARCHAR REFERENCES users(username) ON DELETE SET NULL,
         status VARCHAR NOT NULL DEFAULT 'OPEN',
@@ -38,8 +37,7 @@ function createTableManager() {
 exports.createTableManager = createTableManager;
 function create_new_table(tableName, waiter) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let result = db.query((0, sql_template_strings_1.default) `INSERT INTO tables (table_name, waiter) 
+        let result = connection_1.db.query((0, sql_template_strings_1.default) `INSERT INTO tables (table_name, waiter) 
                         VALUES(${tableName}, ${waiter})`);
         return result;
     });
@@ -47,8 +45,7 @@ function create_new_table(tableName, waiter) {
 exports.create_new_table = create_new_table;
 function get_all_waiter_tables(waiter) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        const result = yield db.query((0, sql_template_strings_1.default) `SELECT * FROM tables WHERE waiter = ${waiter}`);
+        const result = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT * FROM tables WHERE waiter = ${waiter}`);
         if (result.rowCount === 0)
             return null;
         return result.rows;
@@ -57,8 +54,7 @@ function get_all_waiter_tables(waiter) {
 exports.get_all_waiter_tables = get_all_waiter_tables;
 function get_all_tables() {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let result = db.query((0, sql_template_strings_1.default) `SELECT * FROM tables`);
+        let result = connection_1.db.query((0, sql_template_strings_1.default) `SELECT * FROM tables`);
         if ((yield result).rowCount === 0)
             return null;
         return result;
@@ -67,16 +63,14 @@ function get_all_tables() {
 exports.get_all_tables = get_all_tables;
 function get_table(table_name) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let result = yield db.query((0, sql_template_strings_1.default) `SELECT table_name, status FROM tables WHERE table_name = ${table_name}`);
+        let result = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT table_name, status FROM tables WHERE table_name = ${table_name}`);
         return result;
     });
 }
 exports.get_table = get_table;
 function get_table_discount(table_name) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let result = yield db.query((0, sql_template_strings_1.default) `SELECT waiter, discount, total, complimentary_drink,
+        let result = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT waiter, discount, total, complimentary_drink,
         complimentary_qty FROM tables WHERE table_name = ${table_name}`);
         return result;
     });
@@ -84,8 +78,7 @@ function get_table_discount(table_name) {
 exports.get_table_discount = get_table_discount;
 function get_one_waiter_table(tbl_name, waiter) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let result = yield db.query((0, sql_template_strings_1.default) `SELECT table_name, status from tables 
+        let result = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT table_name, status from tables 
             WHERE table_name = ${tbl_name} AND waiter = ${waiter}`);
         return result;
     });
@@ -93,16 +86,14 @@ function get_one_waiter_table(tbl_name, waiter) {
 exports.get_one_waiter_table = get_one_waiter_table;
 function get_table_date_and_time(table_name) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        const date = yield db.query((0, sql_template_strings_1.default) `SELECT date, time FROM tables WHERE table_name = ${table_name}`);
+        const date = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT date, time FROM tables WHERE table_name = ${table_name}`);
         return date;
     });
 }
 exports.get_table_date_and_time = get_table_date_and_time;
 function delete_table(table_name, waiter) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        const DEL_TABLE = yield db.query(`DELETE FROM tables WHERE table_name = ${table_name} 
+        const DEL_TABLE = yield connection_1.db.query(`DELETE FROM tables WHERE table_name = ${table_name} 
                                 AND waiter = ${waiter}`);
         return DEL_TABLE;
     });
@@ -110,8 +101,7 @@ function delete_table(table_name, waiter) {
 exports.delete_table = delete_table;
 function close_table(waiter, status, tbl_name, cash, pos, credit, transfer, total, discount, complimentary_drink, complimentary_qty) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let result = yield db.query((0, sql_template_strings_1.default) `UPDATE tables SET status = ${status}, 
+        let result = yield connection_1.db.query((0, sql_template_strings_1.default) `UPDATE tables SET status = ${status}, 
         cash = ${cash}, pos = ${pos}, transfer = ${transfer}, credit = ${credit}, 
         total = ${total}, discount = ${discount}, 
         complimentary_drink = ${complimentary_drink},

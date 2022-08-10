@@ -17,8 +17,7 @@ const connection_1 = require("../connection");
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 function create_credit_table() {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        return yield db.query(`CREATE TABLE IF NOT EXISTS credit(
+        return yield connection_1.db.query(`CREATE TABLE IF NOT EXISTS credit(
         id SERIAL PRIMARY KEY,
         opening_credit INTEGER DEFAULT 0,
         credit_granted INTEGER DEFAULT 0,
@@ -30,8 +29,7 @@ function create_credit_table() {
 exports.create_credit_table = create_credit_table;
 function grant_credit(user, opening_credit, credit_remaining) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let result = yield db.query((0, sql_template_strings_1.default) `INSERT INTO credit(username, opening_credit, credit_remaining)
+        let result = yield connection_1.db.query((0, sql_template_strings_1.default) `INSERT INTO credit(username, opening_credit, credit_remaining)
         VALUES(${user}, ${opening_credit}, ${credit_remaining})`);
         return result;
     });
@@ -39,8 +37,7 @@ function grant_credit(user, opening_credit, credit_remaining) {
 exports.grant_credit = grant_credit;
 function update_credit_status(user, opening_credit, credit_remaining) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let creditResult = yield db.query((0, sql_template_strings_1.default) `UPDATE credit SET 
+        let creditResult = yield connection_1.db.query((0, sql_template_strings_1.default) `UPDATE credit SET 
         opening_credit = ${opening_credit}, credit_remaining = ${credit_remaining}
         WHERE username = ${user}`);
         return creditResult;
@@ -49,8 +46,7 @@ function update_credit_status(user, opening_credit, credit_remaining) {
 exports.update_credit_status = update_credit_status;
 function calculate_credit_balance(user, credit_remaining, credit_granted) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let updateBalance = yield db.query((0, sql_template_strings_1.default) `UPDATE credit SET credit_remaining = ${credit_remaining},
+        let updateBalance = yield connection_1.db.query((0, sql_template_strings_1.default) `UPDATE credit SET credit_remaining = ${credit_remaining},
         credit_granted = ${credit_granted} WHERE username = ${user}`);
         return updateBalance;
     });
@@ -58,8 +54,7 @@ function calculate_credit_balance(user, credit_remaining, credit_granted) {
 exports.calculate_credit_balance = calculate_credit_balance;
 function get_admin_users() {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let _ = yield db.query(`SELECT users.username, opening_credit, 
+        let _ = yield connection_1.db.query(`SELECT users.username, opening_credit, 
         credit_granted, credit_remaining FROM users
         
         LEFT JOIN credit 
@@ -74,8 +69,7 @@ function get_admin_users() {
 exports.get_admin_users = get_admin_users;
 function get_credit_status(user) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let _ = yield db.query((0, sql_template_strings_1.default) `SELECT credit_remaining, credit_granted, opening_credit
+        let _ = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT credit_remaining, credit_granted, opening_credit
         FROM credit WHERE username = ${user}`);
         return _;
     });
@@ -83,8 +77,7 @@ function get_credit_status(user) {
 exports.get_credit_status = get_credit_status;
 function get_credit_balance(user) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let balance = yield db.query((0, sql_template_strings_1.default) `SELECT * FROM credit WHERE user = ${user}`);
+        let balance = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT * FROM credit WHERE user = ${user}`);
         return balance;
     });
 }

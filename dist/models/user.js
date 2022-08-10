@@ -17,8 +17,7 @@ const connection_1 = require("../connection");
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 function createUsersTable() {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        db.query(` CREATE TABLE IF NOT EXISTS users (
+        connection_1.db.query(` CREATE TABLE IF NOT EXISTS users (
         username VARCHAR NOT NULL PRIMARY KEY,
         password VARCHAR NOT NULL,
         role VARCHAR NOT NULL,
@@ -30,8 +29,7 @@ function createUsersTable() {
 exports.createUsersTable = createUsersTable;
 function create_new_user(username, password, passcode, role) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let result = db.query((0, sql_template_strings_1.default) `INSERT INTO users (username, password, passcode, role) 
+        let result = connection_1.db.query((0, sql_template_strings_1.default) `INSERT INTO users (username, password, passcode, role) 
     VALUES (${username}, ${password}, 
         ${passcode}, ${role})`);
         return result;
@@ -40,8 +38,7 @@ function create_new_user(username, password, passcode, role) {
 exports.create_new_user = create_new_user;
 function get_user(username) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let result = yield db.query((0, sql_template_strings_1.default) `SELECT * FROM users WHERE username = ${username}`);
+        let result = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT * FROM users WHERE username = ${username}`);
         // if ((await result).rowCount === 0) return null;
         return result;
     });
@@ -49,16 +46,14 @@ function get_user(username) {
 exports.get_user = get_user;
 function get_admin_user(user) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let role = yield db.query((0, sql_template_strings_1.default) `SELECT role FROM users WHERE username = ${user}`);
+        let role = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT role FROM users WHERE username = ${user}`);
         return role;
     });
 }
 exports.get_admin_user = get_admin_user;
 function get_admins() {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let result = yield db.query(`SELECT * FROM USERS WHERE role = 'Admin' 
+        let result = yield connection_1.db.query(`SELECT * FROM USERS WHERE role = 'Admin' 
         OR role = 'Super Admin' OR role = 'Auditor' `);
         return result;
     });
@@ -66,16 +61,14 @@ function get_admins() {
 exports.get_admins = get_admins;
 function get_all_users() {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let result = db.query((0, sql_template_strings_1.default) `SELECT * FROM users `);
+        let result = connection_1.db.query((0, sql_template_strings_1.default) `SELECT * FROM users `);
         return result;
     });
 }
 exports.get_all_users = get_all_users;
 function get_passcode(passcode) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let result = db.query((0, sql_template_strings_1.default) `SELECT * FROM users WHERE passcode = ${passcode}`);
+        let result = connection_1.db.query((0, sql_template_strings_1.default) `SELECT * FROM users WHERE passcode = ${passcode}`);
         if ((yield result).rowCount === 0)
             return null;
         return result;
@@ -84,8 +77,7 @@ function get_passcode(passcode) {
 exports.get_passcode = get_passcode;
 function suspend_user(user, status) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        const USER = yield db.query((0, sql_template_strings_1.default) `UPDATE users SET status = ${status}  
+        const USER = yield connection_1.db.query((0, sql_template_strings_1.default) `UPDATE users SET status = ${status}  
         WHERE username = ${user}`);
         return USER;
     });
@@ -93,32 +85,28 @@ function suspend_user(user, status) {
 exports.suspend_user = suspend_user;
 function delete_user(user) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        const USER = yield db.query((0, sql_template_strings_1.default) `DELETE FROM users WHERE username = ${user}`);
+        const USER = yield connection_1.db.query((0, sql_template_strings_1.default) `DELETE FROM users WHERE username = ${user}`);
         return USER;
     });
 }
 exports.delete_user = delete_user;
 function update_user_role(user, role) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        const USER = yield db.query((0, sql_template_strings_1.default) `UPDATE users SET role = ${role} WHERE username = ${user}`);
+        const USER = yield connection_1.db.query((0, sql_template_strings_1.default) `UPDATE users SET role = ${role} WHERE username = ${user}`);
         return USER;
     });
 }
 exports.update_user_role = update_user_role;
 function update_user_password(user, password) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        const USER = yield db.query((0, sql_template_strings_1.default) `UPDATE users SET password = ${password} WHERE username = ${user}`);
+        const USER = yield connection_1.db.query((0, sql_template_strings_1.default) `UPDATE users SET password = ${password} WHERE username = ${user}`);
         return USER;
     });
 }
 exports.update_user_password = update_user_password;
 function update_user_passcode(user, passcode) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        const USER = yield db.query((0, sql_template_strings_1.default) `UPDATE users SET passcode = ${passcode} WHERE username = ${user}`);
+        const USER = yield connection_1.db.query((0, sql_template_strings_1.default) `UPDATE users SET passcode = ${passcode} WHERE username = ${user}`);
         return USER;
     });
 }

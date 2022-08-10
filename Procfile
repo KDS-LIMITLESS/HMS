@@ -1,1 +1,1 @@
-web:ts-node server.ts
+web:pm2 start dist/server.js

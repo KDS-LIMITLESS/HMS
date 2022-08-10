@@ -66,8 +66,6 @@ function deleteItem(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const ITEM = yield (0, item_1.get_item)(req.body.product, req.body.department);
-            console.log(ITEM.rows);
-            console.log(req.body);
             if (ITEM.rowCount === 1) {
                 yield (0, item_1.delete_item)(req.body.product, req.body.department);
                 return res.status(200).send("OK");

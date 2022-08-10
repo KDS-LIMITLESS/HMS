@@ -17,8 +17,7 @@ const connection_1 = require("../connection");
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 function create_reports_table() {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        return yield db.query(`CREATE TABLE IF NOT EXISTS report (
+        return yield connection_1.db.query(`CREATE TABLE IF NOT EXISTS report (
         waiters_name VARCHAR NOT NULL REFERENCES users (username) ON DELETE SET NULL,
         date VARCHAR NOT NULL PRIMARY KEY DEFAULT TO_CHAR(CURRENT_TIMESTAMP, 'YYYMMDD')
     )`);
@@ -27,8 +26,7 @@ function create_reports_table() {
 exports.create_reports_table = create_reports_table;
 function get_waiters_that_closed_tables() {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let waiter = yield db.query((0, sql_template_strings_1.default) `SELECT waiter, date from tables`);
+        let waiter = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT waiter, date from tables`);
         return waiter;
     });
 }

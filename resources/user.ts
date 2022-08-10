@@ -16,8 +16,7 @@ export async function newUser(req: Request, res: Response) {
         console.error(err)
         return res.status(500).send('An error occured!')
     }
-};
-
+}
 export async function login(req:Request, res:Response) {
     let userExists = await get_user(req.body.username)
     if ((userExists.rowCount === 1) && (await bcrypt.compare(req.body.password, userExists.rows[0]['password']))) {

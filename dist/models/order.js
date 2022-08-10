@@ -18,8 +18,7 @@ const connection_1 = require("../connection");
 const table_1 = require("./table");
 function create_Order_Table() {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        return yield db.query(`CREATE TABLE IF NOT EXISTS orders (
+        return yield connection_1.db.query(`CREATE TABLE IF NOT EXISTS orders (
         id BIGSERIAL PRIMARY KEY, 
         username VARCHAR REFERENCES users(username) ON DELETE SET NULL,
         
@@ -40,21 +39,20 @@ function create_Order_Table() {
 exports.create_Order_Table = create_Order_Table;
 function new_order(username, item, price, quantity, category, image, department, table_name, time) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
         try {
-            yield db.query('BEGIN');
-            let result = yield db.query((0, sql_template_strings_1.default) `INSERT INTO orders (
+            yield connection_1.db.query('BEGIN');
+            let result = yield connection_1.db.query((0, sql_template_strings_1.default) `INSERT INTO orders (
             username, item, price, quantity, category, image, department,
                 table_name, time)
     
         VALUES (${username}, ${item}, ${price}, ${quantity}, ${category}, 
                 ${image}, ${department}, ${table_name}, ${time})`);
-            yield db.query('COMMIT');
+            yield connection_1.db.query('COMMIT');
             console.log('Committing ');
             return result;
         }
         catch (e) {
-            yield db.query('ROLLBACK');
+            yield connection_1.db.query('ROLLBACK');
             // await delete_order(table_name);
             yield (0, table_1.delete_table)(table_name, username);
             console.log('Rolling back');
@@ -65,8 +63,7 @@ function new_order(username, item, price, quantity, category, image, department,
 exports.new_order = new_order;
 function get_table_orders(name, tbl) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        const result = db.query((0, sql_template_strings_1.default) `SELECT username, item, price, quantity, category, image, department FROM orders 
+        const result = connection_1.db.query((0, sql_template_strings_1.default) `SELECT username, item, price, quantity, category, image, department FROM orders 
             WHERE username = ${name} AND table_name = ${tbl}`);
         if ((yield result).rowCount === 0)
             return null;
@@ -76,8 +73,7 @@ function get_table_orders(name, tbl) {
 exports.get_table_orders = get_table_orders;
 function get_table_orders_for_admin(tbl_name) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        const result = db.query((0, sql_template_strings_1.default) `SELECT username, item, price, quantity, category, image, department FROM orders 
+        const result = connection_1.db.query((0, sql_template_strings_1.default) `SELECT username, item, price, quantity, category, image, department FROM orders 
         WHERE table_name = ${tbl_name}`);
         if ((yield result).rowCount === 0)
             return null;
@@ -87,8 +83,7 @@ function get_table_orders_for_admin(tbl_name) {
 exports.get_table_orders_for_admin = get_table_orders_for_admin;
 function get_drinks_in_table(item, col) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let result = yield db.query((0, sql_template_strings_1.default) `SELECT item, price, quantity, category, image FROM orders 
+        let result = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT item, price, quantity, category, image FROM orders 
             WHERE item = ${item} AND table_name = ${col}`);
         // if (result.rowCount === 0) return null;
         return result;
@@ -97,8 +92,7 @@ function get_drinks_in_table(item, col) {
 exports.get_drinks_in_table = get_drinks_in_table;
 function update_order_quantity(item, quantity, tbl) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let result = yield db.query((0, sql_template_strings_1.default) `UPDATE orders SET quantity = ${quantity} 
+        let result = yield connection_1.db.query((0, sql_template_strings_1.default) `UPDATE orders SET quantity = ${quantity} 
         WHERE item = ${item} AND table_name = ${tbl}`);
         // if (result.rowCount === 0) return null;
         return result;
@@ -107,24 +101,21 @@ function update_order_quantity(item, quantity, tbl) {
 exports.update_order_quantity = update_order_quantity;
 function get_all_orders() {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let orders = yield db.query((0, sql_template_strings_1.default) `SELECT * FROM orders`);
+        let orders = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT * FROM orders`);
         return orders;
     });
 }
 exports.get_all_orders = get_all_orders;
 function count_waiters_order(waiter) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let orderCount = yield db.query((0, sql_template_strings_1.default) `SELECT username, item FROM orders WHERE username = ${waiter}`);
+        let orderCount = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT username, item FROM orders WHERE username = ${waiter}`);
         return orderCount;
     });
 }
 exports.count_waiters_order = count_waiters_order;
 function delete_order(table_name, item) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let result = yield db.query((0, sql_template_strings_1.default) `DELETE FROM orders 
+        let result = yield connection_1.db.query((0, sql_template_strings_1.default) `DELETE FROM orders 
     WHERE table_name = ${table_name} AND item = ${item}`);
         return result;
     });
@@ -132,8 +123,7 @@ function delete_order(table_name, item) {
 exports.delete_order = delete_order;
 function get_order(table_name, waiter, product) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let result = yield db.query((0, sql_template_strings_1.default) `SELECT item, username, table_name FROM orders 
+        let result = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT item, username, table_name FROM orders 
         WHERE table_name = ${table_name} AND item = ${product} AND username = ${waiter}`);
         return result;
     });
@@ -141,8 +131,7 @@ function get_order(table_name, waiter, product) {
 exports.get_order = get_order;
 function get_waiter_order(waiter) {
     return __awaiter(this, void 0, void 0, function* () {
-        const db = yield (0, connection_1.dbConnection)();
-        let _ = yield db.query((0, sql_template_strings_1.default) `SELECT item, quantity FROM orders WHERE username = ${waiter}`);
+        let _ = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT item, quantity FROM orders WHERE username = ${waiter}`);
         return _;
     });
 }

@@ -11,13 +11,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteOrder = exports.removeOrdersFromTable = exports.countWaitersOrder = exports.getAllOrder = exports.updateOrder = exports.getTableOrders = exports.placeOrder = void 0;
 const order_1 = require("../models/order");
+const notifiacation_1 = require("../models/notifiacation");
 function placeOrder(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         let time = new Date();
         const ORDER = req.body.order;
-        ORDER.forEach((order) => __awaiter(this, void 0, void 0, function* () {
+        for (const order of ORDER) {
             yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], order['item']['department'], req.body.table_name, time.toLocaleTimeString());
-        }));
+            yield (0, notifiacation_1.send_notification)(req.body.activeUser, order['item']['product'], order['quantity']);
+        }
+        ;
         console.log(`new order created!`);
         res.status(200).send('OK');
     });
@@ -36,7 +39,7 @@ function getTableOrders(req, res) {
         if (!TABLE_ORDERS)
             return res.status(400).send(`table not found`);
         // converting return type from db to [{}] required by the client.
-        let i = [];
+        let notification = [];
         TABLE_ORDERS === null || TABLE_ORDERS === void 0 ? void 0 : TABLE_ORDERS.forEach((item) => {
             let items = {
                 // "username": item.username,
@@ -49,9 +52,9 @@ function getTableOrders(req, res) {
                     "department": item.department
                 }
             };
-            i.push(items);
+            notification.push(items);
         });
-        return res.status(200).send(i);
+        return res.status(200).send(notification);
     });
 }
 exports.getTableOrders = getTableOrders;
@@ -60,22 +63,24 @@ function updateOrder(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let time = new Date();
         const ORDER = req.body.order;
-        let update;
-        let newOrder;
-        ORDER.forEach((order) => __awaiter(this, void 0, void 0, function* () {
+        // check if table exists
+        for (const order of ORDER) {
             let item = yield (0, order_1.get_drinks_in_table)(order['item']['product'], req.body.table_name);
-            // console.log(item.rowCount)
             if (item.rowCount !== 0) {
-                update = yield (0, order_1.update_order_quantity)(order['item']['product'], order['quantity'], req.body.table_name);
+                let quantity = order['quantity'] + item.rows[0]['quantity'];
+                yield (0, order_1.update_order_quantity)(order['item']['product'], quantity, req.body.table_name);
+                // order derails to send to the bar man as notification
+                yield (0, notifiacation_1.send_notification)(req.body.activeUser, order['item']['product'], order['quantity']);
             }
             else {
+                // item exists 
                 const TOTAL = req.body.price * req.body.quantity;
-                newOrder = yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], order['item']['department'], req.body.table_name, time.toLocaleTimeString());
+                yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], order['item']['department'], req.body.table_name, time.toLocaleTimeString());
+                yield (0, notifiacation_1.send_notification)(req.body.activeUser, order['item']['product'], order['quantity']);
             }
-        }));
-        if (update === 0 || newOrder === 0)
-            return res.status(400).send(`an error occured`);
-        return res.end(`OK`);
+        }
+        ;
+        return res.json(`OK`);
     });
 }
 exports.updateOrder = updateOrder;
@@ -130,18 +135,3 @@ function deleteOrder(req, res) {
     });
 }
 exports.deleteOrder = deleteOrder;
-// cors should only direct to the frontend
-// order status table status
-// add automatic total amount check 
-// update item prices
-// specify items for lounge and bar
-// splitting orders into a transaction
-// notification
-// jwts
-// logout 
-// printing dockets
-// super admin dashboard
-//  *********** //
-// get all waiters tables
-// update drinks in db done
-// strong man creates good times, goot times creates weak men, weak men creates bad time
