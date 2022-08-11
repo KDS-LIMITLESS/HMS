@@ -5,7 +5,7 @@ import { SQL } from 'sql-template-strings'
 export async function create_notifications_table() {
     return await db.query(`CREATE TABLE IF NOT EXISTS notification(
         id BIGSERIAL PRIMARY KEY,
-        waiter VARCHAR NOT NULL REFERENCES users(username),
+        waiter VARCHAR NOT NULL REFERENCES users(username) ON DELETE NO ACTION,
         item VARCHAR NOT NULL,
         quantity INTEGER NOT NULL,
         status VARCHAR DEFAULT 'UNREAD'
