@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateOverallRepoert = exports.getItemReports = exports.report = void 0;
+exports.generateOverallReport = exports.getItemReports = exports.report = void 0;
 const reports_1 = require("../models/reports");
 function report(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -29,7 +29,7 @@ function getItemReports(req, res) {
     });
 }
 exports.getItemReports = getItemReports;
-function generateOverallRepoert(req, res) {
+function generateOverallReport(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let items = yield (0, reports_1.get_all_items_sold)();
         if (items.rowCount > 0)
@@ -37,4 +37,4 @@ function generateOverallRepoert(req, res) {
         return res.status(400).send('None');
     });
 }
-exports.generateOverallRepoert = generateOverallRepoert;
+exports.generateOverallReport = generateOverallReport;
