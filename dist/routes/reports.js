@@ -8,4 +8,5 @@ const express_1 = __importDefault(require("express"));
 const reports_1 = require("../resources/reports");
 exports.router = express_1.default.Router();
 exports.router.get('/reports', reports_1.report);
+exports.router.get('/items-report', reports_1.getItemReports);
 module.exports = exports.router;

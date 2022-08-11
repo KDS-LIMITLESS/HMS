@@ -9,12 +9,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.report = void 0;
+exports.getItemReports = exports.report = void 0;
 const reports_1 = require("../models/reports");
 function report(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        yield (0, reports_1.get_waiters_that_closed_tables)();
-        return res.status(200).send(`Done`);
+        let waiters = yield (0, reports_1.get_waiters)();
+        if (waiters.rowCount > 0)
+            return res.status(200).send(waiters.rows);
+        return res.status(400).send(` none `);
     });
 }
 exports.report = report;
+function getItemReports(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let items = yield (0, reports_1.get_items)(req.body.waiter);
+        if (items.rowCount > 0)
+            return res.status(200).send(items.rows);
+        return res.status(400).send('none');
+    });
+}
+exports.getItemReports = getItemReports;

@@ -8,9 +8,13 @@ export async function create_reports_table() {
     )`)
 }
 
-export async function get_waiters_that_closed_tables() {
-
-    let waiter = await db.query(SQL`SELECT waiter, date from tables`)
+// returns all the waiters that served items
+export async function get_waiters() {
+    let waiter = await db.query(SQL ` SELECT DISTINCT username FROM orders`)
     return waiter;
 }
 
+export async function get_items(waiter:string) {
+    let item = await db.query(SQL `SELECT item, quantity FROM orders WHERE username = ${waiter}`)
+    return item
+}
