@@ -14,6 +14,13 @@ export async function get_waiters() {
     return waiter;
 }
 
+export async function get_distinct_items(waiter:string) {
+    let item = await db.query(SQL `SELECT DISTINCT item FROM orders 
+        WHERE username = ${waiter}`)
+    return item
+}
+
+
 export async function get_items(waiter:string) {
     let item = await db.query(SQL `SELECT item, quantity, price FROM orders 
         WHERE username = ${waiter}`)

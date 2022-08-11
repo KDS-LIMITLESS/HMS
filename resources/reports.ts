@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { get_waiters, get_items } from "../models/reports";
+import { get_waiters, get_items, get_distinct_items } from "../models/reports";
 
 
 export async function report(req: Request, res: Response) {
