@@ -7,6 +7,6 @@ exports.router = void 0;
 const express_1 = __importDefault(require("express"));
 const reports_1 = require("../resources/reports");
 exports.router = express_1.default.Router();
-exports.router.get('/reports', reports_1.report);
-exports.router.get('/items-report', reports_1.getItemReports);
+exports.router.get('/waiter-reports', reports_1.report);
+exports.router.get('/sold-items', reports_1.getItemReports);
 module.exports = exports.router;

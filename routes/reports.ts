@@ -4,7 +4,7 @@ import { report, getItemReports } from '../resources/reports';
 
 export const router = express.Router();
 
-router.get('/reports', report)
-router.get('/items-report', getItemReports)
+router.get('/waiter-reports', report)
+router.get('/sold-items', getItemReports)
 
 module.exports = router;

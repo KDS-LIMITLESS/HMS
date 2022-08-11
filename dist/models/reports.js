@@ -34,7 +34,8 @@ function get_waiters() {
 exports.get_waiters = get_waiters;
 function get_items(waiter) {
     return __awaiter(this, void 0, void 0, function* () {
-        let item = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT item, quantity FROM orders WHERE username = ${waiter}`);
+        let item = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT item, quantity, price FROM orders 
+        WHERE username = ${waiter}`);
         return item;
     });
 }

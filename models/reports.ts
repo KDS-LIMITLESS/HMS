@@ -15,6 +15,7 @@ export async function get_waiters() {
 }
 
 export async function get_items(waiter:string) {
-    let item = await db.query(SQL `SELECT item, quantity FROM orders WHERE username = ${waiter}`)
+    let item = await db.query(SQL `SELECT item, quantity, price FROM orders 
+        WHERE username = ${waiter}`)
     return item
 }
