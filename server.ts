@@ -34,10 +34,20 @@ app.listen(PORT, () => {
 })
 
 async function startServer() {
-    await createTableManager()
-    await create_notifications_table();
-    await create_Order_Table()
+    // await createTableManager()
+    // await create_notifications_table();
+    // await create_Order_Table()
+
+    await db.query(`ALTER TABLE notification 
+        DROP CONSTRAINT notification_waiter_fkey,
+        ALTER waiter DROP NOT NULL,
+        ADD CONSTRAINT notification_waiter_fkey FOREIGN KEY (waiter)
+        REFERENCES users(username) ON DELETE SET DEFAULT`)
     
 }
+// ADD CONSTRAINT person_waiter_fkey FOREIGN KEY (waiter)
+    //     REFERENCES users(username) ON DELETE SET NULL
+
+
 startServer();
-    
+
