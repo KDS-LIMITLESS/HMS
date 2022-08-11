@@ -26,3 +26,8 @@ export async function get_items(waiter:string) {
         WHERE username = ${waiter}`)
     return item
 }
+
+export async function get_all_items_sold() {
+    let allItems = await db.query(`SELECT item, price, quantity FROM orders`);
+    return allItems;
+}

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { get_waiters, get_items, get_distinct_items } from "../models/reports";
+import { get_waiters, get_items, get_all_items_sold } from "../models/reports";
 
 
 export async function report(req: Request, res: Response) {
@@ -12,4 +12,10 @@ export async function getItemReports(req:Request, res:Response) {
    let items = await get_items(req.body.waiter)
    if (items.rowCount > 0) return res.status(200).send(items.rows)
    return res.status(400).send('none')
+}
+
+export async function generateOverallReport(req:Request, res:Response) {
+   let items = await get_all_items_sold()
+   if (items.rowCount > 0) return res.status(200).send(items.rows)
+   return res.status(400).send('None')
 }
