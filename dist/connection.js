@@ -8,7 +8,7 @@ const pg_1 = require("pg");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 exports.db = new pg_1.Pool();
-if (process.env.RDS_HOSTNAME || process.env.DATABASE_URL) {
+if (process.env.RDS_HOSTNAME) {
     console.log(`Running Production Databse......`);
     exports.db = new pg_1.Pool({
         host: process.env.RDS_HOSTNAME,
@@ -16,6 +16,15 @@ if (process.env.RDS_HOSTNAME || process.env.DATABASE_URL) {
         database: process.env.RDS_DB_NAME,
         user: process.env.RDS_USERNAME,
         password: process.env.RDS_PASSWORD
+    });
+}
+if (process.env.DATABASE_URL) {
+    console.log(`running dbase database`);
+    exports.db = new pg_1.Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false
+        }
     });
 }
 else {
