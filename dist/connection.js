@@ -8,7 +8,7 @@ const pg_1 = require("pg");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 exports.db = new pg_1.Pool();
-if (process.env.RDS_HOSTNAME) {
+if (process.env.RDS_HOSTNAME || process.env.DATABASE_URL) {
     console.log(`Running Production Databse......`);
     exports.db = new pg_1.Pool({
         host: process.env.RDS_HOSTNAME,

@@ -5,7 +5,7 @@ dotenv.config()
 
 export let db = new Pool();
 
-if (process.env.RDS_HOSTNAME) {
+if (process.env.RDS_HOSTNAME || process.env.DATABASE_URL) {
 	console.log(`Running Production Databse......`)
 	db = new Pool({
 		host: process.env.RDS_HOSTNAME,
