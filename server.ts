@@ -35,7 +35,7 @@ app.listen(PORT, () => {
 
 async function startServer() {
     await createUsersTable();
-    // await createItemsTable();
+    await createItemsTable();
     // await create_Order_Table()
     // await createTableManager()
     // await create_notifications_table();
