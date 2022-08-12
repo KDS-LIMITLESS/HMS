@@ -34,9 +34,12 @@ app.listen(PORT, () => {
 })
 
 async function startServer() {
-    // await createTableManager()
-    // await create_notifications_table();
-    // await create_Order_Table()
+    await createTableManager()
+    await create_notifications_table();
+    await create_Order_Table()
+    await create_credit_table()
+    await createUsersTable()
+    await createItemsTable();
 
     // await db.query(`ALTER TABLE notification 
     //     DROP CONSTRAINT notification_waiter_fkey,
