@@ -13,7 +13,7 @@ const app = express();
 dotenv.config()
 
 app.use(express.json())
-app.use(cors({origin: 'https://rainforestpos.online'}));
+app.use(cors());
 app.use(express.static('uploads'));
 app.use('', require('./routes/item'));
 app.use('', require('./routes/user'));
