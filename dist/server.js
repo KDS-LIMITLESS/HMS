@@ -16,6 +16,10 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = require("./connection");
+const order_1 = require("./models/order");
+const table_1 = require("./models/table");
+const credit_1 = require("./models/credit");
+const notifiacation_1 = require("./models/notifiacation");
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 app.use(express_1.default.json());
@@ -39,9 +43,16 @@ app.listen(PORT, () => {
 });
 function startServer() {
     return __awaiter(this, void 0, void 0, function* () {
-        // await createTableManager()
-        // await create_notifications_table();
-        // await create_Order_Table()
+        // await createUsersTable();
+        // await createItemsTable();
+        yield connection_1.db.query('DROP TABLE orders');
+        yield connection_1.db.query('DROP TABLE tables');
+        yield connection_1.db.query('DROP TABLE credit');
+        yield connection_1.db.query('DROP TABLE notification');
+        yield (0, table_1.createTableManager)();
+        yield (0, order_1.create_Order_Table)();
+        yield (0, credit_1.create_credit_table)();
+        yield (0, notifiacation_1.create_notifications_table)();
         // await db.query(`ALTER TABLE notification 
         //     DROP CONSTRAINT notification_waiter_fkey,
         //     ALTER waiter DROP NOT NULL,
@@ -50,5 +61,6 @@ function startServer() {
     });
 }
 startServer();
+// KAMAH GTBank2022
 // notificatons to various departments
 // retur item for bar man

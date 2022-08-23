@@ -15,7 +15,7 @@ if (process.env.RDS_HOSTNAME ) {
 		password: process.env.RDS_PASSWORD
 	}) 
 }
-if (process.env.DATABASE_URL) {
+else if (process.env.DATABASE_URL) {
 	console.log(`running dbase database`)
 	db = new Pool({
 	  connectionString: process.env.DATABASE_URL,
@@ -23,7 +23,8 @@ if (process.env.DATABASE_URL) {
 		rejectUnauthorized: false
 	  }
 	})
-} else {
+} 
+else {
 	console.log(`Running Development Databse......`)
 	db = new Pool({
 	  user: "hope",

@@ -13,7 +13,7 @@ const app = express();
 dotenv.config()
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({origin: 'https://rainforestpos.online'}));
 app.use(express.static('uploads'));
 app.use('', require('./routes/item'));
 app.use('', require('./routes/user'));
@@ -36,6 +36,11 @@ app.listen(PORT, () => {
 async function startServer() {
     // await createUsersTable();
     // await createItemsTable();
+    // await db.query('DROP TABLE orders')
+    // await db.query('DROP TABLE tables')
+    // await db.query('DROP TABLE credit')
+    // await db.query('DROP TABLE notification')
+
     await createTableManager()
     await create_Order_Table()
     await create_credit_table()
@@ -51,6 +56,6 @@ async function startServer() {
 }
 startServer();
 
-
+// KAMAH GTBank2022
 // notificatons to various departments
 // retur item for bar man

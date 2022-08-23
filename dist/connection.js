@@ -18,7 +18,7 @@ if (process.env.RDS_HOSTNAME) {
         password: process.env.RDS_PASSWORD
     });
 }
-if (process.env.DATABASE_URL) {
+else if (process.env.DATABASE_URL) {
     console.log(`running dbase database`);
     exports.db = new pg_1.Pool({
         connectionString: process.env.DATABASE_URL,
