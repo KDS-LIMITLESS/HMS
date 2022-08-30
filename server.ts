@@ -40,7 +40,8 @@ async function startServer() {
     // await db.query('DROP TABLE tables')
     // await db.query('DROP TABLE credit')
     // await db.query('DROP TABLE notification')
-
+    await createUsersTable()
+    await createItemsTable()
     await createTableManager()
     await create_Order_Table()
     await create_credit_table()
