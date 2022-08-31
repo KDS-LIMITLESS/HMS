@@ -16,10 +16,13 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = require("./connection");
+const item_1 = require("./models/item");
 const order_1 = require("./models/order");
+const user_1 = require("./models/user");
 const table_1 = require("./models/table");
 const credit_1 = require("./models/credit");
 const notifiacation_1 = require("./models/notifiacation");
+const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 app.use(express_1.default.json());
@@ -45,14 +48,18 @@ function startServer() {
     return __awaiter(this, void 0, void 0, function* () {
         // await createUsersTable();
         // await createItemsTable();
-        yield connection_1.db.query('DROP TABLE orders');
-        yield connection_1.db.query('DROP TABLE tables');
-        yield connection_1.db.query('DROP TABLE credit');
-        yield connection_1.db.query('DROP TABLE notification');
+        // await db.query('DROP TABLE orders')
+        // await db.query('DROP TABLE tables')
+        // await db.query('DROP TABLE credit')
+        // await db.query('DROP TABLE notification')
+        yield (0, user_1.createUsersTable)();
+        yield (0, item_1.createItemsTable)();
         yield (0, table_1.createTableManager)();
         yield (0, order_1.create_Order_Table)();
         yield (0, credit_1.create_credit_table)();
         yield (0, notifiacation_1.create_notifications_table)();
+        const test = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT * FROM item WHERE category = Wines & Spirit`);
+        console.log(test);
         // await db.query(`ALTER TABLE notification 
         //     DROP CONSTRAINT notification_waiter_fkey,
         //     ALTER waiter DROP NOT NULL,

@@ -8,6 +8,7 @@ import { createUsersTable } from './models/user';
 import { createTableManager} from './models/table';
 import { create_credit_table } from './models/credit';
 import { create_notifications_table } from './models/notifiacation';
+import SQL from 'sql-template-strings'
 
 const app = express();
 dotenv.config()
@@ -32,7 +33,11 @@ const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
      console.log('Server Listening on port 3000')
 })
-
+async function updateCategory(category: string, initialCategory: string) {
+    const categories = await db.query(SQL `UPDATE item SET category = ${category}
+        WHERE category = ${initialCategory}`)
+    return categories;
+}
 async function startServer() {
     // await createUsersTable();
     // await createItemsTable();
@@ -47,7 +52,9 @@ async function startServer() {
     await create_credit_table()
     await create_notifications_table();
 
-
+    await updateCategory("Wines / Whisky", "Wines / Whiskey")
+    const test = await db.query(SQL `SELECT * FROM item ` )
+    console.log(test.rows)
     // await db.query(`ALTER TABLE notification 
     //     DROP CONSTRAINT notification_waiter_fkey,
     //     ALTER waiter DROP NOT NULL,
