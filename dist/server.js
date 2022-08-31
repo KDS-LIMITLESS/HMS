@@ -44,6 +44,13 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log('Server Listening on port 3000');
 });
+function updateCategory(category, initialCategory) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const categories = yield connection_1.db.query((0, sql_template_strings_1.default) `UPDATE item SET category = ${category}
+        WHERE category = ${initialCategory}`);
+        return categories;
+    });
+}
 function startServer() {
     return __awaiter(this, void 0, void 0, function* () {
         // await createUsersTable();
@@ -58,8 +65,10 @@ function startServer() {
         yield (0, order_1.create_Order_Table)();
         yield (0, credit_1.create_credit_table)();
         yield (0, notifiacation_1.create_notifications_table)();
-        const test = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT * FROM item WHERE category = Wines & Spirit`);
-        console.log(test);
+        const test = yield updateCategory("Wines / Whisky", "Wines & Spirit");
+        // const test = await db.query(SQL `SELECT * FROM item ` )
+        console.log(test.rows);
+        console.log(test.rowCount);
         // await db.query(`ALTER TABLE notification 
         //     DROP CONSTRAINT notification_waiter_fkey,
         //     ALTER waiter DROP NOT NULL,
