@@ -39,7 +39,7 @@ export async function authorizeSuperAdminNext(req: Request, res: Response, next:
 }
 
 export async function authorizeAuditor(req: Request, res: Response, next: NextFunction){
-    const USERS = ['Auditor', 'Super Admin', 'Bar Man']
+    const USERS = ['Auditor', 'Super Admin', 'Bar Man', 'Accounts']
     try {
         let userExists = await get_user(req.body.activeUser)
         if (userExists && USERS.includes(userExists.rows[0]['role']) 
@@ -63,7 +63,7 @@ export async function authorizeDiscount(req:Request, res:Response, next:NextFunc
         let userExists = await get_passcode(req.body.passcode)
         
         if (req.body.complimentary_qty !== 0 || req.body.discount !== 0 ){
-            const USERS = ['Auditor', 'Super Admin', 'Admin']
+            const USERS = ['Auditor', 'Super Admin', 'Accounts']
             if (userExists?.rowCount === 1 && USERS.includes(userExists?.rows[0]['role'])){
                 next();
 
@@ -87,7 +87,7 @@ export async function authorizeCredit(req: Request, res:Response, next:NextFunct
     if (req.body.credit !== 0){
         
         try{ 
-            const USERS = ['Auditor', 'Super Admin']
+            const USERS = ['Auditor', 'Super Admin', 'Accounts']
             let userExists = await get_passcode(req.body.passcode)
             const USER_HAS_CREDIT = await get_credit_status(userExists?.rows[0]['username'])
         

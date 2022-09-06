@@ -33,11 +33,7 @@ const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
      console.log('Server Listening on port 3000')
 })
-async function updateCategory(category: string, initialCategory: string) {
-    const categories = await db.query(SQL `UPDATE item SET category = ${category}
-        WHERE category = ${initialCategory}`)
-    return categories;
-}
+
 async function startServer() {
     // await createUsersTable();
     // await createItemsTable();
@@ -52,11 +48,6 @@ async function startServer() {
     await create_credit_table()
     await create_notifications_table();
 
-    const test = await updateCategory("Wines / Whisky", "Wines and Spirit")
-    // let category = "Bar"
-    // const test = await db.query(SQL `SELECT * FROM item WHERE department =${category}` )
-    console.log(test.rows);
-    console.log(test.rowCount);
     // await db.query(`ALTER TABLE notification 
     //     DROP CONSTRAINT notification_waiter_fkey,
     //     ALTER waiter DROP NOT NULL,
