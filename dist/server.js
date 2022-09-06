@@ -65,8 +65,9 @@ function startServer() {
         yield (0, order_1.create_Order_Table)();
         yield (0, credit_1.create_credit_table)();
         yield (0, notifiacation_1.create_notifications_table)();
-        const test = yield updateCategory("Wines / Whisky", "Wines & Spirit");
-        // const test = await db.query(SQL `SELECT * FROM item ` )
+        const test = yield updateCategory("Wines / Whisky", "Wines and Spirit");
+        // let category = "Bar"
+        // const test = await db.query(SQL `SELECT * FROM item WHERE department =${category}` )
         console.log(test.rows);
         console.log(test.rowCount);
         // await db.query(`ALTER TABLE notification 

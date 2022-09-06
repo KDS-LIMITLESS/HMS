@@ -52,7 +52,7 @@ async function startServer() {
     await create_credit_table()
     await create_notifications_table();
 
-    const test = await updateCategory("Wines / Whisky", "Wines and Spirit")
+    const test = await updateCategory("Wines", "Wines / Whisky")
     // let category = "Bar"
     // const test = await db.query(SQL `SELECT * FROM item WHERE department =${category}` )
     console.log(test.rows);
