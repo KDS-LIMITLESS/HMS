@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateUserPasscode = exports.updateUserPassword = exports.getAllAuthorizedAdmins = exports.updateUserRole = exports.getAllUsers = exports.removeUser = exports.reactivateUser = exports.suspendUser = exports.checkPasscode = exports.login = exports.newUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = require("../models/user");
+const user_2 = require("../middlewares/user");
+const token = new user_2.Tokens();
 function newUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let userExists = yield (0, user_1.get_user)(req.body.username);
@@ -36,8 +38,9 @@ function login(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let userExists = yield (0, user_1.get_user)(req.body.username);
         if ((userExists.rowCount === 1) && (yield bcrypt_1.default.compare(req.body.password, userExists.rows[0]['password']))) {
-            return res.status(200).json({ username: userExists.rows[0]['username'],
-                passcode: userExists.rows[0]['passcode'], role: userExists.rows[0]['role'] });
+            let user = token.generateAuthToken(userExists.rows[0]['username'], userExists.rows[0]['role']);
+            console.log(user);
+            return res.status(200).json({ token: user });
         }
         console.log(JSON.stringify(req.body) + " Invalid login details");
         return res.status(400).send(`Invalid login details`);
@@ -48,7 +51,7 @@ function checkPasscode(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let userExists = yield (0, user_1.get_user)(req.body.username);
         try {
-            if ((userExists.rowCount === 1) && (userExists.rows[0]['role'] === 'Super Admin') && (req.body.passcode === userExists.rows[0]['passcode'])) {
+            if ((userExists.rowCount === 1) && (userExists.rows[0]['role'] === 'Super Admin' || userExists.rows[0]['role'] === 'Accounts') && (req.body.passcode === userExists.rows[0]['passcode'])) {
                 return res.status(200).send("OK");
             }
             console.log(JSON.stringify(req.body));

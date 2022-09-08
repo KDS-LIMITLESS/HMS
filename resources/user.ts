@@ -2,6 +2,10 @@ import bcrypt from 'bcrypt'
 import { get_user, create_new_user, suspend_user, delete_user, 
     get_all_users, update_user_role, get_admins, update_user_password, update_user_passcode } from "../models/user";
 import { Response, Request } from "express";
+import { Tokens } from '../middlewares/user'
+
+const token = new Tokens();
+
 
 export async function newUser(req: Request, res: Response) {
     let userExists = await get_user(req.body.username)
@@ -20,9 +24,11 @@ export async function newUser(req: Request, res: Response) {
 export async function login(req:Request, res:Response) {
     let userExists = await get_user(req.body.username)
     if ((userExists.rowCount === 1) && (await bcrypt.compare(req.body.password, userExists.rows[0]['password']))) {
-        
-        return res.status(200).json({username: userExists.rows[0]['username'], 
-            passcode: userExists.rows[0]['passcode'], role: userExists.rows[0]['role']}); 
+        let user = await token.generateAuthToken(userExists.rows[0]['username'], userExists.rows[0]['role'])
+
+        console.log(user);
+
+        return res.status(200).json({token: user }); 
     }
     console.log(JSON.stringify(req.body) + " Invalid login details")
     return res.status(400).send(`Invalid login details`);    

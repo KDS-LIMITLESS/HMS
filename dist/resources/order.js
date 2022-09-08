@@ -30,7 +30,7 @@ exports.placeOrder = placeOrder;
 function getTableOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let TABLE_ORDERS;
-        if (req.body.role === 'Super Admin' || req.body.role === 'Auditor') {
+        if (req.body.role === 'Super Admin' || req.body.role === 'Auditor' || req.body.role === 'Accounts') {
             TABLE_ORDERS = yield (0, order_1.get_table_orders_for_admin)(req.body.table_name);
         }
         else {

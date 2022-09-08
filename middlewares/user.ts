@@ -1,5 +1,5 @@
 import { Response, Request, NextFunction } from "express";
-import { nextTick } from "process";
+import jwt from 'jsonwebtoken';
 import { get_user, get_passcode } from "../models/user";
 import { get_credit_balance, calculate_credit_balance, get_credit_status } from "../models/credit";
 
@@ -39,7 +39,7 @@ export async function authorizeSuperAdminNext(req: Request, res: Response, next:
 }
 
 export async function authorizeAuditor(req: Request, res: Response, next: NextFunction){
-    const USERS = ['Auditor', 'Super Admin', 'Bar Man', 'Accounts']
+    const USERS = ['Auditor', 'Super Admin', 'Bar Man']
     try {
         let userExists = await get_user(req.body.activeUser)
         if (userExists && USERS.includes(userExists.rows[0]['role']) 
@@ -63,7 +63,7 @@ export async function authorizeDiscount(req:Request, res:Response, next:NextFunc
         let userExists = await get_passcode(req.body.passcode)
         
         if (req.body.complimentary_qty !== 0 || req.body.discount !== 0 ){
-            const USERS = ['Auditor', 'Super Admin', 'Accounts']
+            const USERS = ['Auditor', 'Super Admin', 'Admin']
             if (userExists?.rowCount === 1 && USERS.includes(userExists?.rows[0]['role'])){
                 next();
 
@@ -87,7 +87,7 @@ export async function authorizeCredit(req: Request, res:Response, next:NextFunct
     if (req.body.credit !== 0){
         
         try{ 
-            const USERS = ['Auditor', 'Super Admin', 'Accounts']
+            const USERS = ['Auditor', 'Super Admin']
             let userExists = await get_passcode(req.body.passcode)
             const USER_HAS_CREDIT = await get_credit_status(userExists?.rows[0]['username'])
         
@@ -125,4 +125,41 @@ export async function checkIsUserSuspended(req:Request, res: Response, next: Nex
     }
     next();
     
+}
+
+
+export interface IRequest extends Request {
+    user: any
+}
+
+
+export class Tokens {
+
+    async generateAuthToken(username:string, role: string): Promise<string> {
+        return jwt.sign({username, role}, process.env.JWT_SECRET_TOKEN as string , {expiresIn: '1h'})
+    }
+
+    async authenticateAuthToken(req:IRequest, res:Response, next:NextFunction) {
+        console.log(req.headers)
+        if (!req.headers.authorization) {
+            return res.status(401).json({message: "Authorization required"});
+        } 
+        let splittedHeader = req.headers.authorization.split(' ');
+        
+        if (splittedHeader[ 0 ] !== "Bearer") {
+            return res.status(401).json({ message: "auth format is Bearer <token>" })
+        }
+        let token = splittedHeader[ 1 ];
+        
+        try{
+            const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN as string );
+            console.log(decodedToken)
+            req.user = decodedToken
+            next();
+        }
+        catch(err: any){
+            res.status(401).send(err.message)
+        }
+        
+    }
 }

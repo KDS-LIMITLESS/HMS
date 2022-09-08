@@ -8,8 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkIsUserSuspended = exports.authorizeCredit = exports.authorizeDiscount = exports.authorizeAuditor = exports.authorizeSuperAdminNext = exports.authorizeUser = void 0;
+exports.Tokens = exports.checkIsUserSuspended = exports.authorizeCredit = exports.authorizeDiscount = exports.authorizeAuditor = exports.authorizeSuperAdminNext = exports.authorizeUser = void 0;
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_1 = require("../models/user");
 const credit_1 = require("../models/credit");
 function authorizeUser(req, res, next) {
@@ -139,3 +143,33 @@ function checkIsUserSuspended(req, res, next) {
     });
 }
 exports.checkIsUserSuspended = checkIsUserSuspended;
+class Tokens {
+    generateAuthToken(username, role) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return jsonwebtoken_1.default.sign({ username, role }, process.env.JWT_SECRET_TOKEN, { expiresIn: '1h' });
+        });
+    }
+    authenticateAuthToken(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(req.headers);
+            if (!req.headers.authorization) {
+                return res.status(401).json({ message: "Authorization required" });
+            }
+            let splittedHeader = req.headers.authorization.split(' ');
+            if (splittedHeader[0] !== "Bearer") {
+                return res.status(401).json({ message: "auth format is Bearer <token>" });
+            }
+            let token = splittedHeader[1];
+            try {
+                const decodedToken = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET_TOKEN);
+                console.log(decodedToken);
+                req.user = decodedToken;
+                next();
+            }
+            catch (err) {
+                res.status(401).send(err.message);
+            }
+        });
+    }
+}
+exports.Tokens = Tokens;
