@@ -43,11 +43,11 @@ async function startServer() {
     // await db.query('DROP TABLE notification')
     
     await createUsersTable()
-    await createItemsTable()
-    await createTableManager()
-    await create_Order_Table()
-    await create_credit_table()
-    await create_notifications_table();
+    // await createItemsTable()
+    // await createTableManager()
+    // await create_Order_Table()
+    // await create_credit_table()
+    // await create_notifications_table();
 
     // await db.query(`ALTER TABLE notification 
     //     DROP CONSTRAINT notification_waiter_fkey,
