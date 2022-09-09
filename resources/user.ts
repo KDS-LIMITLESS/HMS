@@ -24,7 +24,7 @@ export async function newUser(req: Request, res: Response) {
 export async function login(req:Request, res:Response) {
     let userExists = await get_user(req.body.username)
     if ((userExists.rowCount === 1) && (await bcrypt.compare(req.body.password, userExists.rows[0]['password']))) {
-        let user = await token.generateAuthToken(userExists.rows[0]['username'], userExists.rows[0]['role'])
+        let user = await token.generateAuthToken(userExists.rows[0]['username'], userExists.rows[0]['role'], userExists.rows[0]['passcode'])
 
         console.log(user);
 

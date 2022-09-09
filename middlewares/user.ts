@@ -4,6 +4,15 @@ import { get_user, get_passcode } from "../models/user";
 import { get_credit_balance, calculate_credit_balance, get_credit_status } from "../models/credit";
 
 
+export interface IRequest extends Request {
+    user: any;
+}
+
+export interface IResponse extends Response {
+    user: any;
+}
+
+
 export async function authorizeUser(req:Request, res:Response, next:NextFunction){
     
     try {
@@ -127,16 +136,10 @@ export async function checkIsUserSuspended(req:Request, res: Response, next: Nex
     
 }
 
-
-export interface IRequest extends Request {
-    user: any
-}
-
-
 export class Tokens {
 
-    async generateAuthToken(username:string, role: string): Promise<string> {
-        return jwt.sign({username, role}, process.env.JWT_SECRET_TOKEN as string , {expiresIn: '1h'})
+    async generateAuthToken(username:string, role: string, passcode: number): Promise<string> {
+        return jwt.sign({username, role, passcode}, process.env.JWT_SECRET_TOKEN as string , {expiresIn: '1h'})
     }
 
     async authenticateAuthToken(req:IRequest, res:Response, next:NextFunction) {
