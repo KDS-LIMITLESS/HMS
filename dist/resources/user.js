@@ -38,7 +38,7 @@ function login(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let userExists = yield (0, user_1.get_user)(req.body.username);
         if ((userExists.rowCount === 1) && (yield bcrypt_1.default.compare(req.body.password, userExists.rows[0]['password']))) {
-            let user = token.generateAuthToken(userExists.rows[0]['username'], userExists.rows[0]['role']);
+            let user = yield token.generateAuthToken(userExists.rows[0]['username'], userExists.rows[0]['role'], userExists.rows[0]['passcode']);
             console.log(user);
             return res.status(200).json({ token: user });
         }

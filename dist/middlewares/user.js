@@ -144,9 +144,9 @@ function checkIsUserSuspended(req, res, next) {
 }
 exports.checkIsUserSuspended = checkIsUserSuspended;
 class Tokens {
-    generateAuthToken(username, role) {
+    generateAuthToken(username, role, passcode) {
         return __awaiter(this, void 0, void 0, function* () {
-            return jsonwebtoken_1.default.sign({ username, role }, process.env.JWT_SECRET_TOKEN, { expiresIn: '1h' });
+            return jsonwebtoken_1.default.sign({ username, role, passcode }, process.env.JWT_SECRET_TOKEN, { expiresIn: '1h' });
         });
     }
     authenticateAuthToken(req, res, next) {

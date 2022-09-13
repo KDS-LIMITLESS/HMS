@@ -35,8 +35,8 @@ app.listen(PORT, () => {
 })
 
 async function startServer() {
-    // await createUsersTable();
-    // await createItemsTable();
+    await createUsersTable();
+    await createItemsTable();
     // await db.query('DROP TABLE orders')
     // await db.query('DROP TABLE tables')
     // await db.query('DROP TABLE credit')
@@ -44,11 +44,12 @@ async function startServer() {
     
     await createUsersTable()
     await createItemsTable()
-    // await createTableManager()
-    // await create_Order_Table()
-    // await create_credit_table()
-    // await create_notifications_table();
+    await createTableManager()
+    await create_Order_Table()
+    await create_credit_table()
+    await create_notifications_table();
 
+    await db.query('pg_dump -U postgres thebase > thebasedump.sql')
     // await db.query(`ALTER TABLE notification 
     //     DROP CONSTRAINT notification_waiter_fkey,
     //     ALTER waiter DROP NOT NULL,
