@@ -38,8 +38,8 @@ async function startServer() {
     // await createUsersTable();
     
     // await createItemsTable();
-    // await db.query('DROP TABLE item')
-    // await db.query('DROP TABLE users')
+    await db.query('DROP TABLE item')
+    await db.query('DROP TABLE users')
     await db.query('DROP TABLE orders')
     await db.query('DROP TABLE tables')
     await db.query('DROP TABLE credit')
