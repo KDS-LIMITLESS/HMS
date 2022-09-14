@@ -47,8 +47,8 @@ async function startServer() {
     
     // await createUsersTable()
     // await createItemsTable()
-    // await createTableManager()
-    // await create_Order_Table()
+    await createTableManager()
+    await create_Order_Table()
     await create_credit_table()
     await create_notifications_table();
 
