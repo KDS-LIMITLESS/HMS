@@ -19,11 +19,11 @@ export async function createTable(req:Request, res: Response, next: NextFunction
     } 
     if (table.rowCount === 0) {
         for (order of ORDER){
-            let item = await get_item(order['item']['product'], order['item']['department']);
+            let item = await get_item(order['product'], order['department']);
             
             if (item === null)  {     
                 console.log(item)
-                console.log(`${order['item']['product']} Not found`)
+                console.log(`${order['product']} Not found`)
                 res.status(404).end(`Not Found!`); 
                 exit()
                 //stop crashing the server here!!
