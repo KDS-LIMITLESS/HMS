@@ -27,9 +27,9 @@ export async function login(req:Request, res:Response) {
         let user = await token.generateAuthToken(userExists.rows[0]['username'], userExists.rows[0]['role'], userExists.rows[0]['passcode'])
 
         console.log(user);
-        return res.status(200).json({username: userExists.rows[0]['username'], 
-            passcode: userExists.rows[0]['passcode'], role: userExists.rows[0]['role']}); 
-        // return res.status(200).json({token: user }); 
+        // return res.status(200).json({username: userExists.rows[0]['username'], 
+        //     passcode: userExists.rows[0]['passcode'], role: userExists.rows[0]['role']}); 
+        return res.status(200).json({token: user }); 
     }
     console.log(JSON.stringify(req.body) + " Invalid login details")
     return res.status(400).send(`Invalid login details`);    
