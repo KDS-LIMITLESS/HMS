@@ -13,6 +13,7 @@ export async function placeOrder(req: Request, res: Response, next: NextFunction
     const ORDER: [] = req.body.order;
     
     for (const order of ORDER) {
+        console.log(order)
         await new_order(req.body.activeUser, order['item']['product'], 
             order['item']['price'], order['quantity'], order['item']['category'],  
             order['item']['image'], order['item']['department'], req.body.table_name,
