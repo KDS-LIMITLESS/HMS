@@ -65,22 +65,22 @@ export async function updateOrder(req: Request, res: Response) {
     const ORDER: [] = req.body.order;
     // check if table exists
     for (const order of ORDER) {
-        let item = await get_drinks_in_table(order['item']['product'], req.body.table_name)
+        let item = await get_drinks_in_table(order['product'], req.body.table_name)
         if (item.rowCount !== 0 ) {
             let quantity = order['quantity'] + item.rows[0]['quantity']
-            await update_order_quantity(order['item']['product'], 
+            await update_order_quantity(order['product'], 
                                      quantity, req.body.table_name)
             // order derails to send to the bar man as notification
-            await send_notification(req.body.activeUser, order['item']['product'], order['quantity'])   
+            await send_notification(req.body.activeUser, order['product'], order['quantity'])   
         } else {
             // item exists 
             const TOTAL =  req.body.price*req.body.quantity
-            await new_order(req.body.activeUser, order['item']['product'], 
-                order['item']['price'], order['quantity'], order['item']['category'],  
-                order['item']['image'], order['item']['department'], 
+            await new_order(req.body.activeUser, order['product'], 
+                order['price'], order['quantity'], order['category'],  
+                order['image'], order['department'], 
                 req.body.table_name,time.toLocaleTimeString()
             ); 
-            await send_notification(req.body.activeUser, order['item']['product'], order['quantity'])   
+            await send_notification(req.body.activeUser, order['product'], order['quantity'])   
         }
     };
     return res.json(`OK`)
