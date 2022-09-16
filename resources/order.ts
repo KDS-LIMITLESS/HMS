@@ -45,12 +45,13 @@ export async function getTableOrders(req: Request, res: Response) {
         let items = {
             // "username": item.username,
             "quantity": item.quantity,
-            "product": item.item,
-            "price": item.price,
-            "category": item.category,
-            "image": item.image,
-            "department": item.department
-            
+            "item": {
+                "product": item.item,
+                "price": item.price,
+                "category": item.category,
+                "image": item.image,
+                "department": item.department
+            }
         }
         
         notification.push(items)
