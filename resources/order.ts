@@ -123,7 +123,7 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
 }
 
 export async function deleteOrder(req:Request, res:Response) {
-    let order = await get_order(req.body.table_name, req.body.waiter, req.body.product);
+    let order = await get_order(req.body.table_name, req.body.product);
     if (order.rowCount === 1){
         await delete_order(req.body.table_name, req.body.product)
         return res.status(200).send(`OK`)
