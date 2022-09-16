@@ -45,17 +45,17 @@ export async function getTableOrders(req: Request, res: Response) {
         let items = {
             // "username": item.username,
             "quantity": item.quantity,
-            "item": {
-                "product": item.item,
-                "price": item.price,
-                "category": item.category,
-                "image": item.image,
-                "department": item.department
-            }
+            "product": item.item,
+            "price": item.price,
+            "category": item.category,
+            "image": item.image,
+            "department": item.department
+            
         }
         
         notification.push(items)
     })
+    console.log(TABLE_ORDERS)
     return res.status(200).send(notification)   
 }
 
@@ -83,6 +83,7 @@ export async function updateOrder(req: Request, res: Response) {
             await send_notification(req.body.activeUser, order['product'], order['quantity'])   
         }
     };
+    console.log(ORDER)
     return res.json(`OK`)
 }
 
