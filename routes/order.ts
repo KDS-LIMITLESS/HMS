@@ -12,7 +12,7 @@ router.post('/order', authorizeUser, createTable, placeOrder);
 router.post('/get-orders', authorizeUser, getTableOrders);
 router.post('/update-order', authorizeUser, updateOrder);
 router.post('/order-count', authorizeUser, countWaitersOrder)
-router.post('/return-order', authorizeAuditor, removeOrdersFromTable)
+router.put('/return-order', authorizeAuditor, removeOrdersFromTable)
 router.delete('/delete-order', authorizeAuditor, deleteOrder)
 
 module.exports = router;
