@@ -56,7 +56,6 @@ export async function getTableOrders(req: Request, res: Response) {
         
         notification.push(items)
     })
-    console.log(TABLE_ORDERS)
     return res.status(200).send(notification)   
 }
 
@@ -84,7 +83,6 @@ export async function updateOrder(req: Request, res: Response) {
             await send_notification(req.body.activeUser, order['product'], order['quantity'])   
         }
     };
-    console.log(ORDER)
     return res.json(`OK`)
 }
 
