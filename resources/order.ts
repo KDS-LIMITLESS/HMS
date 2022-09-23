@@ -35,7 +35,7 @@ export async function getTableOrders(req: Request, res: Response) {
         TABLE_ORDERS = await get_table_orders(req.body.activeUser, req.body.table_name);
     }
     
-    console.log(TABLE_ORDERS)
+    console.log(req.body)
 
     if (!TABLE_ORDERS) return res.status(400).send(`table not found`)
     
