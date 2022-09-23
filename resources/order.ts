@@ -30,10 +30,12 @@ export async function getTableOrders(req: Request, res: Response) {
     let TABLE_ORDERS;
     if (req.body.role === 'Super Admin' || req.body.role === 'Auditor' || req.body.role === 'Accounts' ){
         TABLE_ORDERS = await get_table_orders_for_admin(req.body.table_name)
-    
+        
     } else {
         TABLE_ORDERS = await get_table_orders(req.body.activeUser, req.body.table_name);
     }
+    
+    console.log(TABLE_ORDERS)
 
     if (!TABLE_ORDERS) return res.status(400).send(`table not found`)
     
