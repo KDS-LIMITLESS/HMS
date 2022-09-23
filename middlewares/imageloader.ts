@@ -71,7 +71,7 @@ const uploadReport = multer({
           },  
 
         key: function(req:Request, file:any, cb:any){
-            cb(null, path.basename(file.originalname) + path.extname(file.originalname));
+            cb(null, file.originalname);
         }
     })
 }).single('file')
