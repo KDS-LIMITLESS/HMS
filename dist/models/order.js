@@ -121,10 +121,10 @@ function delete_order(table_name, item) {
     });
 }
 exports.delete_order = delete_order;
-function get_order(table_name, waiter, product) {
+function get_order(table_name, product) {
     return __awaiter(this, void 0, void 0, function* () {
         let result = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT item, username, table_name FROM orders 
-        WHERE table_name = ${table_name} AND item = ${product} AND username = ${waiter}`);
+        WHERE table_name = ${table_name} AND item = ${product}`);
         return result;
     });
 }

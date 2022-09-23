@@ -8,7 +8,7 @@ router.post('/tables', getWaiterTables); // rename to my-tables
 router.post('/close-table', authorizeDiscount, authorizeCredit, closeTable);
 // admin table to see all tables 
 router.post('/all-tables', authorizeAuditor, getAllTables);
-router.post('/table', getTableDiscount)
+router.post('/table-discount', getTableDiscount)
 router.post('/table-date', getTableDateAndTime)
 
 

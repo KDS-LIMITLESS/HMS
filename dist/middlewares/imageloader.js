@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadPicture = void 0;
+exports.uploadReportFile = exports.uploadPicture = void 0;
 const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
 const { S3Client } = require('@aws-sdk/client-s3');
@@ -24,11 +24,13 @@ const s3 = new S3Client({
         secretAccessKey: "txUVwvT4wQR7ouyUVr494p7Pl7NlNJutkzmphnQy",
     }
 });
+// image upload 
 const uploadS3 = (0, multer_1.default)({
     storage: multers3({
         s3: s3,
         bucket: 'rainforestpos',
         acl: 'public-read',
+        cacheControl: 'max-age=31536000',
         contentType: multers3.AUTO_CONTENT_TYPE,
         metadata: function (req, file, cb) {
             cb(null, { fieldname: file.fieldname });
@@ -59,3 +61,37 @@ function uploadPicture(req, res) {
     });
 }
 exports.uploadPicture = uploadPicture;
+// upload report file
+const uploadReport = (0, multer_1.default)({
+    storage: multers3({
+        s3: s3,
+        bucket: 'rainforestpos',
+        acl: 'public-read',
+        contentType: multers3.AUTO_CONTENT_TYPE,
+        metadata: function (req, file, cb) {
+            cb(null, { fieldname: file.fieldname });
+        },
+        key: function (req, file, cb) {
+            cb(null, Date.now());
+        }
+    })
+}).single('file');
+function uploadReportFile(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            uploadReport(req, res, (err) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).send(`An error occured!`);
+                }
+                console.log(req.file.location);
+                return res.status(200).json({ filepath: req.file.location });
+            });
+        }
+        catch (e) {
+            console.log(e.message);
+            res.status(400).send(e.message);
+        }
+    });
+}
+exports.uploadReportFile = uploadReportFile;

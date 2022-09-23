@@ -17,8 +17,9 @@ function placeOrder(req, res, next) {
         let time = new Date();
         const ORDER = req.body.order;
         for (const order of ORDER) {
-            yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], order['item']['department'], req.body.table_name, time.toLocaleTimeString());
-            yield (0, notifiacation_1.send_notification)(req.body.activeUser, order['item']['product'], order['quantity']);
+            console.log(order);
+            yield (0, order_1.new_order)(req.body.activeUser, order['product'], order['price'], order['quantity'], order['category'], order['image'], order['department'], req.body.table_name, time.toLocaleTimeString());
+            yield (0, notifiacation_1.send_notification)(req.body.activeUser, order['product'], order['quantity']);
         }
         ;
         console.log(`new order created!`);
@@ -36,6 +37,7 @@ function getTableOrders(req, res) {
         else {
             TABLE_ORDERS = yield (0, order_1.get_table_orders)(req.body.activeUser, req.body.table_name);
         }
+        console.log(req.body);
         if (!TABLE_ORDERS)
             return res.status(400).send(`table not found`);
         // converting return type from db to [{}] required by the client.
@@ -65,18 +67,18 @@ function updateOrder(req, res) {
         const ORDER = req.body.order;
         // check if table exists
         for (const order of ORDER) {
-            let item = yield (0, order_1.get_drinks_in_table)(order['item']['product'], req.body.table_name);
+            let item = yield (0, order_1.get_drinks_in_table)(order['product'], req.body.table_name);
             if (item.rowCount !== 0) {
                 let quantity = order['quantity'] + item.rows[0]['quantity'];
-                yield (0, order_1.update_order_quantity)(order['item']['product'], quantity, req.body.table_name);
+                yield (0, order_1.update_order_quantity)(order['product'], quantity, req.body.table_name);
                 // order derails to send to the bar man as notification
-                yield (0, notifiacation_1.send_notification)(req.body.activeUser, order['item']['product'], order['quantity']);
+                yield (0, notifiacation_1.send_notification)(req.body.activeUser, order['product'], order['quantity']);
             }
             else {
                 // item exists 
                 const TOTAL = req.body.price * req.body.quantity;
-                yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], order['item']['department'], req.body.table_name, time.toLocaleTimeString());
-                yield (0, notifiacation_1.send_notification)(req.body.activeUser, order['item']['product'], order['quantity']);
+                yield (0, order_1.new_order)(req.body.activeUser, order['product'], order['price'], order['quantity'], order['category'], order['image'], order['department'], req.body.table_name, time.toLocaleTimeString());
+                yield (0, notifiacation_1.send_notification)(req.body.activeUser, order['product'], order['quantity']);
             }
         }
         ;
@@ -114,10 +116,11 @@ function removeOrdersFromTable(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const ORDER = req.body.order;
         let order;
+        console.log(req.body);
         for (order of ORDER) {
-            let item = yield (0, order_1.get_drinks_in_table)(order['item']['product'], req.body.table_name);
+            let item = yield (0, order_1.get_drinks_in_table)(order['product'], req.body.table_name);
             if (item.rowCount !== 0) {
-                yield (0, order_1.update_order_quantity)(order['item']['product'], order['quantity'], req.body.table_name);
+                yield (0, order_1.update_order_quantity)(order['product'], order['quantity'], req.body.table_name);
             }
         }
         return res.status(200).send(`OK`);
@@ -126,7 +129,7 @@ function removeOrdersFromTable(req, res) {
 exports.removeOrdersFromTable = removeOrdersFromTable;
 function deleteOrder(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        let order = yield (0, order_1.get_order)(req.body.table_name, req.body.waiter, req.body.product);
+        let order = yield (0, order_1.get_order)(req.body.table_name, req.body.product);
         if (order.rowCount === 1) {
             yield (0, order_1.delete_order)(req.body.table_name, req.body.product);
             return res.status(200).send(`OK`);

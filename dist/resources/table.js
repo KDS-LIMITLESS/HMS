@@ -25,10 +25,10 @@ function createTable(req, res, next) {
         }
         if (table.rowCount === 0) {
             for (order of ORDER) {
-                let item = yield (0, item_1.get_item)(order['item']['product'], order['item']['department']);
+                let item = yield (0, item_1.get_item)(order['product'], order['department']);
                 if (item === null) {
                     console.log(item);
-                    console.log(`${order['item']['product']} Not found`);
+                    console.log(`${order['product']} Not found`);
                     res.status(404).end(`Not Found!`);
                     (0, process_1.exit)();
                     //stop crashing the server here!!
@@ -47,6 +47,7 @@ function getAllTables(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const TABLES = yield (0, table_1.get_all_tables)();
+            console.log(TABLES === null || TABLES === void 0 ? void 0 : TABLES.rows);
             if (TABLES)
                 return res.status(200).send(TABLES === null || TABLES === void 0 ? void 0 : TABLES.rows);
             return res.status(404).send(`Table not found!`);
