@@ -47,7 +47,6 @@ function getAllTables(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const TABLES = yield (0, table_1.get_all_tables)();
-            console.log(TABLES === null || TABLES === void 0 ? void 0 : TABLES.rows);
             if (TABLES)
                 return res.status(200).send(TABLES === null || TABLES === void 0 ? void 0 : TABLES.rows);
             return res.status(404).send(`Table not found!`);

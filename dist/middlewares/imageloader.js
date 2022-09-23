@@ -12,9 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadReportFile = exports.uploadPicture = void 0;
+exports.uploadReportFile = exports.uploads = exports.uploadPicture = void 0;
 const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
+const aws = require('aws-sdk');
 const { S3Client } = require('@aws-sdk/client-s3');
 const multers3 = require('multer-s3');
 const s3 = new S3Client({
@@ -62,6 +63,11 @@ function uploadPicture(req, res) {
 }
 exports.uploadPicture = uploadPicture;
 // upload report file
+function uploads(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+    });
+}
+exports.uploads = uploads;
 const uploadReport = (0, multer_1.default)({
     storage: multers3({
         s3: s3,
@@ -72,7 +78,7 @@ const uploadReport = (0, multer_1.default)({
             cb(null, { fieldname: file.fieldname });
         },
         key: function (req, file, cb) {
-            cb(null, Date.now());
+            cb(null, file.originalname + path_1.default.extname(file.originalname));
         }
     })
 }).single('file');
@@ -84,6 +90,7 @@ function uploadReportFile(req, res) {
                     console.log(err);
                     return res.status(400).send(`An error occured!`);
                 }
+                console.log(req.body);
                 console.log(req.file.location);
                 return res.status(200).json({ filepath: req.file.location });
             });
