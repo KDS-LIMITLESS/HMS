@@ -96,7 +96,7 @@ export async function uploadReportFile(req:any, res:Response) {
 
 export async function retrievePDF(req:Request, res:Response) {
     try {
-        let baseURL = `rainforestpos.s3.us-east-1.amazonaws.com/${req.body.date}`
+        let baseURL = `rainforestpos.s3.us-east-1.amazonaws.com/${req.body.date}.pdf`
         return res.status(200).json({pdf: baseURL})
     } catch(e: any) {
         console.log(e.message)
