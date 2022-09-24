@@ -113,7 +113,7 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
     const ORDER: [] = req.body.order
     let order;
     
-    console.log(req.body + 'here')
+    JSON.stringify(console.log(req.body + 'here'))
    
     for (order of ORDER) {
         
