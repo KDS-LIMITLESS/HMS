@@ -109,19 +109,22 @@ export async function countWaitersOrder(req: Request, res: Response) {
 }
 
 export async function removeOrdersFromTable(req: Request, res: Response) {
-    
+    console.log(req.body)
     const ORDER: [] = req.body.order
     let order;
-    console.log(req.body)
+    
+    console.log(req.body + 'here')
    
     for (order of ORDER) {
         
+        console.log('inside loop')
         let item = await get_drinks_in_table(order['product'], req.body.table_name)        
         if (item.rowCount !== 0 ) {
             await update_order_quantity(order['product'], 
                 order['quantity'], req.body.table_name)
         }
     }
+    console.log('outside loop')
     return res.status(200).send(`OK`)
 }
 
