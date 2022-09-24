@@ -1,10 +1,12 @@
 import { Request, Response } from 'express';
 import multer from 'multer';
 import path from 'path';
+import { S3Client } from '@aws-sdk/client-s3'
+import multers3 from 'multer-s3'
 
-const aws = require('aws-sdk')
-const { S3Client }= require('@aws-sdk/client-s3')
-const multers3 = require('multer-s3')
+//const aws = require('aws-sdk')
+//const { S3Client }= require('@aws-sdk/client-s3')
+//const multers3 = require('multer-s3')
 
 
 const s3 = new S3Client({
@@ -14,6 +16,8 @@ const s3 = new S3Client({
         secretAccessKey: "txUVwvT4wQR7ouyUVr494p7Pl7NlNJutkzmphnQy",
     }
 });
+
+//s3.getObject({})
 
 // image upload 
 const uploadS3  = multer({
@@ -54,11 +58,6 @@ export async function uploadPicture(req: any, res: Response) {
 
 // upload report file
 
-export async function uploads(req:Request, res: Response) {
-   
-    
-}
-
 const uploadReport = multer({
     storage: multers3({
         s3: s3,
@@ -91,5 +90,16 @@ export async function uploadReportFile(req:any, res:Response) {
     } catch (e: any) {
         console.log(e.message)
         res.status(400).send(e.message)
+    }
+}
+
+
+export async function retrievePDF(req:Request, res:Response) {
+    try {
+        let baseURL = `rainforestpos.s3.us-east-1.amazonaws.com/${req.body.date}`
+        return res.status(200).send('OK')
+    } catch(e: any) {
+        console.log(e.message)
+        return res.status(404).send("Not Found")
     }
 }

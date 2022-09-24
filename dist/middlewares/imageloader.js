@@ -12,27 +12,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadReportFile = exports.uploads = exports.uploadPicture = void 0;
+exports.uploadReportFile = exports.uploadPicture = void 0;
 const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
-const aws = require('aws-sdk');
-const { S3Client } = require('@aws-sdk/client-s3');
-const multers3 = require('multer-s3');
-const s3 = new S3Client({
+const client_s3_1 = require("@aws-sdk/client-s3");
+const multer_s3_1 = __importDefault(require("multer-s3"));
+//const aws = require('aws-sdk')
+//const { S3Client }= require('@aws-sdk/client-s3')
+//const multers3 = require('multer-s3')
+const s3 = new client_s3_1.S3Client({
     region: 'us-east-1',
     credentials: {
         accessKeyId: "AKIA5O3DTRVWAOXULS6L",
         secretAccessKey: "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",
     }
 });
+//s3.getObject({})
 // image upload 
 const uploadS3 = (0, multer_1.default)({
-    storage: multers3({
+    storage: (0, multer_s3_1.default)({
         s3: s3,
         bucket: 'rainforestpos',
         acl: 'public-read',
         cacheControl: 'max-age=31536000',
-        contentType: multers3.AUTO_CONTENT_TYPE,
+        contentType: multer_s3_1.default.AUTO_CONTENT_TYPE,
         metadata: function (req, file, cb) {
             cb(null, { fieldname: file.fieldname });
         },
@@ -63,21 +66,17 @@ function uploadPicture(req, res) {
 }
 exports.uploadPicture = uploadPicture;
 // upload report file
-function uploads(req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-    });
-}
-exports.uploads = uploads;
 const uploadReport = (0, multer_1.default)({
-    storage: multers3({
+    storage: (0, multer_s3_1.default)({
         s3: s3,
         bucket: 'rainforestpos',
         acl: 'public-read',
-        contentType: multers3.AUTO_CONTENT_TYPE,
+        contentType: multer_s3_1.default.AUTO_CONTENT_TYPE,
         metadata: function (req, file, cb) {
             cb(null, { fieldname: file.fieldname });
         },
         key: function (req, file, cb) {
+            console.log(file);
             cb(null, file.originalname);
         }
     })
