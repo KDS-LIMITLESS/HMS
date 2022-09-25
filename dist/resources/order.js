@@ -18,8 +18,8 @@ function placeOrder(req, res, next) {
         const ORDER = req.body.order;
         for (const order of ORDER) {
             console.log(order);
-            yield (0, order_1.new_order)(req.body.activeUser, order['product'], order['price'], order['quantity'], order['category'], order['image'], order['department'], req.body.table_name, time.toLocaleTimeString());
-            yield (0, notifiacation_1.send_notification)(req.body.activeUser, order['product'], order['quantity']);
+            yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], order['item']['department'], req.body.table_name, time.toLocaleTimeString());
+            yield (0, notifiacation_1.send_notification)(req.body.activeUser, order['item']['product'], order['quantity']);
         }
         ;
         console.log(`new order created!`);
@@ -114,15 +114,18 @@ function countWaitersOrder(req, res) {
 exports.countWaitersOrder = countWaitersOrder;
 function removeOrdersFromTable(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log(req.body);
         const ORDER = req.body.order;
         let order;
-        console.log(req.body);
+        JSON.stringify(console.log(req.body + 'here'));
         for (order of ORDER) {
-            let item = yield (0, order_1.get_drinks_in_table)(order['product'], req.body.table_name);
+            console.log('inside loop');
+            let item = yield (0, order_1.get_drinks_in_table)(order['item']['product'], req.body.table_name);
             if (item.rowCount !== 0) {
-                yield (0, order_1.update_order_quantity)(order['product'], order['quantity'], req.body.table_name);
+                yield (0, order_1.update_order_quantity)(order['item']['product'], order['quantity'], req.body.table_name);
             }
         }
+        console.log('outside loop');
         return res.status(200).send(`OK`);
     });
 }

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadReportFile = exports.uploadPicture = void 0;
+exports.retrievePDF = exports.uploadReportFile = exports.uploadPicture = void 0;
 const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
 const client_s3_1 = require("@aws-sdk/client-s3");
@@ -101,3 +101,16 @@ function uploadReportFile(req, res) {
     });
 }
 exports.uploadReportFile = uploadReportFile;
+function retrievePDF(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            let baseURL = `rainforestpos.s3.us-east-1.amazonaws.com/${req.body.date}.pdf`;
+            return res.status(200).json({ pdf: baseURL });
+        }
+        catch (e) {
+            console.log(e.message);
+            return res.status(404).send("Not Found");
+        }
+    });
+}
+exports.retrievePDF = retrievePDF;
