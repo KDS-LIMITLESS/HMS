@@ -14,12 +14,12 @@ export async function placeOrder(req: Request, res: Response, next: NextFunction
     
     for (const order of ORDER) {
         console.log(order)
-        await new_order(req.body.activeUser, order['product'], 
-            order['price'], order['quantity'], order['category'],  
-            order['image'], order['department'], req.body.table_name,
+        await new_order(req.body.activeUser, order['item']['product'], 
+            order['item']['price'], order['quantity'], order['item']['category'],  
+            order['item']['image'], order['item']['department'], req.body.table_name,
             time.toLocaleTimeString()
         )
-        await send_notification(req.body.activeUser, order['product'], order['quantity'])   
+        await send_notification(req.body.activeUser, order['item']['product'], order['quantity'])   
     };
     console.log(`new order created!`)
     res.status(200).send('OK');  
