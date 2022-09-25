@@ -3,6 +3,7 @@ import multer from 'multer';
 import path from 'path';
 import { S3Client } from '@aws-sdk/client-s3'
 import multers3 from 'multer-s3'
+const http = require('http')
 
 //const aws = require('aws-sdk')
 //const { S3Client }= require('@aws-sdk/client-s3')
@@ -95,9 +96,17 @@ export async function uploadReportFile(req:any, res:Response) {
 
 
 export async function retrievePDF(req:Request, res:Response) {
+    const date = await req.body.date
     try {
-        let baseURL = `rainforestpos.s3.us-east-1.amazonaws.com/${req.body.date}.pdf`
-        return res.status(200).json({pdf: baseURL})
+        http.get(`http://rainforestpos.s3.amazonaws.com/${date}.pdf`, function(resp: any) {
+            if (resp.statusCode === 200) {
+                console.log(resp.statusCode)
+                return res.status(200).json(
+                    {pdf:`http://rainforestpos.s3.amazonaws.com/${date}.pdf` })
+            }
+            return res.status(404).send(`Report not found!`)
+        })
+       
     } catch(e: any) {
         console.log(e.message)
         return res.status(404).send("Not Found")

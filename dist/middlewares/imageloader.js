@@ -17,6 +17,7 @@ const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
 const client_s3_1 = require("@aws-sdk/client-s3");
 const multer_s3_1 = __importDefault(require("multer-s3"));
+const http = require('http');
 //const aws = require('aws-sdk')
 //const { S3Client }= require('@aws-sdk/client-s3')
 //const multers3 = require('multer-s3')
@@ -105,7 +106,13 @@ function retrievePDF(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             let baseURL = `rainforestpos.s3.us-east-1.amazonaws.com/${req.body.date}.pdf`;
-            return res.status(200).json({ pdf: baseURL });
+            http.get(`http://rainforestpos.s3.amazonaws.com/${baseURL}.pdf`, function (resp) {
+                if (resp) {
+                    console.log(resp);
+                    return res.status(200).json({ pdf: baseURL });
+                }
+                return res.status(404).send(`Report not found!`);
+            });
         }
         catch (e) {
             console.log(e.message);
