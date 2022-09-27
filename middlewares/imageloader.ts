@@ -103,7 +103,7 @@ export async function retrievePDF(req:Request, res:Response) {
             if (resp.statusCode === 200) {
                 console.log(resp.statusCode)
                 return res.status(200).json(
-                    {pdf:`https://rainforestpos.s3.amazonaws.com/${date}.pdf` })
+                    {pdf:`https://rainforestpos.s3.amazonaws.com/${client}-${date}.pdf` })
             }
             return res.status(404).send(`Report not found!`)
         })
