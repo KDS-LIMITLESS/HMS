@@ -104,12 +104,12 @@ function uploadReportFile(req, res) {
 exports.uploadReportFile = uploadReportFile;
 function retrievePDF(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        const date = yield req.body.date;
         try {
-            let baseURL = `rainforestpos.s3.us-east-1.amazonaws.com/${req.body.date}.pdf`;
-            http.get(`http://rainforestpos.s3.amazonaws.com/${baseURL}.pdf`, function (resp) {
-                if (resp) {
-                    console.log(resp);
-                    return res.status(200).json({ pdf: baseURL });
+            http.get(`http://rainforestpos.s3.amazonaws.com/${date}.pdf`, function (resp) {
+                if (resp.statusCode === 200) {
+                    console.log(resp.statusCode);
+                    return res.status(200).json({ pdf: `http://rainforestpos.s3.amazonaws.com/${date}.pdf` });
                 }
                 return res.status(404).send(`Report not found!`);
             });
@@ -121,3 +121,4 @@ function retrievePDF(req, res) {
     });
 }
 exports.retrievePDF = retrievePDF;
+//https://s3.console.aws.amazon.com/s3/object/rainforestpos?region=us-east-1&prefix=1663941368393.pdf

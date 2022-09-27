@@ -97,12 +97,13 @@ export async function uploadReportFile(req:any, res:Response) {
 
 export async function retrievePDF(req:Request, res:Response) {
     const date = await req.body.date
+    const client = await req.body.client
     try {
         http.get(`http://rainforestpos.s3.amazonaws.com/${date}.pdf`, function(resp: any) {
             if (resp.statusCode === 200) {
                 console.log(resp.statusCode)
                 return res.status(200).json(
-                    {pdf:`http://rainforestpos.s3.amazonaws.com/${date}.pdf` })
+                    {pdf:`https://rainforestpos.s3.amazonaws.com/${date}.pdf` })
             }
             return res.status(404).send(`Report not found!`)
         })
