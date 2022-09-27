@@ -99,6 +99,7 @@ export async function retrievePDF(req:Request, res:Response) {
     const date = await req.body.date
     const client = await req.body.client
     try {
+        console.log(req.body)
         http.get(`http://rainforestpos.s3.amazonaws.com/${client}-${date}.pdf`, function(resp: any) {
             if (resp.statusCode === 200) {
                 console.log(resp.statusCode)
