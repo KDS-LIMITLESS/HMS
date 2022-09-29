@@ -15,8 +15,7 @@ export async function create_inventory_order_table() {
 
     // refrence the items from the pos already
 }
-
-
+                                                                    
 export async function place_order(item:string, qty:number, size:number, metric:string, 
     unitPrice:number, totalPrice:number, status:string, date:string) {
 
@@ -27,4 +26,15 @@ export async function place_order(item:string, qty:number, size:number, metric:s
             ${status}, ${date})`)
 
         return order;
+}
+
+export async function get_orders() {
+    let order = await db.query(SQL ` SELECT * from catalogue `);
+    return order
+}
+
+export async function update_order_status(item:string, status:string) {
+    let orderStatus = await db.query(SQL ` UPDATE catalogue SET status = ${status}
+        WHERE item=${item}`)
+    return orderStatus
 }

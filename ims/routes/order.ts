@@ -1,5 +1,11 @@
 import express from 'express'
 import { updateOrderStatus, placeOrder } from '../resources/order'
 
-export const router = express.Router()
+const router = express.Router()
 
+
+router.post('/place-order', placeOrder)
+
+
+
+module.exports = router;
