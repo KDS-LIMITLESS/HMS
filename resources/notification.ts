@@ -4,7 +4,7 @@ import { get_notifications, get_waiter_notification, update_notification_status,
 
 
 export async function notifications(req:Request, res: Response) {
-    let notification = await get_notifications(req.body.waiter, "UNREAD")
+    let notification = await get_notifications(req.body.waiter )
     if (notification.rowCount > 0 ) return res.status(200).send(notification.rows)
     return res.status(400).send(`None`)
 }
