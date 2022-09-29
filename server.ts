@@ -28,7 +28,7 @@ app.use('', require('./routes/notiffication'))
 //ims 
 
 app.use('', require('./ims/routes/order'))
-app.use('', require('./ims/routes/item'))
+// app.use('', require('./ims/routes/item'))
 
 
 db.connect((err) => {

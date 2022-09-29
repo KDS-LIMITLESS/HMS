@@ -29,6 +29,9 @@ app.use('', require('./routes/table'));
 app.use('', require('./routes/credit'));
 app.use('', require('./routes/reports'));
 app.use('', require('./routes/notiffication'));
+//ims 
+app.use('', require('./ims/routes/order'));
+app.use('', require('./ims/routes/item'));
 connection_1.db.connect((err) => {
     if (err)
         return console.error(err.message);
