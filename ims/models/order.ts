@@ -17,13 +17,12 @@ export async function create_inventory_order_table() {
 }
                                                                     
 export async function place_order(item:string, qty:number, size:number, metric:string, 
-    unitPrice:number, totalPrice:number, status:string, date:string) {
+    unitPrice:number, totalPrice:number) {
 
         let order = await db.query(SQL ` INSERT INTO catalogue(item, qty, size, metric, 
             unitprice, status, date) 
         
-            VALUES (${item}, ${qty}, ${size}, ${metric}, ${unitPrice}, ${totalPrice}, 
-            ${status}, ${date})`)
+            VALUES (${item}, ${qty}, ${size}, ${metric}, ${unitPrice}, ${totalPrice})`)
 
         return order;
 }

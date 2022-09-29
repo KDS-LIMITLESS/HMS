@@ -7,7 +7,7 @@ export async function placeOrder(req:Request, res:Response) {
     console.log(req.body);
 
     const order = await place_order(req.body.item, req.body.qty, req.body.size, req.body.metric, 
-        req.body.unitPrice, req.body.totalPrice, req.body.status, req.body.date)
+        req.body.unitPrice, req.body.totalPrice)
     if (order.rowCount >= 1) return res.status(200).send(`OK`)
     return res.status(400).send(` An error happened! `)
 
