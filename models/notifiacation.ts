@@ -31,7 +31,7 @@ export async function get_notifications(waiter:string) {
 }
 
 export async function get_waiter_notification() {
-    let waiter = await db.query(SQL `SELECT DISTINCT waiter FROM notification `)
+    let waiter = await db.query(SQL `SELECT DISTINCT waiter, status FROM notification `)
     return waiter
 }
 
