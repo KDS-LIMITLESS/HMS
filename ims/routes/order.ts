@@ -4,8 +4,8 @@ import { updateOrderStatus, placeOrder, getOrders, getAllOrders } from '../resou
 
 const router = express.Router();
 
-router.get('/get-order-staus', getOrders)
-router.get('/get-all-orders', getAllOrders)
+router.get('/order-staus', getOrders)
+router.get('/all-orders', getAllOrders)
 
 router.post('/place-order', placeOrder)
 

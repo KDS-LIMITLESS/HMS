@@ -27,7 +27,7 @@ app.use('', require('./routes/notiffication'))
 
 //ims 
 
-app.use('', require('./ims/routes/order'))
+app.use('/ims', require('./ims/routes/order'))
 // app.use('', require('./ims/routes/item'))
 
 
