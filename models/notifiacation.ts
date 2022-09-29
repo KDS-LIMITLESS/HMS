@@ -42,6 +42,6 @@ export async function get_unread_notification_count(status:string) {
 }
 
 export async function delete_all_notifications() {
-    const notification = await db.query(SQL `DELETE *  FROM notification `);
+    const notification = await db.query(SQL `DELETE FROM notification `);
     return notification 
 }

@@ -1,6 +1,5 @@
 import { db } from '../../connection'
 import SQL from 'sql-template-strings'
-import { stat } from 'fs'
 
 
 export async function create_inventory_order_table() {
