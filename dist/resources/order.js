@@ -18,8 +18,8 @@ function placeOrder(req, res, next) {
         const ORDER = req.body.order;
         for (const order of ORDER) {
             console.log(order);
-            yield (0, order_1.new_order)(req.body.activeUser, order['item']['product'], order['item']['price'], order['quantity'], order['item']['category'], order['item']['image'], order['item']['department'], req.body.table_name, time.toLocaleTimeString());
-            yield (0, notifiacation_1.send_notification)(req.body.activeUser, order['item']['product'], order['quantity']);
+            yield (0, order_1.new_order)(req.body.activeUser, order['product'], order['price'], order['quantity'], order['category'], order['image'], order['department'], req.body.table_name, time.toLocaleTimeString());
+            yield (0, notifiacation_1.send_notification)(req.body.activeUser, order['product'], order['quantity']);
         }
         ;
         console.log(`new order created!`);

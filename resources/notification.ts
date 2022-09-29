@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { get_notifications, get_waiter_notification, update_notification_status,
-    get_unread_notification_count } from '../models/notifiacation'
+    get_unread_notification_count, delete_all_notifications } from '../models/notifiacation'
 
 
 export async function notifications(req:Request, res: Response) {
@@ -27,4 +27,10 @@ export async function notificationCount(req:Request, res:Response) {
     let count = await get_unread_notification_count("UNREAD")
     if (count.rowCount > 0) return res.status(200).send(count.rows)
     res.status(400).send(`none`)
+}
+
+export async function clearNotifications(req:Request, res:Response) {
+    let clear = await delete_all_notifications()
+    if (clear.rowCount >= 1) return res.status(200).send(`OK`)
+    res.status(400).send(`error`)
 }

@@ -8,6 +8,7 @@ import { createUsersTable } from './models/user';
 import { createTableManager} from './models/table';
 import { create_credit_table } from './models/credit';
 import { create_notifications_table } from './models/notifiacation';
+import { create_inventory_order_table } from './ims/models/order';
 import SQL from 'sql-template-strings'
 
 const app = express();
@@ -47,10 +48,10 @@ async function startServer() {
     
     // await createUsersTable()
     // await createItemsTable()
-    await createTableManager()
-    await create_Order_Table()
-    await create_credit_table()
-    await create_notifications_table();
+    // await createTableManager()
+    // await create_Order_Table()
+    // await create_credit_table()
+    // await create_notifications_table();
 
     // await db.query(`ALTER TABLE notification 
     //     DROP CONSTRAINT notification_waiter_fkey,
@@ -58,6 +59,9 @@ async function startServer() {
     //     ADD CONSTRAINT notification_waiter_fkey FOREIGN KEY (waiter)
     //     REFERENCES users(username) ON DELETE SET DEFAULT`)
     
+
+    // ims
+    await create_inventory_order_table();
 }
 startServer();
 
