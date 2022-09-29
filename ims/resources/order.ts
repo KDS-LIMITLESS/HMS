@@ -1,4 +1,4 @@
-import { place_order, update_order_status }from '../models/order';
+import { place_order, update_order_status, get_order_by_status }from '../models/order';
 import { Request, Response } from 'express'
 
 
@@ -28,8 +28,12 @@ export async function updateOrderStatus(req:Request, res:Response) {
 
 // }
 
-export async function name(req:Request, res:Response) {
+export async function getOrders(req:Request, res:Response) {
     
     console.log(req.body)
+
+    const orders = await get_order_by_status(req.body.status)
+    if (orders.rowCount > 0) return res.status(200).send(orders.rows)
+    return res.status(400).send(`None`)
 
 }

@@ -37,3 +37,8 @@ export async function update_order_status(item:string, status:string) {
         WHERE item=${item}`)
     return orderStatus
 }
+
+export async function get_order_by_status(status:string) {
+    let orderStatus = await db.query(SQL ` SELECT * FROM catalogue WHERE status = ${status}`)
+    return orderStatus;
+}
