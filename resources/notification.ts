@@ -4,7 +4,7 @@ import { get_notifications, get_waiter_notification, update_notification_status,
 
 
 export async function notifications(req:Request, res: Response) {
-    let notification = await get_notifications('UNREAD', req.body.waiter)
+    let notification = await get_notifications(req.body.waiter)
     if (notification.rowCount > 0 ) return res.status(200).send(notification.rows)
     return res.status(400).send(`None`)
 }
@@ -12,7 +12,7 @@ export async function notifications(req:Request, res: Response) {
 
 // list of all waiters names that placed orders
 export async function waiters(req: Request, res: Response) {
-    let waiter = await get_waiter_notification("UNREAD");
+    let waiter = await get_waiter_notification();
     if (waiter.rowCount > 0) return res.status(200).send(waiter.rows)
     return res.status(400).send(`none`)
 }

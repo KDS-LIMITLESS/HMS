@@ -24,15 +24,14 @@ export async function update_notification_status(status: string, waiter: string)
     return message;
 }
 
-export async function get_notifications(status:string, waiter:string) {
+export async function get_notifications(waiter:string) {
     let notification = await db.query(SQL `SELECT item, quantity FROM notification 
-        WHERE status = ${status} AND waiter = ${waiter} `)
+        WHERE waiter = ${waiter} `)
     return notification;
 }
 
-export async function get_waiter_notification(status: string) {
-    let waiter = await db.query(SQL `SELECT DISTINCT waiter FROM notification 
-        WHERE STATUS = ${status}`)
+export async function get_waiter_notification() {
+    let waiter = await db.query(SQL `SELECT DISTINCT waiter FROM notification `)
     return waiter
 }
 
@@ -43,8 +42,6 @@ export async function get_unread_notification_count(status:string) {
 }
 
 export async function delete_all_notifications() {
-
     const notification = await db.query(SQL `DELETE *  FROM notification `);
     return notification 
-
 }
