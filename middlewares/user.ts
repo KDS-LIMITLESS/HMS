@@ -33,7 +33,9 @@ export async function authorizeUser(req:Request, res:Response, next:NextFunction
 
 export async function authorizeSuperAdminNext(req: Request, res: Response, next: NextFunction){
     try {
+        console.log(req.body.activeUser)
         let userExists = await get_user(req.body.activeUser)
+        console.log(userExists.rows)
         if (userExists && ( userExists.rows[0]['role'] === 'Super Admin') && (req.body.activePasscode === userExists.rows[0]['passcode']) ){
             next();
         }else {
