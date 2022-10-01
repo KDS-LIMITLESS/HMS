@@ -38,7 +38,9 @@ exports.authorizeUser = authorizeUser;
 function authorizeSuperAdminNext(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            console.log(req.body.activeUser);
             let userExists = yield (0, user_1.get_user)(req.body.activeUser);
+            console.log(userExists.rows);
             if (userExists && (userExists.rows[0]['role'] === 'Super Admin') && (req.body.activePasscode === userExists.rows[0]['passcode'])) {
                 next();
             }

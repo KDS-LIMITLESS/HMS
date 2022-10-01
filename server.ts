@@ -47,19 +47,19 @@ async function startServer() {
     // await createItemsTable();
     
     
-    await db.query('DROP TABLE orders')
-    await db.query('DROP TABLE tables')
-    await db.query('DROP TABLE credit')
-    await db.query('DROP TABLE notification')
-    await db.query('DROP TABLE item')
-    // await db.query('DROP TABLE users')
-    
-    await createUsersTable()
-    await createItemsTable()
-    await createTableManager()
-    await create_Order_Table()
-    await create_credit_table()
-    await create_notifications_table();
+    // await db.query('DROP TABLE orders')
+    // await db.query('DROP TABLE tables')
+    // await db.query('DROP TABLE credit')
+    // await db.query('DROP TABLE notification')
+    // await db.query('DROP TABLE item')
+    // // await db.query('DROP TABLE users')
+    // 
+    // await createUsersTable()
+    // await createItemsTable()
+    // await createTableManager()
+    // await create_Order_Table()
+    // await create_credit_table()
+    // await create_notifications_table();
 
     // await db.query(`ALTER TABLE notification 
     //     DROP CONSTRAINT notification_waiter_fkey,
