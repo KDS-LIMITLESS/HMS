@@ -12,14 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.update_item = exports.delete_item = exports.get_drinks_in_department = exports.add_item = exports.get_all_items_with_category = exports.get_product_price = exports.get_item = exports.get_all_items = exports.createItemsTable = void 0;
+exports.update_item = exports.delete_item = exports.get_drinks_in_department = exports.add_item = exports.get_all_items_with_category = exports.get_product_price = exports.get_item = exports.get_all_items = exports.create_dept = exports.createDeptTable = exports.createItemsTable = void 0;
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const connection_1 = require("../connection");
 function createItemsTable() {
     return __awaiter(this, void 0, void 0, function* () {
         connection_1.db.query(`CREATE TABLE IF NOT EXISTS 
     item(
-        department VARCHAR NOT NULL,
+        department VARCHAR REFERENCES dept(department),
         product VARCHAR NOT NULL,
         price INTEGER NOT NULL,
         category VARCHAR NOT NULL, 
@@ -34,6 +34,26 @@ function createItemsTable() {
     });
 }
 exports.createItemsTable = createItemsTable;
+function createDeptTable() {
+    return __awaiter(this, void 0, void 0, function* () {
+        connection_1.db.query(`CREATE TABLE IF NOT EXISTS 
+    dept(
+        department VARCHAR PRIMARY KEY NOT NULL
+    )`, (err, result) => {
+            if (err)
+                return console.error(err.message);
+            return result;
+        });
+    });
+}
+exports.createDeptTable = createDeptTable;
+function create_dept(dept) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let department = yield connection_1.db.query((0, sql_template_strings_1.default) ` INSERT INTO dept(department)
+        VALUES(${dept});`);
+    });
+}
+exports.create_dept = create_dept;
 function get_all_items() {
     return __awaiter(this, void 0, void 0, function* () {
         let result = connection_1.db.query('SELECT * FROM item');

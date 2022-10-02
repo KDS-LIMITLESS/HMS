@@ -1,11 +1,12 @@
 import express from 'express';
 import { getItem, addNewItem, getItemsInCategory, getAllDrinksDepartment, 
-    deleteItem, updateItem } from '../resources/item';
+    deleteItem, updateItem, createDepartment } from '../resources/item';
 import { authorizeSuperAdminNext } from '../middlewares/user';
 import { uploadPicture } from '../middlewares/imageloader';
 
 export const router = express.Router()
 
+router.post('/create-dept', createDepartment)
 
 router.get('/items', getItem)
 

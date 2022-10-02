@@ -9,8 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateItem = exports.deleteItem = exports.getAllDrinksDepartment = exports.getItemsInCategory = exports.addNewItem = exports.getItem = void 0;
+exports.updateItem = exports.deleteItem = exports.getAllDrinksDepartment = exports.getItemsInCategory = exports.addNewItem = exports.getItem = exports.createDepartment = void 0;
 const item_1 = require("../models/item");
+function createDepartment(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const dept = yield (0, item_1.create_dept)(req.body.department);
+        return res.status(200).send("OK");
+    });
+}
+exports.createDepartment = createDepartment;
 function getItem(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {

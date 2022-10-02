@@ -6,7 +6,7 @@ export async function createItemsTable() {
 
     db.query(`CREATE TABLE IF NOT EXISTS 
     item(
-        department VARCHAR NOT NULL,
+        department VARCHAR REFERENCES dept(department),
         product VARCHAR NOT NULL,
         price INTEGER NOT NULL,
         category VARCHAR NOT NULL, 
@@ -19,6 +19,23 @@ export async function createItemsTable() {
         return result
     })
     
+}
+
+export async function createDeptTable() {
+
+    db.query(`CREATE TABLE IF NOT EXISTS 
+    dept(
+        department VARCHAR PRIMARY KEY NOT NULL
+    )`, 
+    (err, result) =>{
+        if(err) return console.error(err.message);
+        return result
+    })
+}
+
+export async function create_dept(dept:string) {
+    let department = await db.query(SQL ` INSERT INTO dept(department)
+        VALUES(${dept});`)
 }
 
 export async function get_all_items() {

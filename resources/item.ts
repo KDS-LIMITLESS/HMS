@@ -1,8 +1,13 @@
 import { get_all_items, add_item, get_item, 
         get_all_items_with_category, get_drinks_in_department, 
-        delete_item, update_item
+        delete_item, update_item, create_dept
 } from "../models/item";
 import { Request, Response } from "express";
+
+export async function createDepartment(req:Request, res:Response) {
+    const dept = await create_dept(req.body.department)
+    return res.status(200).send("OK")
+}
 
 export async function getItem(req: Request, res: Response){
     try{
@@ -49,6 +54,8 @@ export async function getAllDrinksDepartment(req:Request, res:Response) {
         return res.status(400).send("An Error Occured ")
     }
 }
+
+// if user.department === lounge siplay only drinks/ items for lounge etc 
 
 export async function deleteItem(req: Request,res: Response){
     try {
