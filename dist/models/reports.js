@@ -50,7 +50,7 @@ function get_items(waiter) {
 exports.get_items = get_items;
 function get_all_items_sold() {
     return __awaiter(this, void 0, void 0, function* () {
-        let allItems = yield connection_1.db.query(`SELECT item, price, quantity FROM orders`);
+        let allItems = yield connection_1.db.query(`SELECT item, price, quantity, department FROM orders`);
         return allItems;
     });
 }

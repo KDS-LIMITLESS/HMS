@@ -28,6 +28,6 @@ export async function get_items(waiter:string) {
 }
 
 export async function get_all_items_sold() {
-    let allItems = await db.query(`SELECT item, price, quantity FROM orders`);
+    let allItems = await db.query(`SELECT item, price, quantity, department FROM orders`);
     return allItems;
 }

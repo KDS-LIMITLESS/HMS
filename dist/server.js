@@ -45,12 +45,13 @@ function startServer() {
     return __awaiter(this, void 0, void 0, function* () {
         // await createUsersTable();
         // await createItemsTable();
-        // await db.query('DROP TABLE item')
-        // await db.query('DROP TABLE users')
         // await db.query('DROP TABLE orders')
         // await db.query('DROP TABLE tables')
         // await db.query('DROP TABLE credit')
         // await db.query('DROP TABLE notification')
+        // await db.query('DROP TABLE item')
+        // // await db.query('DROP TABLE users')
+        // 
         // await createUsersTable()
         // await createItemsTable()
         // await createTableManager()
