@@ -6,7 +6,6 @@ import { Tokens } from '../middlewares/user'
 
 const token = new Tokens();
 
-
 export async function newUser(req: Request, res: Response) {
     let userExists = await get_user(req.body.username)
 
@@ -21,14 +20,15 @@ export async function newUser(req: Request, res: Response) {
         return res.status(500).send('An error occured!')
     }
 }
+
 export async function login(req:Request, res:Response) {
     let userExists = await get_user(req.body.username)
     if ((userExists.rowCount === 1) && (await bcrypt.compare(req.body.password, userExists.rows[0]['password']))) {
-        let user = await token.generateAuthToken(userExists.rows[0]['username'], userExists.rows[0]['role'], userExists.rows[0]['passcode'])
+        // let user = await token.generateAuthToken(userExists.rows[0]['username'], userExists.rows[0]['role'], userExists.rows[0]['passcode'])
 
-        console.log(user);
+        console.log(userExists.rows);
          return res.status(200).json({username: userExists.rows[0]['username'], 
-             passcode: userExists.rows[0]['passcode'], role: userExists.rows[0]['role'], token: user}); 
+            passcode: userExists.rows[0]['passcode'], role: userExists.rows[0]['role']}); 
         // return res.status(200).json({token: user }); 
     }
     console.log(JSON.stringify(req.body) + " Invalid login details")
