@@ -27,7 +27,7 @@ export async function login(req:Request, res:Response) {
         // let user = await token.generateAuthToken(userExists.rows[0]['username'], userExists.rows[0]['role'], userExists.rows[0]['passcode'])
 
         console.log(userExists.rows);
-         return res.status(200).json({username: userExists.rows[0]['username'], 
+        return res.status(200).json({username: userExists.rows[0]['username'], 
             passcode: userExists.rows[0]['passcode'], role: userExists.rows[0]['role']}); 
         // return res.status(200).json({token: user }); 
     }
