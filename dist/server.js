@@ -16,7 +16,6 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = require("./connection");
-const order_1 = require("./ims/models/order");
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 app.use(express_1.default.json());
@@ -64,7 +63,7 @@ function startServer() {
         //     ADD CONSTRAINT notification_waiter_fkey FOREIGN KEY (waiter)
         //     REFERENCES users(username) ON DELETE SET DEFAULT`)
         // ims
-        yield (0, order_1.create_inventory_order_table)();
+        // await create_inventory_order_table();
     });
 }
 startServer();

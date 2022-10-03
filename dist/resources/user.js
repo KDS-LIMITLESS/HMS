@@ -24,7 +24,9 @@ function newUser(req, res) {
             return res.status(400).send(`User ${req.body.username} already exists.`);
         try {
             const PSW = yield bcrypt_1.default.hash(req.body.password, 12);
-            yield (0, user_1.create_new_user)(req.body.username, PSW, req.body.passcode, req.body.role);
+            const username = req.body['username'].trim().strip();
+            console.log(username);
+            yield (0, user_1.create_new_user)(username, PSW, req.body.passcode, req.body.role);
             return res.status(200).json({ success: `User created successfully!` });
         }
         catch (err) {

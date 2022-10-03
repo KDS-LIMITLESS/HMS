@@ -45,6 +45,6 @@ export async function get_order_by_status(status:string) {
 
 
 export async function get_all_order() {
-    let order = await db.query(SQL ` SELECT item, qty, unitprice, status, date, metric FROM catalogue`)
+    let order = await db.query(SQL ` SELECT item, qty, unitprice, size, status, date, metric FROM catalogue`)
     return order;
 }
