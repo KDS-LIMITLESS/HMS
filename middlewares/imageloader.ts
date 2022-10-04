@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import multer from 'multer';
 import path from 'path';
 import { S3Client } from '@aws-sdk/client-s3'
@@ -77,16 +77,16 @@ const uploadReport = multer({
     })
 }).single('file')
 
-export async function uploadReportFile(req:any, res:Response) {
+export async function uploadReportFile(req:any, res:Response, next:NextFunction) {
     try {
         uploadReport(req, res, (err) => {
             if (err) {
                 console.log(err);
                 return res.status(400).send(`An error occured!`)
             }
-            console.log(req.body)
+            // console.log(req.body)
             console.log(req.file.location);
-            return res.status(200).json({filepath: req.file.location})
+            next();
         })
     } catch (e: any) {
         console.log(e.message)

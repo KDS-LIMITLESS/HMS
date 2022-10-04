@@ -31,3 +31,10 @@ export async function get_all_items_sold() {
     let allItems = await db.query(`SELECT item, price, quantity, department FROM orders`);
     return allItems;
 }
+
+export async function clear_db() {
+    let clear = db.query(SQL` DELETE * FROM orders;
+        DELETE * FROM tables;
+        DELETE * from notification`)
+    return clear;
+}
