@@ -1,4 +1,4 @@
-import { place_order, update_order_status, get_order_by_status, get_pending_orders }from '../models/order';
+import { place_order, update_order_status, get_order_by_status, get_all_order }from '../models/order';
 import { Request, Response } from 'express'
 
 
@@ -42,8 +42,8 @@ export async function getAllOrders(req:Request, res:Response) {
     
     console.log(req.body)
 
-    const orders = await get_pending_orders("PENDING")
+    const orders = await get_all_order()
     if (orders.rowCount > 0) return res.status(200).send(orders.rows)
-    return res.status(400).send(`None`)
+    return res.status(400).send(`No Orders`)
 
 }
