@@ -16,6 +16,14 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = require("./connection");
+const item_1 = require("./models/item");
+const order_1 = require("./models/order");
+const user_1 = require("./models/user");
+const table_1 = require("./models/table");
+const credit_1 = require("./models/credit");
+const notifiacation_1 = require("./models/notifiacation");
+const order_2 = require("./ims/models/order");
+const item_2 = require("./ims/models/item");
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 app.use(express_1.default.json());
@@ -30,7 +38,7 @@ app.use('', require('./routes/reports'));
 app.use('', require('./routes/notiffication'));
 //ims 
 app.use('/ims', require('./ims/routes/order'));
-// app.use('', require('./ims/routes/item'))
+app.use('', require('./ims/routes/item'));
 connection_1.db.connect((err) => {
     if (err)
         return console.error(err.message);
@@ -51,19 +59,20 @@ function startServer() {
         // await db.query('DROP TABLE item')
         // // await db.query('DROP TABLE users')
         // 
-        // await createUsersTable()
-        // await createItemsTable()
-        // await createTableManager()
-        // await create_Order_Table()
-        // await create_credit_table()
-        // await create_notifications_table();
+        yield (0, user_1.createUsersTable)();
+        yield (0, item_1.createItemsTable)();
+        yield (0, table_1.createTableManager)();
+        yield (0, order_1.create_Order_Table)();
+        yield (0, credit_1.create_credit_table)();
+        yield (0, notifiacation_1.create_notifications_table)();
         // await db.query(`ALTER TABLE notification 
         //     DROP CONSTRAINT notification_waiter_fkey,
         //     ALTER waiter DROP NOT NULL,
         //     ADD CONSTRAINT notification_waiter_fkey FOREIGN KEY (waiter)
         //     REFERENCES users(username) ON DELETE SET DEFAULT`)
         // ims
-        // await create_inventory_order_table();
+        yield (0, order_2.create_inventory_order_table)();
+        yield (0, item_2.create_transactions_table)();
     });
 }
 startServer();

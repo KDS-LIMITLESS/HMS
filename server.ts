@@ -9,6 +9,7 @@ import { createTableManager} from './models/table';
 import { create_credit_table } from './models/credit';
 import { create_notifications_table } from './models/notifiacation';
 import { create_inventory_order_table } from './ims/models/order';
+import { create_transactions_table } from './ims/models/item';
 import SQL from 'sql-template-strings'
 
 const app = express();
@@ -28,7 +29,7 @@ app.use('', require('./routes/notiffication'))
 //ims 
 
 app.use('/ims', require('./ims/routes/order'))
-// app.use('', require('./ims/routes/item'))
+app.use('', require('./ims/routes/item'))
 
 
 db.connect((err) => {
@@ -70,6 +71,7 @@ async function startServer() {
 
     // ims
     await create_inventory_order_table();
+    await create_transactions_table();
 }
 startServer();
 
