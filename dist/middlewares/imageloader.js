@@ -82,7 +82,7 @@ const uploadReport = (0, multer_1.default)({
         }
     })
 }).single('file');
-function uploadReportFile(req, res) {
+function uploadReportFile(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             uploadReport(req, res, (err) => {
@@ -90,9 +90,9 @@ function uploadReportFile(req, res) {
                     console.log(err);
                     return res.status(400).send(`An error occured!`);
                 }
-                console.log(req.body);
+                // console.log(req.body)
                 console.log(req.file.location);
-                return res.status(200).json({ filepath: req.file.location });
+                next();
             });
         }
         catch (e) {

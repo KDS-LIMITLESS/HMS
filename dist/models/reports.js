@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_all_items_sold = exports.get_items = exports.get_distinct_items = exports.get_waiters = exports.create_reports_table = void 0;
+exports.clear_db = exports.get_all_items_sold = exports.get_items = exports.get_distinct_items = exports.get_waiters = exports.create_reports_table = void 0;
 const connection_1 = require("../connection");
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 function create_reports_table() {
@@ -55,3 +55,12 @@ function get_all_items_sold() {
     });
 }
 exports.get_all_items_sold = get_all_items_sold;
+function clear_db() {
+    return __awaiter(this, void 0, void 0, function* () {
+        let clear = connection_1.db.query((0, sql_template_strings_1.default) ` DELETE FROM orders;
+        DELETE FROM tables;
+        DELETE from notification`);
+        return clear;
+    });
+}
+exports.clear_db = clear_db;

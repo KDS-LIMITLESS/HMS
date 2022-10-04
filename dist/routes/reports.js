@@ -11,7 +11,7 @@ exports.router = express_1.default.Router();
 exports.router.get('/waiter-reports', reports_1.report);
 exports.router.post('/sold-items', reports_1.getItemReports);
 exports.router.get('/overall-reports', reports_1.generateOverallReport);
-exports.router.post('/upload-report', imageloader_1.uploadReportFile);
+exports.router.post('/upload-report', imageloader_1.uploadReportFile, reports_1.clearDbDetails);
 exports.router.post('/retrieve-pdf', imageloader_1.retrievePDF);
 module.exports = exports.router;
 // i am me this cool igbo guy abu m onye igbo and as you can see a na m asu igbo 

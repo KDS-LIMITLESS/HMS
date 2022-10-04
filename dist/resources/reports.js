@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateOverallReport = exports.getItemReports = exports.report = void 0;
+exports.clearDbDetails = exports.generateOverallReport = exports.getItemReports = exports.report = void 0;
 const reports_1 = require("../models/reports");
 function report(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -38,3 +38,11 @@ function generateOverallReport(req, res) {
     });
 }
 exports.generateOverallReport = generateOverallReport;
+function clearDbDetails(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const clear = yield (0, reports_1.clear_db)();
+        if (clear)
+            return res.status(200).send(`Database Wiped!`);
+    });
+}
+exports.clearDbDetails = clearDbDetails;
