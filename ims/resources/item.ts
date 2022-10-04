@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { send_items_to_depts, get_departments } from '../models/item';
+import { send_items_to_depts, get_departments, get_all_sent_items } from '../models/item';
 
 
 export async function sendItemsToDepartments(req:Request, res:Response) {
@@ -12,4 +12,9 @@ export async function sendItemsToDepartments(req:Request, res:Response) {
 export async function getDepartments(req:Request, res:Response) {
     let dept = await get_departments()
     return res.status(200).send(dept.rows)
+}
+
+export async function getAllItemsSent(req:Request, res:Response) {
+    let items = await get_all_sent_items();
+    return res.status(200).send(items.rows)
 }

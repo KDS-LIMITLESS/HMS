@@ -27,3 +27,8 @@ export async function get_departments() {
     const dept = db.query(SQL ` SELECT DISTINCT department from item `)
     return dept
 }
+
+export async function get_all_sent_items() {
+    const items = await db.query(SQL` SELECT * FROM transaactions `)
+    return items
+}
