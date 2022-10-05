@@ -68,6 +68,7 @@ export async function updateOrder(req: Request, res: Response) {
     // check if table exists
     for (const order of ORDER) {
         let item = await get_drinks_in_table(order['product'], req.body.table_name)
+        console.log(req.body)
         if (item.rowCount !== 0 ) {
             let quantity = order['quantity'] + item.rows[0]['quantity']
             await update_order_quantity(order['product'], 
@@ -76,7 +77,7 @@ export async function updateOrder(req: Request, res: Response) {
             await send_notification(req.body.activeUser, order['product'], order['quantity'])   
         } else {
             // item exists 
-            const TOTAL =  req.body.price*req.body.quantity
+            // const TOTAL =  req.body.price*req.body.quantity
             await new_order(req.body.activeUser, order['product'], 
                 order['price'], order['quantity'], order['category'],  
                 order['image'], order['department'], 

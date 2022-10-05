@@ -58,16 +58,16 @@ async function startServer() {
     // await create_credit_table()
     // await create_notifications_table();
 
-    let i = await db.query(`ALTER TABLE orders 
-        DROP CONSTRAINT orders_department_item_fkey,
-    
-        
-        ADD CONSTRAINT orders_department_item_fkey FOREIGN KEY (department, item)
-        REFERENCES item(department, product) ON DELETE NO ACTION ON UPDATE NO ACTION
-        
-        
-        `)
-    console.log(i.rowCount)
+    // let i = await db.query(`ALTER TABLE orders 
+    //     DROP CONSTRAINT orders_department_item_fkey,
+    // 
+    //     
+    //     ADD CONSTRAINT orders_department_item_fkey FOREIGN KEY (department, item)
+    //     REFERENCES item(department, product) ON DELETE NO ACTION ON UPDATE NO ACTION
+    //     
+    //     
+    //     `)
+    // console.log(i.rowCount)
 
     // ims
     // await create_inventory_order_table();

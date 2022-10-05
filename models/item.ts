@@ -65,8 +65,8 @@ export async function delete_item(item:string, department: string) {
     
 }
 
-export async function update_item(product: string, price:number, productName:string) {
+export async function update_item(product: string, price:number) {
 
-    let result = await db.query(SQL`UPDATE item SET price = ${price}, product = ${productName} WHERE product = ${product}`);
+    let result = await db.query(SQL`UPDATE item SET price = ${price} WHERE product = ${product}`);
     return result;
 }

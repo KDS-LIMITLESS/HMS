@@ -20,7 +20,7 @@ export async function create_Order_Table() {
         table_name VARCHAR NOT NULL REFERENCES tables(table_name),
         
         time VARCHAR,
-        FOREIGN KEY (department, item ) REFERENCES item(department, product)
+        FOREIGN KEY (department, item ) REFERENCES item(department, product) ON UPDATE NO ACTION ON DELETE NO ACTION
     )`)
 }
 
