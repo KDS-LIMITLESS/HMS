@@ -29,7 +29,7 @@ app.use('', require('./routes/notiffication'))
 //ims 
 
 app.use('/ims', require('./ims/routes/order'))
-app.use('', require('./ims/routes/item'))
+app.use('/ims', require('./ims/routes/item'))
 
 
 db.connect((err) => {
@@ -49,7 +49,7 @@ async function startServer() {
     // await db.query('DROP TABLE credit')
     // await db.query('DROP TABLE notification')
     // await db.query('DROP TABLE item')
-    await db.query('DROP TABLE transactions')
+    // await db.query('DROP TABLE transactions')
     // 
     // await createUsersTable()
     // await createItemsTable()

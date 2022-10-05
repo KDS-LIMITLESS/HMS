@@ -37,6 +37,5 @@ export async function get_all_sent_items() {
 
 export async function get_date(from:string, to:Date) {
     const DATE = await db.query(SQL ` SELECT * FROM transactions WHERE date BETWEEN ${from} AND ${to} `)
-    console.log(DATE.rows)
     return DATE
 }

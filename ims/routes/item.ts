@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get('/departments', getDepartments)
 router.get('/sent-items', getAllItemsSent)
+
 router.post('/send-items', sendItemsToDepartments)
 router.post('/transactions', getTransactonDates)
 

@@ -67,7 +67,7 @@ export async function updateItem(req:Request, res: Response) {
     try{
         const ITEM = await get_item(req.body.product, req.body.department)
         if (ITEM.rowCount === 1) {
-            await update_item(req.body.product, req.body.price);
+            await update_item(req.body.product, req.body.price, req.body.productName);
             return res.status(200).send(`ITEM UPDATED`)
         }
         return res.status(404).send(`Item not found in department!`);
