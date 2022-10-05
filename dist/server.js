@@ -31,7 +31,7 @@ app.use('', require('./routes/reports'));
 app.use('', require('./routes/notiffication'));
 //ims 
 app.use('/ims', require('./ims/routes/order'));
-app.use('', require('./ims/routes/item'));
+app.use('/ims', require('./ims/routes/item'));
 connection_1.db.connect((err) => {
     if (err)
         return console.error(err.message);
@@ -64,6 +64,8 @@ function startServer() {
         // ims
         // await create_inventory_order_table();
         yield (0, item_1.create_transactions_table)();
+        let check = yield connection_1.db.query("SELECT CURRENT_DATE");
+        console.log(check.rows[0]);
     });
 }
 startServer();

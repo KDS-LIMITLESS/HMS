@@ -14,6 +14,7 @@ export async function create_transactions_table() {
 
         FOREIGN KEY (department, item ) REFERENCES item(department, product)
     )`)
+    return transaction
 }
 
 export async function send_items_to_depts(item:string, department:string, quantity:number,
@@ -31,7 +32,7 @@ export async function get_departments() {
 }
 
 export async function get_all_sent_items() {
-    const items = await db.query(SQL` SELECT * FROM transaactions `)
+    const items = await db.query(SQL` SELECT * FROM transactions WHERE DATE = CURRENT_DATE`)
     return items
 }
 

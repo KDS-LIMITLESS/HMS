@@ -68,6 +68,8 @@ async function startServer() {
     // ims
     // await create_inventory_order_table();
     await create_transactions_table();
+    let check = await db.query("SELECT * FROM transactions WHERE DATE = CURRENT_DATE")
+    console.log(check.rows)
 }
 startServer();
 
