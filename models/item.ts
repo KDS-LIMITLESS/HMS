@@ -6,19 +6,35 @@ export async function createItemsTable() {
 
     db.query(`CREATE TABLE IF NOT EXISTS 
     item(
-        department VARCHAR REFERENCES dept(department),
-        product VARCHAR NOT NULL,
-        price INTEGER NOT NULL,
+        product VARCHAR PRIMARY KEY,
         category VARCHAR NOT NULL, 
+        quantity INTEGER NOT NULL, 
+        size INTEGER,
+        metric VARCHAR,
         image VARCHAR NOT NULL,
-        
-        PRIMARY KEY (department,product)
+        reorder INTEGER DEFAULT 0    
     )`, 
     (err, result) =>{
         if(err) return console.error(err.message);
         return result
     })
-    
+}
+// add another table for sending items 
+// itemName price department 
+
+export async function createProductTable() {
+
+    db.query(`CREATE TABLE IF NOT EXISTS 
+    product(
+        product VARCHAR REFERENCES item(product),
+        price INTEGER  DEFAULT 0,
+        quantity INTEGER DEFAULT 0,
+        department VARCHAR REFERENCES dept(department)
+    )`, 
+    (err, result) =>{
+        if(err) return console.error(err.message);
+        return result
+    })
 }
 
 export async function createDeptTable() {
@@ -43,10 +59,10 @@ export async function get_all_items() {
     return result;
 }
 
-export async function get_item(product: string, department: string) {
+export async function get_item(product: string) {
 
-    let result = await db.query(SQL `SELECT product, department FROM item 
-                WHERE product = ${product} AND department = ${department};`)
+    let result = await db.query(SQL `SELECT product FROM item 
+        WHERE product = ${product};`)
     return result
 }
 
@@ -56,15 +72,19 @@ export async function get_product_price(product: string){
     return (await result).rows[0]['price']
 }
  
+// start from here 
 export async function get_all_items_with_category(itemCategory: string, department: string){
     let result = db.query(SQL `SELECT * FROM item WHERE category = ${itemCategory} 
             AND department = ${department};`)
     return result
 }
 
-export async function add_item(product:string, price:number, category:string, image: string, department: string) {
-    let result = await db.query(SQL `INSERT INTO item(product, price, category, image, department) 
-        VALUES(${product}, ${price}, ${category}, ${image}, ${department});`)
+export async function add_item(product:string, category:string, quantity:number, image: string, 
+    size:number, metric:string, reorder:string) {
+    let result = await db.query(SQL `INSERT INTO item(product,category, quantity, 
+        image, size, metric, reorder) 
+
+        VALUES(${product}, ${category}, ${quantity}, ${image}, ${size}, ${metric}, ${reorder});`)
     return result   
 }
 

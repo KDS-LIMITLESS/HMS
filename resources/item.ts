@@ -4,10 +4,18 @@ import { get_all_items, add_item, get_item,
 } from "../models/item";
 import { Request, Response } from "express";
 
+
+// department 
+
 export async function createDepartment(req:Request, res:Response) {
     const dept = await create_dept(req.body.department)
     return res.status(200).send("OK")
 }
+
+
+
+
+// item 
 
 export async function getItem(req: Request, res: Response){
     try{
@@ -24,11 +32,11 @@ export async function getItem(req: Request, res: Response){
 export async function addNewItem(req:Request, res: Response) {
     const reqBody = req.body;
     try{
-        let getItem = await get_item(reqBody['product'], reqBody['department'])
+        let getItem = await get_item(reqBody['product'])
         if (getItem.rowCount === 1) return res.status(400).send(`${reqBody['product']} already exists`)
         
-        await add_item(reqBody['product'], reqBody['price'], 
-        reqBody['category'], reqBody['image'], reqBody['department'])
+        await add_item(reqBody['product'], reqBody['category'], reqBody['quantity'], 
+        reqBody['image'], reqBody['size'], reqBody['metric'], reqBody['reorder'])
         return res.status(200).send('OK');  
            
     } catch (err: any) {
@@ -59,7 +67,7 @@ export async function getAllDrinksDepartment(req:Request, res:Response) {
 
 export async function deleteItem(req: Request,res: Response){
     try {
-        const ITEM = await get_item(req.body.product, req.body.department)
+        const ITEM = await get_item(req.body.product)
         if (ITEM.rowCount === 1) {
             await delete_item(req.body.product, req.body.department)
             return res.status(200).send("OK")
@@ -72,7 +80,7 @@ export async function deleteItem(req: Request,res: Response){
 
 export async function updateItem(req:Request, res: Response) {
     try{
-        const ITEM = await get_item(req.body.product, req.body.department)
+        const ITEM = await get_item(req.body.product)
         if (ITEM.rowCount === 1) {
             await update_item(req.body.product, req.body.price);
             return res.status(200).send(`ITEM UPDATED`)
