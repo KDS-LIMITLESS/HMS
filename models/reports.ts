@@ -28,7 +28,16 @@ export async function get_items(waiter:string) {
 }
 
 export async function get_all_items_sold() {
-    let allItems = await db.query(`SELECT item, price, quantity, department FROM orders`);
+    let allItems = await db.query(
+        `SELECT tables.status, item, price, 
+            quantity, department FROM orders
+
+            LEFT JOIN tables
+
+            ON tables.table_name = orders.table_name
+
+            WHERE tables.status = 'CLOSED'
+        `);
     return allItems;
 }
 
@@ -38,3 +47,13 @@ export async function clear_db() {
         DELETE from notification`)
     return clear;
 }
+
+`SELECT users.username, opening_credit, 
+        credit_granted, credit_remaining FROM users
+        
+        LEFT JOIN credit 
+
+        ON users.username = credit.username
+
+        WHERE users.role = 'Super Admin' OR users.role = 'Auditor' OR users.role = 'Admin'
+        `
