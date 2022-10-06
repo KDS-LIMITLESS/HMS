@@ -1,4 +1,4 @@
-import { place_order, update_order_status, get_order_by_status, get_all_order }from '../models/order';
+import { place_order, update_order_status, get_order_by_status, get_all_order, get_orders_by_date }from '../models/order';
 import { Request, Response } from 'express'
 
 
@@ -46,4 +46,10 @@ export async function getAllOrders(req:Request, res:Response) {
     if (orders.rowCount > 0) return res.status(200).send(orders.rows)
     return res.status(400).send(`No Orders`)
 
+}
+
+export async function getOrderTransactionByDates(req:Request, res:Response) {
+    let date = await get_orders_by_date(req.body.from, req.body.to)
+    if (date) return res.status(200).send(date.rows)
+    return res.status(400).send("Transactions within the specified date does not exist")
 }

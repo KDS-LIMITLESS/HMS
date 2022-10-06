@@ -48,3 +48,8 @@ export async function get_all_order() {
     let order = await db.query(SQL ` SELECT item, qty, unitprice, size, status, date, metric FROM catalogue`)
     return order;
 }
+
+export async function get_orders_by_date(from:string, to:Date) {
+    const DATE = await db.query(SQL ` SELECT * FROM catalogue WHERE date BETWEEN ${from} AND ${to} `)
+    return DATE
+}
