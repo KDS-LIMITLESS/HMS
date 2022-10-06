@@ -22,8 +22,13 @@ export async function get_distinct_items(waiter:string) {
 
 
 export async function get_items(waiter:string) {
-    let item = await db.query(SQL `SELECT item, quantity, price FROM orders 
-        WHERE username = ${waiter}`)
+    let item = await db.query(SQL `SELECT tables.status, item, quantity, price FROM orders 
+
+        LEFT JOIN tables
+
+        ON tables.table_name = orders.table_name
+
+        WHERE username = ${waiter} AND tables.status = 'CLOSED'`)
     return item
 }
 
