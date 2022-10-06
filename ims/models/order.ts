@@ -10,7 +10,7 @@ export async function create_inventory_order_table() {
         metric VARCHAR DEFAULT ' ',
         unitprice INTEGER DEFAULT 0,
         status VARCHAR DEFAULT 'PENDING',
-        date DATE NOT NULL DEFAULT CURRENT_DATE,
+        date DATE NOT NULL DEFAULT CURRENT_DATE
     )`)
 
     // refrence the items from the pos already
