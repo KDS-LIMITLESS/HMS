@@ -57,8 +57,8 @@ async function startServer() {
     // await create_Order_Table()
     // await create_credit_table()
     // await create_notifications_table();
-    await db.query(` DROP TABLE catalogue `)
-    await db.query(` DROP TABLE transactions `)
+    // await db.query(` DROP TABLE catalogue `)
+    // await db.query(` DROP TABLE transactions `)
 
     // let i = await db.query(`ALTER TABLE orders 
     //     DROP CONSTRAINT orders_department_item_fkey,
