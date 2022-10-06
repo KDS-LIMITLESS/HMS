@@ -1,4 +1,5 @@
-import { place_order, update_order_status, get_order_by_status, get_all_order, get_orders_by_date }from '../models/order';
+import { place_order, update_order_status, get_order_by_status, 
+    get_all_order, get_orders_by_date, get_cancelled_orders, get_received_orders }from '../models/order';
 import { Request, Response } from 'express'
 
 
@@ -19,14 +20,7 @@ export async function updateOrderStatus(req:Request, res:Response) {
     const status = await update_order_status(req.body.item, req.body.status)
     if (status.rowCount >= 1) return res.status(200).send(`OK`)
     return res.status(400).send(`Error`)
-
 }
-
-// export async function cancelOrder(req:Request, res:Response) {
-    
-//     console.log(req.body)
-
-// }
 
 export async function getOrders(req:Request, res:Response) {
     
@@ -53,3 +47,14 @@ export async function getOrderTransactionByDates(req:Request, res:Response) {
     if (date) return res.status(200).send(date.rows)
     return res.status(400).send("Transactions within the specified date does not exist")
 }
+
+export async function getCancelledOrders(req:Request, res:Response) {
+    let orders = await get_cancelled_orders()
+    if (orders) return res.status(200).send(orders.rows)
+}
+
+export async function getReceivedOrders(req:Request, res:Response) {
+    let orders = await get_received_orders()
+    if (orders) return res.status(200).send(orders.rows)
+}
+

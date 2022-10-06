@@ -14,7 +14,6 @@ export async function sendItemsToDepartments(req:Request, res:Response) {
     else{
         return res.status(404).send(`item not found in specified department`)
     }
-    
 }
 
 export async function getDepartments(req:Request, res:Response) {
@@ -29,6 +28,11 @@ export async function getAllItemsSent(req:Request, res:Response) {
 
 export async function getTransactonDates(req:Request, res:Response) {
     let date = await get_date(req.body.from, req.body.to)
+    console.log(req.body)
     if (date) return res.status(200).send(date.rows)
     return res.status(400).send("Transactions within the specified date does not exist")
+}
+
+export async function name(req:Request, res:Response) {
+    
 }

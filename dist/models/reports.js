@@ -42,15 +42,28 @@ function get_distinct_items(waiter) {
 exports.get_distinct_items = get_distinct_items;
 function get_items(waiter) {
     return __awaiter(this, void 0, void 0, function* () {
-        let item = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT item, quantity, price FROM orders 
-        WHERE username = ${waiter}`);
+        let item = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT tables.status, item, quantity, price FROM orders 
+
+        LEFT JOIN tables
+
+        ON tables.table_name = orders.table_name
+
+        WHERE username = ${waiter} AND tables.status = 'CLOSED'`);
         return item;
     });
 }
 exports.get_items = get_items;
 function get_all_items_sold() {
     return __awaiter(this, void 0, void 0, function* () {
-        let allItems = yield connection_1.db.query(`SELECT item, price, quantity, department FROM orders`);
+        let allItems = yield connection_1.db.query(`SELECT tables.status, item, price, 
+            quantity, department FROM orders
+
+            LEFT JOIN tables
+
+            ON tables.table_name = orders.table_name
+
+            WHERE tables.status = 'CLOSED'
+        `);
         return allItems;
     });
 }
@@ -64,3 +77,12 @@ function clear_db() {
     });
 }
 exports.clear_db = clear_db;
+`SELECT users.username, opening_credit, 
+        credit_granted, credit_remaining FROM users
+        
+        LEFT JOIN credit 
+
+        ON users.username = credit.username
+
+        WHERE users.role = 'Super Admin' OR users.role = 'Auditor' OR users.role = 'Admin'
+        `;

@@ -83,7 +83,7 @@ function updateItem(req, res) {
         try {
             const ITEM = yield (0, item_1.get_item)(req.body.product, req.body.department);
             if (ITEM.rowCount === 1) {
-                yield (0, item_1.update_item)(req.body.product, req.body.price, req.body.productName);
+                yield (0, item_1.update_item)(req.body.product, req.body.price);
                 return res.status(200).send(`ITEM UPDATED`);
             }
             return res.status(404).send(`Item not found in department!`);

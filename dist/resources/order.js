@@ -68,6 +68,7 @@ function updateOrder(req, res) {
         // check if table exists
         for (const order of ORDER) {
             let item = yield (0, order_1.get_drinks_in_table)(order['product'], req.body.table_name);
+            console.log(req.body);
             if (item.rowCount !== 0) {
                 let quantity = order['quantity'] + item.rows[0]['quantity'];
                 yield (0, order_1.update_order_quantity)(order['product'], quantity, req.body.table_name);
@@ -76,7 +77,7 @@ function updateOrder(req, res) {
             }
             else {
                 // item exists 
-                const TOTAL = req.body.price * req.body.quantity;
+                // const TOTAL =  req.body.price*req.body.quantity
                 yield (0, order_1.new_order)(req.body.activeUser, order['product'], order['price'], order['quantity'], order['category'], order['image'], order['department'], req.body.table_name, time.toLocaleTimeString());
                 yield (0, notifiacation_1.send_notification)(req.body.activeUser, order['product'], order['quantity']);
             }

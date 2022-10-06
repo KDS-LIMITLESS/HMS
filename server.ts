@@ -57,6 +57,8 @@ async function startServer() {
     // await create_Order_Table()
     // await create_credit_table()
     // await create_notifications_table();
+    await db.query(` DROP TABLE catalogue `)
+    await db.query(` DROP TABLE transactions `)
 
     // let i = await db.query(`ALTER TABLE orders 
     //     DROP CONSTRAINT orders_department_item_fkey,
@@ -70,8 +72,8 @@ async function startServer() {
     // console.log(i.rowCount)
 
     // ims
-    // await create_inventory_order_table();
-    // await create_transactions_table();
+    await create_inventory_order_table();
+    await create_transactions_table();
     // let check = await db.query("SELECT * FROM transactions WHERE DATE = CURRENT_DATE")
     // console.log(check.rows)
 }

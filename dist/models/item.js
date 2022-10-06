@@ -89,9 +89,9 @@ function delete_item(item, department) {
     });
 }
 exports.delete_item = delete_item;
-function update_item(product, price, productName) {
+function update_item(product, price) {
     return __awaiter(this, void 0, void 0, function* () {
-        let result = yield connection_1.db.query((0, sql_template_strings_1.default) `UPDATE item SET price = ${price}, product = ${productName} WHERE product = ${product}`);
+        let result = yield connection_1.db.query((0, sql_template_strings_1.default) `UPDATE item SET price = ${price} WHERE product = ${product}`);
         return result;
     });
 }

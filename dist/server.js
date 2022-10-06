@@ -16,7 +16,6 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = require("./connection");
-const item_1 = require("./ims/models/item");
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 app.use(express_1.default.json());
@@ -56,16 +55,21 @@ function startServer() {
         // await create_Order_Table()
         // await create_credit_table()
         // await create_notifications_table();
-        // await db.query(`ALTER TABLE notification 
-        //     DROP CONSTRAINT notification_waiter_fkey,
-        //     ALTER waiter DROP NOT NULL,
-        //     ADD CONSTRAINT notification_waiter_fkey FOREIGN KEY (waiter)
-        //     REFERENCES users(username) ON DELETE SET DEFAULT`)
+        // let i = await db.query(`ALTER TABLE orders 
+        //     DROP CONSTRAINT orders_department_item_fkey,
+        // 
+        //     
+        //     ADD CONSTRAINT orders_department_item_fkey FOREIGN KEY (department, item)
+        //     REFERENCES item(department, product) ON DELETE NO ACTION ON UPDATE NO ACTION
+        //     
+        //     
+        //     `)
+        // console.log(i.rowCount)
         // ims
         // await create_inventory_order_table();
-        yield (0, item_1.create_transactions_table)();
-        let check = yield connection_1.db.query("SELECT CURRENT_DATE");
-        console.log(check.rows[0]);
+        // await create_transactions_table();
+        // let check = await db.query("SELECT * FROM transactions WHERE DATE = CURRENT_DATE")
+        // console.log(check.rows)
     });
 }
 startServer();
