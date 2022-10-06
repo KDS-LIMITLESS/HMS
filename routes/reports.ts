@@ -6,7 +6,7 @@ import { uploadReportFile, retrievePDF } from '../middlewares/imageloader';
 export const router = express.Router();
 
 router.get('/waiter-reports', report)
-router.post('/sold-items', getItemReports);
+router.post('/individual-report', getItemReports);
 router.get('/overall-reports', generateOverallReport)
 router.post('/upload-report', uploadReportFile, clearDbDetails)
 router.post('/retrieve-pdf', retrievePDF)
