@@ -86,7 +86,7 @@ export async function uploadReportFile(req:any, res:Response, next:NextFunction)
             }
             // console.log(req.body)
             console.log(req.file.location);
-            next();
+            return res.status(200).json({filepath: req.file.location})
         })
     } catch (e: any) {
         console.log(e.message)

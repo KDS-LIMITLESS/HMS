@@ -8,8 +8,10 @@ export const router = express.Router();
 router.get('/waiter-reports', report)
 router.post('/individual-report', getItemReports);
 router.get('/overall-reports', generateOverallReport)
-router.post('/upload-report', uploadReportFile, clearDbDetails)
+router.post('/upload-report', uploadReportFile)
 router.post('/retrieve-pdf', retrievePDF)
+
+router.delete('/clear-db', clearDbDetails)
 
 
 module.exports = router;
