@@ -19,15 +19,17 @@ import { get_item } from '../../models/item';
 
 export async function distributeItems(req:Request, res:Response) {
     const item = await get_item(req.body.product)
-    console.log(item.rows[0])
+    console.log(req.body)
     
     if (item.rows[0]['quantity'] === 0 || item.rows[0]['quantity'] < req.body.quantity){
         return res.status(400).send('Item quantity in store is too low')
     }
     console.log('here')
+    console.log('here')
     await send_products_to_department(req.body.product, req.body.department, 
         req.body.quantity, req.body.price
     )
+    console.log('role')
    
     console.log('role')
     let quantity = item.rows[0]['quantity'] - req.body.quantity
