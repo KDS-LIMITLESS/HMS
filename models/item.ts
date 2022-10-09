@@ -72,7 +72,7 @@ export async function add_item(product:string, category:string, quantity:number,
 // product table
 export async function get_drinks_in_department(department: string) {
 
-    let result = await db.query(SQL `SELECT * FROM product
+    let result = await db.query(SQL `SELECT * FROM products
             WHERE department = ${department}`);
     return result;
 }
