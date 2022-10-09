@@ -68,6 +68,10 @@ async function startServer() {
     // await create_credit_table()
     // await create_notifications_table();
     // await create_inventory_order_table()
+
+    await db.query(`ALTER TABLE item
+        DROP CONSTRAINT item_category_key CASCADE
+    `)
   
 }
 startServer();
