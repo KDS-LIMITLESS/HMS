@@ -8,19 +8,17 @@ export async function create_Order_Table() {
 
     return await db.query(`CREATE TABLE IF NOT EXISTS orders (
         id BIGSERIAL PRIMARY KEY, 
-        username VARCHAR REFERENCES users(username) ON DELETE SET NULL,
+        username VARCHAR REFERENCES users(username) ON DELETE NO ACTION,
         
-        item VARCHAR NOT NULL ,
+        item VARCHAR  REFERENCES item(product),
         price INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
-        category VARCHAR NOT NULL,
-        image VARCHAR NOT NULL,
-        department VARCHAR NOT NULL,
+        category VARCHAR REFERENCES item(category) ON DELETE NO ACTION,
+        image VARCHAR REFERENCES item(image) ON DELETE NO ACTION,
+        department VARCHAR REFERENCES dept(department) ON DELETE NO ACTION,
 
-        table_name VARCHAR NOT NULL REFERENCES tables(table_name),
-        
-        time VARCHAR,
-        FOREIGN KEY (department, item ) REFERENCES item(department, product)
+        table_name VARCHAR NOT NULL REFERENCES tables(table_name) ON DELETE NO ACTION,
+        time VARCHAR
     )`)
 }
 
@@ -28,19 +26,14 @@ export async function new_order(username: string, item: string, price: number,
             quantity: number, category: string, image: string,  department: string,
             table_name: string, time: string) {            
     try {
-        await db.query('BEGIN')
         let result = await db.query(SQL `INSERT INTO orders (
             username, item, price, quantity, category, image, department,
                 table_name, time)
     
         VALUES (${username}, ${item}, ${price}, ${quantity}, ${category}, 
-                ${image}, ${department}, ${table_name}, ${time})`);
-        await db.query('COMMIT')
-        console.log('Committing ')
+                ${image}, ${department}, ${table_name}, ${time})`);      
         return result
     } catch (e) {
-        await db.query('ROLLBACK')
-        // await delete_order(table_name);
         await delete_table(table_name, username)
         console.log('Rolling back')
         throw e;

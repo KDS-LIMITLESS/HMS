@@ -1,8 +1,8 @@
 import { get_all_items, add_item, get_item, 
-        get_all_items_with_category, get_drinks_in_department, 
-        delete_item, update_item, create_dept
+        get_all_items_in_category, get_drinks_in_department, 
+        delete_item, update_item, create_dept, send_products_to_department, reduce_item_quantity
 } from "../models/item";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
 
 // department 
@@ -47,7 +47,7 @@ export async function addNewItem(req:Request, res: Response) {
 
 export async function getItemsInCategory(req:Request, res:Response) {
     const reqBody = req.body;
-    const result = await get_all_items_with_category(reqBody['category'], reqBody['department'])
+    const result = await get_all_items_in_category(reqBody['category'], reqBody['department'])
     return res.status(200).send(result.rows)
 }
 
@@ -90,3 +90,21 @@ export async function updateItem(req:Request, res: Response) {
         return res.status(400).send(err.message)
     }   
 }
+
+export async function distributeItems(req:Request, res:Response, next:NextFunction) {
+    const item = await get_item(req.body.product)
+
+    
+    if (item.rows[0]['quantity'] === 0 || item.rows[0]['quantity'] < req.body.quantity){
+        return res.status(400).send('Item quantity in store is too low')
+    }
+    await send_products_to_department(req.body.product, req.body.department, 
+        req.body.quantity, req.body.price
+    )
+   
+    let quantity = item.rows[0]['quantity'] - req.body.quantity
+    console.log(quantity)
+    await reduce_item_quantity(req.body.product, quantity)
+    return res.status(200).send(`${req.body.quantity} ${req.body.product} sent to ${req.body.department}`)
+}
+

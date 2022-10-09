@@ -19,7 +19,7 @@ export async function createTable(req:Request, res: Response, next: NextFunction
     } 
     if (table.rowCount === 0) {
         for (order of ORDER){
-            let item = await get_item(order['product'], order['department']);
+            let item = await get_item(order['product']);
             
             if (item === null)  {     
                 console.log(item)

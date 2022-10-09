@@ -2,7 +2,7 @@ import express from 'express'
 import dotenv from "dotenv"
 import cors from 'cors'
 import { db } from './connection';
-import { createItemsTable, createDeptTable } from './models/item';
+import { createItemsTable, createDeptTable, createProductTable } from './models/item';
 import { create_Order_Table } from './models/order';
 import { createUsersTable } from './models/user';
 import { createTableManager} from './models/table';
@@ -51,13 +51,18 @@ async function startServer() {
     // await db.query('DROP TABLE tables')
     // await db.query('DROP TABLE credit')
     // await db.query('DROP TABLE notification')
+    //await db.query('DROP TABLE products')
+    // await db.query('DROP TABLE transactions')
+    // await db.query('DROP TABLE catalogue')
+    
     // await db.query('DROP TABLE item')
+    // await db.query('DROP TABLE dept')
     // // await db.query('DROP TABLE users')
     // 
     // await createUsersTable()
     await createDeptTable()
     await createItemsTable()
-    
+    await createProductTable()
     await createTableManager()
     await create_Order_Table()
     await create_credit_table()
@@ -71,7 +76,7 @@ async function startServer() {
     
 
     // ims
-    await create_inventory_order_table();
+    // await create_inventory_order_table();
 }
 startServer();
 
