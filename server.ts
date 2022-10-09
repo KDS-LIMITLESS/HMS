@@ -9,6 +9,7 @@ import { createTableManager} from './models/table';
 import { create_credit_table } from './models/credit';
 import { create_notifications_table } from './models/notifiacation';
 import { create_inventory_order_table } from './ims/models/order';
+import { create_transactions_table } from './ims/models/item';
 import SQL from 'sql-template-strings'
 
 const app = express();
@@ -28,7 +29,7 @@ app.use('', require('./routes/notiffication'))
 //ims 
 
 app.use('/ims', require('./ims/routes/order'))
-// app.use('', require('./ims/routes/item'))
+app.use('/ims', require('./ims/routes/item'))
 
 
 db.connect((err) => {
@@ -42,11 +43,7 @@ app.listen(PORT, () => {
 })
 
 async function startServer() {
-    // await createUsersTable();
-    
-    // await createItemsTable();
-    
-    
+   
     // await db.query('DROP TABLE orders')
     // await db.query('DROP TABLE tables')
     // await db.query('DROP TABLE credit')
@@ -67,16 +64,33 @@ async function startServer() {
     await create_Order_Table()
     await create_credit_table()
     await create_notifications_table();
+    // await db.query('DROP TABLE transactions')
+    // 
+    // await createUsersTable()
+    // await createItemsTable()
+    // await createTableManager()
+    // await create_Order_Table()
+    // await create_credit_table()
+    // await create_notifications_table();
+    // await db.query(` DROP TABLE catalogue `)
+    // await db.query(` DROP TABLE transactions `)
 
-    // await db.query(`ALTER TABLE notification 
-    //     DROP CONSTRAINT notification_waiter_fkey,
-    //     ALTER waiter DROP NOT NULL,
-    //     ADD CONSTRAINT notification_waiter_fkey FOREIGN KEY (waiter)
-    //     REFERENCES users(username) ON DELETE SET DEFAULT`)
-    
+    // let i = await db.query(`ALTER TABLE orders 
+    //     DROP CONSTRAINT orders_department_item_fkey,
+    // 
+    //     
+    //     ADD CONSTRAINT orders_department_item_fkey FOREIGN KEY (department, item)
+    //     REFERENCES item(department, product) ON DELETE NO ACTION ON UPDATE NO ACTION
+    //     
+    //     
+    //     `)
+    // console.log(i.rowCount)
 
     // ims
     // await create_inventory_order_table();
+    await create_transactions_table();
+    // let check = await db.query("SELECT * FROM transactions WHERE DATE = CURRENT_DATE")
+    // console.log(check.rows)
 }
 startServer();
 

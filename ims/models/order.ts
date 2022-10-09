@@ -10,7 +10,7 @@ export async function create_inventory_order_table() {
         metric VARCHAR DEFAULT ' ',
         unitprice INTEGER DEFAULT 0,
         status VARCHAR DEFAULT 'PENDING',
-        date VARCHAR NOT NULL DEFAULT TO_CHAR(CURRENT_TIMESTAMP, 'YYYMMDD')
+        date DATE NOT NULL DEFAULT CURRENT_DATE
     )`)
 
     // refrence the items from the pos already
@@ -45,6 +45,21 @@ export async function get_order_by_status(status:string) {
 
 
 export async function get_all_order() {
-    let order = await db.query(SQL ` SELECT item, qty, price, unitprice, date FROM catalogue`)
+    let order = await db.query(SQL ` SELECT item, qty, unitprice, size, status, date, metric FROM catalogue`)
     return order;
+}
+
+export async function get_orders_by_date(from:string, to:Date) {
+    const DATE = await db.query(SQL ` SELECT * FROM catalogue WHERE date BETWEEN ${from} AND ${to} `)
+    return DATE
+}
+
+export async function get_cancelled_orders() {
+    let order = await db.query(` SELECT * FROM catalogue WHERE status = 'CANCELLED' `)
+    return order
+}
+
+export async function get_received_orders() {
+    let order = await db.query(` SELECT * FROM catalogue WHERE status = 'RECEIVED' `)
+    return order
 }
