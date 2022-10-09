@@ -32,6 +32,7 @@ app.use('', require('./routes/notiffication'))
 
 app.use('/ims', require('./ims/routes/order'))
 app.use('/ims', require('./ims/routes/item'))
+app.use('/ims', require('./ims/routes/department'))
 
 
 db.connect((err) => {
