@@ -31,39 +31,7 @@ export async function createItemsTable() {
 
 
 // table for products of each dept. with price
-export async function createProductTable() {
 
-    db.query(`CREATE TABLE IF NOT EXISTS 
-    products(
-        id BIGSERIAL PRIMARY KEY,
-        product VARCHAR REFERENCES item(product) ON DELETE NO ACTION ON UPDATE NO ACTION,
-        price INTEGER  DEFAULT 0,
-        quantity INTEGER DEFAULT 0,
-        department VARCHAR REFERENCES dept(department) ON DELETE NO ACTION ON UPDATE NO ACTION,
-        date DATE 
-    )`, 
-    (err, result) =>{
-        if(err) return console.error(err.message);
-        return result
-    })
-}
-
-export async function createDeptTable() {
-
-    db.query(`CREATE TABLE IF NOT EXISTS 
-    dept(
-        department VARCHAR PRIMARY KEY NOT NULL
-    )`, 
-    (err, result) =>{
-        if(err) return console.error(err.message);
-        return result
-    })
-}
-
-export async function create_dept(dept:string) {
-    let department = await db.query(SQL ` INSERT INTO dept(department)
-        VALUES(${dept});`)
-}
 
 export async function get_all_items() {
     let result = db.query('SELECT * FROM item')
@@ -109,6 +77,8 @@ export async function get_drinks_in_department(department: string) {
     return result;
 }
 
+
+
 export async function delete_item(item:string, department: string) {
 
     let result = await db.query(SQL `DELETE FROM item WHERE product = ${item}`)
@@ -116,23 +86,14 @@ export async function delete_item(item:string, department: string) {
     
 }
 
+
+
 export async function update_item(product: string, price:number) {
 
     let result = await db.query(SQL`UPDATE item SET price = ${price} WHERE product = ${product}`);
     return result;
 }
 
-export async function reduce_item_quantity(products:string, quantity:number){
-    let product = await db.query(SQL ` UPDATE item SET quantity = ${quantity} WHERE product = ${products}; `)
-    return product
-
-}
-
-export async function send_products_to_department(product:string, department:string, quantity:number, price:number) {
-    let result = await db.query(SQL ` INSERT INTO products(product, department, quantity, price)
-        VALUES(${product}, ${department}, ${quantity}, ${price});`)
-    return result;
-}
 
 // how do i make updates on tables to reflect on other tables in postgres
 

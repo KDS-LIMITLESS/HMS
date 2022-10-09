@@ -1,13 +1,13 @@
 import express from 'express'
 import { appendFile } from 'fs';
-import { sendItemsToDepartments, getDepartments, getAllItemsSent, getTransactonDates } from '../resources/item'
+import {  getAllItemsSent, getTransactionDates,
+     distributeItems } from '../resources/item'
 
 const router = express.Router();
 
-router.get('/departments', getDepartments)
 router.get('/sent-items', getAllItemsSent)
 
-router.post('/send-items', sendItemsToDepartments)
-router.post('/transactions', getTransactonDates)
+router.post('/send-items', distributeItems)
+router.post('/transactions', getTransactionDates)
 
 module.exports = router;
