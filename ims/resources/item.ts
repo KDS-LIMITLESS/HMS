@@ -19,7 +19,7 @@ import { get_item } from '../../models/item';
 
 export async function distributeItems(req:Request, res:Response) {
     const item = await get_item(req.body.product)
-
+    console.log(req.body)
     
     if (item.rows[0]['quantity'] === 0 || item.rows[0]['quantity'] < req.body.quantity){
         return res.status(400).send('Item quantity in store is too low')
