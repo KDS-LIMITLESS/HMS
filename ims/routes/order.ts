@@ -1,6 +1,6 @@
 import express from 'express'
 import { updateOrderStatus, placeOrder, getOrders, getAllOrders, 
-    getOrderTransactionByDates, getReceivedOrders, getCancelledOrders } from '../resources/order'
+    getOrderTransactionByDates, getReceivedOrders, getCancelledOrders, updateReceivedOrderQuantity } from '../resources/order'
 
 
 const router = express.Router();
@@ -15,6 +15,7 @@ router.post('/place-order', placeOrder)
 router.post('/order-transaction-date', getOrderTransactionByDates )
 
 router.put('/update-status', updateOrderStatus)
+router.put('/update-order-quantity', updateReceivedOrderQuantity)
 
 
 

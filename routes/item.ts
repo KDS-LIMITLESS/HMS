@@ -1,6 +1,6 @@
 import express from 'express';
 import { getItem, addNewItem, getItemsInCategory, getAllDrinksDepartment, 
-    deleteItem, updateItem } from '../resources/item';
+    deleteItem, updateItem, filterItemsByDates } from '../resources/item';
 import { authorizeSuperAdminNext } from '../middlewares/user';
 import { uploadPicture } from '../middlewares/imageloader';
 
@@ -13,6 +13,7 @@ router.post('/items/department', getAllDrinksDepartment)
 router.post('/items/category', getItemsInCategory)
 router.post('/new-item', authorizeSuperAdminNext, addNewItem) // add item
 router.post('/upload', uploadPicture)
+router.post('/dates-filter', filterItemsByDates)
 
 router.put('/update-item', authorizeSuperAdminNext, updateItem)
 

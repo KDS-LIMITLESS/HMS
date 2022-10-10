@@ -1,7 +1,7 @@
 import { db } from '../../connection'
 import SQL from 'sql-template-strings'
 
-
+// placing orders db
 export async function create_inventory_order_table() {
     return db.query(` CREATE TABLE IF NOT EXISTS catalogue (
         item VARCHAR,
@@ -25,6 +25,12 @@ export async function place_order(item:string, qty:number, size:number, metric:s
             VALUES (${item}, ${qty}, ${size}, ${metric}, ${unitPrice})`)
 
         return order;
+}
+
+export async function get_one_order(order:string) {
+    let isOrder = await db.query(SQL `SELECT item FROM catalogue WHERE item = ${order}`);
+    return isOrder;
+
 }
 
 export async function get_orders() {
@@ -62,4 +68,9 @@ export async function get_cancelled_orders() {
 export async function get_received_orders() {
     let order = await db.query(` SELECT * FROM catalogue WHERE status = 'RECEIVED' `)
     return order
+}
+
+export async function update_received_order_quantity(qty:number, item:string) {
+    let order = await db.query(SQL ` UPDATE catalogue SET qty = ${qty} WHERE item = ${item}  `)
+    return order;
 }

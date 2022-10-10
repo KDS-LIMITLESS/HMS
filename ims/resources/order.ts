@@ -1,5 +1,6 @@
 import { place_order, update_order_status, get_order_by_status, 
-    get_all_order, get_orders_by_date, get_cancelled_orders, get_received_orders }from '../models/order';
+    get_all_order, get_orders_by_date, get_cancelled_orders, 
+    get_received_orders, update_received_order_quantity, get_one_order }from '../models/order';
 import { Request, Response } from 'express'
 
 
@@ -58,3 +59,11 @@ export async function getReceivedOrders(req:Request, res:Response) {
     if (orders) return res.status(200).send(orders.rows)
 }
 
+export async function updateReceivedOrderQuantity(req:Request, res:Response) {
+    let item = await get_one_order(req.body.item)
+    if (item.rowCount >= 1) {
+        let orders = await update_received_order_quantity(req.body.qty, req.body.item)
+        return res.status(200).send(`Quantity updated successfully`)
+    }
+    
+}

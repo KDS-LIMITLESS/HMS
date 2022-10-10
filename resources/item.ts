@@ -1,14 +1,8 @@
 import { get_all_items, add_item, get_item, 
         get_all_items_in_category, get_drinks_in_department, 
-        delete_item, update_item
+        delete_item, update_item, get_date
 } from "../models/item";
 import { NextFunction, Request, Response } from "express";
-
-
-// department 
-
-
-
 
 
 // item 
@@ -64,7 +58,7 @@ export async function deleteItem(req: Request,res: Response){
     try {
         const ITEM = await get_item(req.body.product)
         if (ITEM.rowCount === 1) {
-            await delete_item(req.body.product, req.body.department)
+            await delete_item(req.body.product)
             return res.status(200).send("OK")
         }
         return res.status(400).send(`Error. Item does not exist.`)
@@ -85,4 +79,12 @@ export async function updateItem(req:Request, res: Response) {
         return res.status(400).send(err.message)
     }   
 }
+
+export async function filterItemsByDates(req:Request, res:Response) {
+    let date = await get_date(req.body.from, req.body.to)
+    console.log(req.body)
+    if (date) return res.status(200).send(date.rows)
+    return res.status(400).send("Transactions within the specified date does not exist")
+}
+
 

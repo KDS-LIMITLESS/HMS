@@ -12,7 +12,8 @@ export async function createItemsTable() {
         size INTEGER,
         metric VARCHAR,
         image VARCHAR UNIQUE NOT NULL,
-        reorder INTEGER DEFAULT 0    
+        reorder INTEGER DEFAULT 0,
+        date DATE NOT NULL DEFAULT CURRENT_DATE
     )`, 
     (err, result) =>{
         if(err) return console.error(err.message);
@@ -79,7 +80,7 @@ export async function get_drinks_in_department(department: string) {
 
 
 
-export async function delete_item(item:string, department: string) {
+export async function delete_item(item:string) {
 
     let result = await db.query(SQL `DELETE FROM item WHERE product = ${item}`)
     return result;
@@ -87,10 +88,15 @@ export async function delete_item(item:string, department: string) {
 }
 
 
+export async function get_date(from:string, to:Date) {
+    const DATE = await db.query(SQL ` SELECT * FROM item WHERE date BETWEEN ${from} AND ${to} `)
+    return DATE
+}
+
 
 export async function update_item(product: string, price:number) {
 
-    let result = await db.query(SQL`UPDATE item SET price = ${price} WHERE product = ${product}`);
+    let result = await db.query(SQL`UPDATE products SET price = ${price} WHERE product = ${product}`);
     return result;
 }
 

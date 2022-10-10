@@ -63,7 +63,10 @@ export async function send_products_to_department(product:string, department:str
 
 
 export async function get_all_sent_items() {
-    const items = await db.query(SQL` SELECT * FROM products WHERE DATE = CURRENT_DATE`)
+    const items = await db.query(SQL` SELECT *, item.size, item.metric FROM item
+    LEFT JOIN products 
+    ON products.product = item.product
+    WHERE DATE = CURRENT_DATE`)
     return items
 }
 
@@ -71,3 +74,5 @@ export async function get_date(from:string, to:Date) {
     const DATE = await db.query(SQL ` SELECT * FROM products WHERE date BETWEEN ${from} AND ${to} `)
     return DATE
 }
+
+
