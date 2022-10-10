@@ -34,7 +34,7 @@ export async function createItemsTable() {
 
 
 export async function get_all_items() {
-    let result = db.query('SELECT * FROM products')
+    let result = db.query('SELECT * FROM item')
     return result;
 }
 
@@ -72,8 +72,9 @@ export async function add_item(product:string, quantity:number, image: string,
 // product table
 export async function get_drinks_in_department(department: string) {
 
-    let result = await db.query(SQL `SELECT * FROM products
-            WHERE department = ${department}`);
+    let result = await db.query(SQL `SELECT product, price, quantity, image, 
+        category, department, date FROM products
+        WHERE department = ${department}`);
     return result;
 }
 
