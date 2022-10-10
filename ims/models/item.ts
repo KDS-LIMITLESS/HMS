@@ -66,7 +66,7 @@ export async function get_all_sent_items() {
     const items = await db.query(SQL` SELECT *, item.size, item.metric FROM item
     LEFT JOIN products 
     ON products.product = item.product
-    WHERE DATE = CURRENT_DATE`)
+    WHERE date = CURRENT_DATE`)
     return items
 }
 
