@@ -37,7 +37,7 @@ export async function createProductTable() {
     products(
         id BIGSERIAL PRIMARY KEY,
         product VARCHAR REFERENCES item(product) ON DELETE NO ACTION ON UPDATE NO ACTION,
-        price INTEGER  DEFAULT 0,
+        price INTEGER  NOT NULL DEFAULT 0,
         category VARCHAR NOT NULL, 
         quantity INTEGER DEFAULT 0,
         department VARCHAR REFERENCES dept(department) ON DELETE NO ACTION ON UPDATE NO ACTION,

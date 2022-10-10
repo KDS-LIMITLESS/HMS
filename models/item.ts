@@ -34,7 +34,7 @@ export async function createItemsTable() {
 
 
 export async function get_all_items() {
-    let result = db.query('SELECT * FROM item')
+    let result = db.query('SELECT * FROM products')
     return result;
 }
 
