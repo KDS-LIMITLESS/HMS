@@ -70,9 +70,9 @@ async function startServer() {
     // await create_notifications_table();
     // await create_inventory_order_table()
 
-    await db.query(`ALTER TABLE item
-        ADD COLUMN date DATE NOT NULL DEFAULT CURRENT_DATE
-    `)
+    // await db.query(`ALTER TABLE item
+    //     ADD COLUMN date DATE NOT NULL DEFAULT CURRENT_DATE
+    // `)
   
 }
 startServer();
