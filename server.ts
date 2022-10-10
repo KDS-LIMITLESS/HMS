@@ -70,10 +70,9 @@ async function startServer() {
     // await create_notifications_table();
     // await create_inventory_order_table()
 
-   //  await db.query(`ALTER TABLE item
-   //      DROP COLUMN category
-   // `)
-  
+    await db.query(`ALTER TABLE item
+        DROP COLUMN category;
+    `)
     //await db.query(`ALTER TABLE products
     //    ADD COLUMN category VARCHAR NOT NULL
 //      `)
