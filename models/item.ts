@@ -7,7 +7,6 @@ export async function createItemsTable() {
     db.query(`CREATE TABLE IF NOT EXISTS 
     item(
         product VARCHAR PRIMARY KEY,
-        category VARCHAR UNIQUE NOT NULL, 
         quantity INTEGER NOT NULL, 
         size INTEGER,
         metric VARCHAR,
@@ -55,17 +54,17 @@ export async function get_product_price(product: string){
  
 // start from here 
 export async function get_all_items_in_category(itemCategory: string, department: string){
-    let result = db.query(SQL `SELECT * FROM item WHERE category = ${itemCategory} 
+    let result = db.query(SQL `SELECT * FROM product WHERE category = ${itemCategory} 
             AND department = ${department};`)
     return result
 }
 
-export async function add_item(product:string, category:string, quantity:number, image: string, 
+export async function add_item(product:string, quantity:number, image: string, 
     size:number, metric:string, reorder:string) {
-    let result = await db.query(SQL `INSERT INTO item(product,category, quantity, 
+    let result = await db.query(SQL `INSERT INTO item(product, quantity, 
         image, size, metric, reorder) 
 
-        VALUES(${product}, ${category}, ${quantity}, ${image}, ${size}, ${metric}, ${reorder});`)
+        VALUES(${product}, ${quantity}, ${image}, ${size}, ${metric}, ${reorder});`)
     return result   
 }
 

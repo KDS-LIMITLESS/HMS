@@ -25,7 +25,7 @@ export async function addNewItem(req:Request, res: Response) {
         let getItem = await get_item(reqBody['product'])
         if (getItem.rowCount === 1) return res.status(401).send(`${reqBody['product']} already exists`)
         
-        await add_item(reqBody['product'], reqBody['category'], reqBody['quantity'], 
+        await add_item(reqBody['product'], reqBody['quantity'], 
         reqBody['image'], reqBody['size'], reqBody['metric'], reqBody['reorder'])
         return res.status(200).send('OK');  
            

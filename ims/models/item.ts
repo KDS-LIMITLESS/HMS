@@ -38,6 +38,7 @@ export async function createProductTable() {
         id BIGSERIAL PRIMARY KEY,
         product VARCHAR REFERENCES item(product) ON DELETE NO ACTION ON UPDATE NO ACTION,
         price INTEGER  DEFAULT 0,
+        category VARCHAR NOT NULL, 
         quantity INTEGER DEFAULT 0,
         department VARCHAR REFERENCES dept(department) ON DELETE NO ACTION ON UPDATE NO ACTION,
         date DATE NOT NULL DEFAULT CURRENT_DATE
@@ -55,9 +56,9 @@ export async function reduce_item_quantity(products:string, quantity:number){
 
 }
 
-export async function send_products_to_department(product:string, department:string, quantity:number, price:number) {
-    let result = await db.query(SQL ` INSERT INTO products(product, department, quantity, price)
-        VALUES(${product}, ${department}, ${quantity}, ${price});`)
+export async function send_products_to_department(product:string, department:string, quantity:number, category:string, price:number) {
+    let result = await db.query(SQL ` INSERT INTO products(product, department, quantity, category, price)
+        VALUES(${product}, ${department}, ${quantity}, ${category}, ${price});`)
     return result;
 }
 

@@ -51,7 +51,7 @@ async function startServer() {
     // await db.query('DROP TABLE tables')
     // await db.query('DROP TABLE credit')
     // await db.query('DROP TABLE notification')
-    // await db.query('DROP TABLE products')
+    await db.query('DROP TABLE products')
     // await db.query('DROP TABLE catalogue')
     // await db.query('DROP ')
     
@@ -70,10 +70,14 @@ async function startServer() {
     // await create_notifications_table();
     // await create_inventory_order_table()
 
-    // await db.query(`ALTER TABLE item
-    //     ADD COLUMN date DATE NOT NULL DEFAULT CURRENT_DATE
-    // `)
+   //  await db.query(`ALTER TABLE item
+   //      DROP COLUMN category
+   // `)
   
+    //await db.query(`ALTER TABLE products
+    //    ADD COLUMN category VARCHAR NOT NULL
+//      `)
+
 }
 startServer();
 
