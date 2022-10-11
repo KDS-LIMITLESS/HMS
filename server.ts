@@ -47,28 +47,27 @@ app.listen(PORT, () => {
 
 async function startServer() {
    
-    // await db.query('DROP TABLE orders')
-    // await db.query('DROP TABLE tables')
-    // await db.query('DROP TABLE credit')
-    // await db.query('DROP TABLE notification')
-    // await db.query('DROP TABLE products')
-    // await db.query('DROP TABLE catalogue')
-    // await db.query('DROP ')
+    await db.query('DROP TABLE orders')
+    await db.query('DROP TABLE tables')
+    await db.query('DROP TABLE credit')
+    await db.query('DROP TABLE notification')
+    await db.query('DROP TABLE products CASCADE')
+    await db.query('DROP TABLE catalogue CASCADE')
     
-    // await db.query('DROP TABLE item CASCADE')
-    // await db.query('DROP TABLE dept')
+    await db.query('DROP TABLE item CASCADE')
+    await db.query('DROP TABLE dept CASCADE')
     
-    // await db.query('DROP TABLE users')
+    await db.query('DROP TABLE users CASCADE')
     
-    // await createUsersTable()
-    // await createDeptTable()
-    // await createItemsTable()
+    await createUsersTable()
+    await createDeptTable()
+    await createItemsTable()
     await createProductTable()
-    // await createTableManager()
-    // await create_Order_Table()
-    // await create_credit_table()
-    // await create_notifications_table();
-    // await create_inventory_order_table()
+    await createTableManager()
+    await create_Order_Table()
+    await create_credit_table()
+    await create_notifications_table();
+    await create_inventory_order_table()
 
     // await db.query(`ALTER TABLE item
     //     DROP COLUMN category;
