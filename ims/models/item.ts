@@ -36,7 +36,7 @@ export async function createProductTable() {
     db.query(`CREATE TABLE IF NOT EXISTS 
     products(
         id BIGSERIAL PRIMARY KEY,
-        product VARCHAR REFERENCES item(product) ON DELETE NO ACTION ON UPDATE NO ACTION,
+        product VARCHAR REFERENCES item(product) ON DELETE CASCADE ON UPDATE CASCADE,
         price INTEGER  NOT NULL DEFAULT 0,
         category VARCHAR NOT NULL, 
         quantity INTEGER DEFAULT 0,

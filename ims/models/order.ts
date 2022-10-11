@@ -73,3 +73,8 @@ export async function update_received_order_quantity(qty:number, item:string) {
     let order = await db.query(SQL ` UPDATE catalogue SET qty = ${qty} WHERE item = ${item}  `)
     return order;
 }
+
+export async function total_placed_orders() {
+    let order = await db.query(SQL ` SELECT item, qty, unitprice from catalogue WHERE date = CURRENT_DATE `)
+    return order
+}

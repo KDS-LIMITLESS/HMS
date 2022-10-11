@@ -1,6 +1,7 @@
 import { place_order, update_order_status, get_order_by_status, 
     get_all_order, get_orders_by_date, get_cancelled_orders, 
-    get_received_orders, update_received_order_quantity, get_one_order }from '../models/order';
+    get_received_orders, update_received_order_quantity, 
+    get_one_order, total_placed_orders }from '../models/order';
 
 import { add_item, get_item, update_item_quantity } from '../../models/item';
 import { Request, Response } from 'express'
@@ -91,4 +92,8 @@ export async function updateReceivedOrderQuantity(req:Request, res:Response) {
         return res.status(200).send(`Quantity updated successfully`)
     }
     
+}
+
+export async function getPlaceOrderTotal(req:Request, res:Response) {
+    let total = await total_placed_orders()
 }
