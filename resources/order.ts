@@ -3,8 +3,9 @@ import { exit } from "process";
 import { get_item } from "../models/item";
 import {new_order, get_table_orders, get_drinks_in_table, 
     update_order_quantity, get_all_orders, delete_order, get_order,
-    count_waiters_order, get_table_orders_for_admin} from "../models/order";
+    count_waiters_order, get_table_orders_for_admin, count_orders_in_closed_tables, count_all_orders} from "../models/order";
 import { send_notification } from "../models/notifiacation";
+import { get_user } from "../models/user";
 
 
 export async function placeOrder(req: Request, res: Response, next: NextFunction){
@@ -101,6 +102,11 @@ export async function getAllOrder(req:Request, res: Response) {
 
 export async function countWaitersOrder(req: Request, res: Response) {
     try {
+        let user = await get_user(req.body.activeUser)
+        if (user.rows[0]['role'] === 'Super Admin') {
+            let count = await count_all_orders()
+            return res.status(200).json({order_count: count.rows})
+        }
         let count = await count_waiters_order(req.body.activeUser)
         return res.status(200).json({Waiter_count: count.rowCount})
     }catch(err: any){

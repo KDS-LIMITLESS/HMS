@@ -82,6 +82,21 @@ export async function count_waiters_order(waiter: string) {
     return orderCount
 }
 
+export async function count_all_orders() {
+    let count = await db.query(SQL ` SELECT count(*) FROM orders; `)
+    return count;
+}
+
+export async function count_orders_in_closed_tables() {
+    let count = await db.query(SQL ` SELECT count(*), tables.status FROM orders
+            LEFT JOIN tables
+            ON orders.table_name = tables.table_name
+            WHERE tables.table_name = 'CLOSED'
+            GROUP BY tables.status; `)
+    return count;
+}
+
+
 export async function delete_order(table_name: string, item: string){
 
     let result = await db.query(SQL `DELETE FROM orders 
