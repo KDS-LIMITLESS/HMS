@@ -83,7 +83,7 @@ export async function updateItem(req:Request, res: Response) {
 export async function filterItemsByDates(req:Request, res:Response) {
     let date = await get_date(req.body.from, req.body.to)
     console.log(req.body)
-    if (date) return res.status(200).send(date.rows)
+    if (date) return res.status(200).json({filters: date.rows, count: date.rowCount})
     return res.status(400).send("Transactions within the specified date does not exist")
 }
 

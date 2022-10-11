@@ -101,6 +101,12 @@ export async function update_item(product: string, price:number) {
 }
 
 
+export async function update_item_quantity(product: string, quantity:number) {
+
+    let result = await db.query(SQL`UPDATE products SET quantity = ${quantity} WHERE product = ${product}`);
+    return result;
+}
+
 // how do i make updates on tables to reflect on other tables in postgres
 
 // get all products sent to departments 

@@ -33,10 +33,10 @@ export async function get_one_order(order:string) {
 
 }
 
-export async function get_orders() {
-    let order = await db.query(SQL ` SELECT * from catalogue `);
-    return order
-}
+// export async function get_orders() {
+//     let order = await db.query(SQL ` SELECT *, count(*) from catalogue `);
+//     return order
+// }
 
 export async function update_order_status(item:string, status:string) {
     let orderStatus = await db.query(SQL ` UPDATE catalogue SET status = ${status}
@@ -49,9 +49,8 @@ export async function get_order_by_status(status:string) {
     return orderStatus;
 }
 
-
 export async function get_all_order() {
-    let order = await db.query(SQL ` SELECT item, qty, unitprice, size, status, date, metric FROM catalogue`)
+    let order = await db.query(SQL ` SELECT *, count(*) FROM catalogue`)
     return order;
 }
 
