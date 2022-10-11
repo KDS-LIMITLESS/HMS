@@ -80,6 +80,12 @@ async function startServer() {
 }
 startServer();
 
-// KAMAH GTBank2022
-// notificatons to various departments
-// retur item for bar man
+// check update ordr status on ims
+// Database reordring
+// make seprate table for image 
+// automate adding items to deps when order status chages to RECEIVED 
+// quantity, image, reorderlevel
+
+// Seprate closed and open tables, push to a side of the screen
+// change items to products like Ada said 
+// Apis for the cards in IMS and POS
