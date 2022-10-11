@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { get_all_sent_items, get_date, send_products_to_department,
-    reduce_item_quantity } from '../models/item';
+    reduce_item_quantity, 
+    get_product_image} from '../models/item';
 import { get_item } from '../../models/item';
 
 
@@ -24,8 +25,10 @@ export async function distributeItems(req:Request, res:Response) {
     if(item.rowCount  < 1){
         return res.status(400).send('Item quantity in store is too low')
     }
+    let image = await get_product_image(req.body.product)
+    console.log(image)
     await send_products_to_department(req.body.product, req.body.department, 
-        req.body.quantity, req.body.category, req.body.price
+        req.body.quantity, image, req.body.category, req.body.price
     )   
     let quantity = item.rows[0]['quantity'] - req.body.quantity
     await reduce_item_quantity(req.body.product, quantity)

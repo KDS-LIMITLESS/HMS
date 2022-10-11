@@ -40,6 +40,7 @@ export async function createProductTable() {
         price INTEGER  NOT NULL DEFAULT 0,
         category VARCHAR NOT NULL, 
         quantity INTEGER DEFAULT 0,
+        image VARCHAR REFERENCES item(image) ON DELETE SET NULL,
         department VARCHAR REFERENCES dept(department) ON DELETE NO ACTION ON UPDATE NO ACTION,
         date DATE NOT NULL DEFAULT CURRENT_DATE
     )`, 
@@ -56,9 +57,9 @@ export async function reduce_item_quantity(products:string, quantity:number){
 
 }
 
-export async function send_products_to_department(product:string, department:string, quantity:number, category:string, price:number) {
-    let result = await db.query(SQL ` INSERT INTO products(product, department, quantity, category, price)
-        VALUES(${product}, ${department}, ${quantity}, ${category}, ${price});`)
+export async function send_products_to_department(product:string, department:string, quantity:number, image:string, category:string, price:number) {
+    let result = await db.query(SQL ` INSERT INTO products(product, department, quantity, image, category, price)
+        VALUES(${product}, ${department}, ${quantity}, ${image}, ${category}, ${price});`)
     return result;
 }
 
@@ -73,3 +74,8 @@ export async function get_date(from:string, to:Date) {
     return DATE
 }
 
+
+export async function get_product_image(product:string) {
+    let image = await db.query(SQL ` SELECT image from item WHERE product = ${product} `)
+    return image.rows[0]['image']
+}
