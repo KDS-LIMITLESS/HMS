@@ -47,7 +47,7 @@ app.listen(PORT, () => {
 
 async function startServer() {
    
-    await db.query('DROP TABLE orders')
+    // await db.query('DROP TABLE orders')
     await db.query('DROP TABLE tables')
     await db.query('DROP TABLE credit')
     await db.query('DROP TABLE notification')
