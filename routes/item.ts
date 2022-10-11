@@ -1,7 +1,7 @@
 import express from 'express';
 import { getItem, addNewItem, getItemsInCategory, getAllDrinksDepartment, 
     deleteItem, updateItem, filterItemsByDates } from '../resources/item';
-import { authorizeSuperAdminNext } from '../middlewares/user';
+import { authorizeSuperAdminNext, authorizeAuditor } from '../middlewares/user';
 import { uploadPicture } from '../middlewares/imageloader';
 
 export const router = express.Router()
@@ -11,7 +11,7 @@ router.get('/items', getItem)
 
 router.post('/items/department', getAllDrinksDepartment)
 router.post('/items/category', getItemsInCategory)
-router.post('/new-item', authorizeSuperAdminNext, addNewItem) // add item
+router.post('/new-item', authorizeSuperAdminNext, authorizeAuditor, addNewItem) // add item
 router.post('/upload', uploadPicture)
 router.post('/dates-filter', filterItemsByDates)
 

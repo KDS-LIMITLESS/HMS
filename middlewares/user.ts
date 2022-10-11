@@ -50,7 +50,7 @@ export async function authorizeSuperAdminNext(req: Request, res: Response, next:
 }
 
 export async function authorizeAuditor(req: Request, res: Response, next: NextFunction){
-    const USERS = ['Auditor', 'Super Admin', 'Bar Man']
+    const USERS = ['Auditor', 'Store Manager', 'Super Admin', 'Bar Man']
     try {
         let userExists = await get_user(req.body.activeUser)
         if (userExists && USERS.includes(userExists.rows[0]['role']) 
