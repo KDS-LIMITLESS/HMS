@@ -21,7 +21,7 @@ export async function distributeItems(req:Request, res:Response) {
     const item = await get_item(req.body.product)
     
     // if (item.rows[0]['quantity'] === 0 || item.rows[0]['quantity'] < req.body.quantity)
-    if(item.rowCount  >= 1){
+    if(item.rowCount  < 1){
         return res.status(400).send('Item quantity in store is too low')
     }
     await send_products_to_department(req.body.product, req.body.department, 
