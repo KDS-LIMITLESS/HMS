@@ -58,10 +58,11 @@ async function startServer() {
     // await db.query('DROP TABLE dept CASCADE')
     // await db.query('DROP TABLE users CASCADE')
     
+    await createProductTable()
     await createUsersTable()
     await createDeptTable()
     await createItemsTable()
-    await createProductTable()
+    
     await createTableManager()
     await create_Order_Table()
     await create_credit_table()
