@@ -51,7 +51,7 @@ async function startServer() {
     // await db.query('DROP TABLE tables')
     // await db.query('DROP TABLE credit')
     // await db.query('DROP TABLE notification')
-    await db.query('DROP TABLE products')
+    // await db.query('DROP TABLE products')
     // await db.query('DROP TABLE catalogue')
     // await db.query('DROP ')
     
@@ -63,7 +63,7 @@ async function startServer() {
     // await createUsersTable()
     // await createDeptTable()
     // await createItemsTable()
-    // await createProductTable()
+    await createProductTable()
     // await createTableManager()
     // await create_Order_Table()
     // await create_credit_table()
