@@ -60,25 +60,24 @@ async function startServer() {
     
     
 
-    await createUsersTable()
-    await createDeptTable()
-    await createItemsTable()
-    await createProductTable()
+    // await createUsersTable()
+    // await createDeptTable()
+    // await createItemsTable()
+    // await createProductTable()
     
-    await createTableManager()
-    await create_Order_Table()
-    await create_credit_table()
-    await create_notifications_table();
-    await create_inventory_order_table()
+    // await createTableManager()
+    // await create_Order_Table()
+    // await create_credit_table()
+    // await create_notifications_table();
+    // await create_inventory_order_table()
 
-    // await db.query(`ALTER TABLE item
-    //     
-    //     ADD CONSTRAINT item_image_key UNIQUE(image)
+    // await db.query(`ALTER TABLE catalogue
+    //     RENAME COLUMN item to product
     // `)
 
-   
-   let prod =  await db.query(`SELECT * FROM catalogue`)
-   console.log(prod.rows)
+    // ADD CONSTRAINT item_image_key UNIQUE(image)
+   // let prod =  await db.query(`SELECT * FROM users`)
+   // console.log(prod.rows)
     // await db.query(`ALTER TABLE products
     //     ADD COLUMN category VARCHAR NOT NULL
  // `)
