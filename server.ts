@@ -53,7 +53,7 @@ async function startServer() {
     // await db.query('DROP TABLE notification')
     // await db.query('DROP TABLE products CASCADE')
     // await db.query('DROP TABLE catalogue ')
-    await db.query('DROP TABLE transactions')
+    // await db.query('DROP TABLE transactions')
     // await db.query('DROP TABLE item CASCADE')
     // await db.query('DROP TABLE dept ')
     // await db.query('DROP TABLE users')
