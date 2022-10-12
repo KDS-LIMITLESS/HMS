@@ -6,8 +6,8 @@ import { updateOrderStatus, placeOrder, getOrders, getAllOrders,
 
 const router = express.Router();
 
-router.get('cancelled-order', countCancelledOrders)
-router.get('received-order', countReceivedOrders)
+router.get('/cancelled-order', countCancelledOrders)
+router.get('/received-order', countReceivedOrders)
 router.post('/order-staus', getOrders)
 router.get('/all-orders', getAllOrders)
 
