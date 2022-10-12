@@ -87,7 +87,7 @@ export async function get_product_in_department(product:string, dept:string)  {
 }
 
 export async function update_item_in_pos(product:string, quantity:number, price:number){
-    let prod = await db.query(SQL ` UPDATE item SET quantity = ${quantity},price = ${price} 
+    let prod = await db.query(SQL ` UPDATE products SET quantity = ${quantity},price = ${price} 
         WHERE product = ${product}; `)
     return prod
 }
