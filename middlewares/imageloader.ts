@@ -48,11 +48,12 @@ export async function uploadPicture(req: any, res: Response) {
                 console.log(err);
                 return res.status(200).send(`An error occured!`)
             }
-            else if(req.file.location) {
-                console.log(req.file.location);
-                return res.status(200).json({imgPath: req.file.location})
+            if(!req.file.location) {
+                return res.status(400).send(`  Image not sent an error occured`)
             }
-            return res.status(400).send(`  Image not sent an error occured`)
+            console.log(req.file.location);
+            return res.status(200).json({imgPath: req.file.location})
+            
             
         })
     } catch (e: any) {
