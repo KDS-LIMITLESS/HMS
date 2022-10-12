@@ -23,7 +23,7 @@ export async function distributeItems(req:Request, res:Response) {
     
     // if (item.rows[0]['quantity'] === 0 || item.rows[0]['quantity'] < req.body.quantity)
     if(item.rowCount  < 1){
-        return res.status(400).send('Item quantity in store is too low')
+        return res.status(400).send('Item not found!')
     }
     let image = await get_product_image(req.body.product)
     console.log(image)
@@ -31,7 +31,8 @@ export async function distributeItems(req:Request, res:Response) {
     let product = await get_product_in_department(req.body.product, req.body.department)
     // if found update product, price and quantity
     if (product.rowCount >= 1){
-        let update = await update_item_in_pos(req.body.product, req.body.quantity, req.body.price)
+        let quantity = product.rows[0]['quantity'] + req.body.quantity
+        let update = await update_item_in_pos(req.body.product, quantity, req.body.price)
         return res.status(200).json({item: update.rows[0]})
     }
     await send_products_to_department(req.body.product, req.body.department, 
