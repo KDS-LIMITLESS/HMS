@@ -16,13 +16,13 @@ export async function create_inventory_order_table() {
     // refrence the items from the pos already
 }
                                                                     
-export async function place_order(item:string, qty:number, size:number, metric:string, 
+export async function place_order(product:string, qty:number, size:number, metric:string, 
     unitPrice:number) {
 
         let order = await db.query(SQL ` INSERT INTO catalogue(product, qty, size, metric, 
             unitprice) 
         
-            VALUES (${item}, ${qty}, ${size}, ${metric}, ${unitPrice})`)
+            VALUES (${product}, ${qty}, ${size}, ${metric}, ${unitPrice})`)
 
         return order;
 }
@@ -38,9 +38,9 @@ export async function get_one_order(order:string) {
 //     return order
 // }
 
-export async function update_order_status(item:string, status:string) {
+export async function update_order_status(product:string, status:string) {
     let orderStatus = await db.query(SQL ` UPDATE catalogue SET status = ${status}
-        WHERE product = ${item}`)
+        WHERE product = ${product}`)
     return orderStatus
 }
 
@@ -77,4 +77,8 @@ export async function update_received_order_quantity(qty:number, item:string) {
 export async function total_placed_orders() {
     let order = await db.query(SQL ` SELECT item, qty, unitprice from catalogue WHERE date = CURRENT_DATE `)
     return order
+}
+
+export async function count_placed_order() {
+    let count = await db.query(` SELECT count(*) FROM catalogue WHERE date = CURRENT_DATE `)
 }

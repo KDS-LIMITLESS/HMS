@@ -44,7 +44,7 @@ const uploadS3  = multer({
 export async function uploadPicture(req: any, res: Response) {
     try {
         uploadS3(req, res, (err) =>{
-            console.log(req)
+            
             if (err) {
                 console.log(err);
                 return res.status(200).send(`An error occured!`)

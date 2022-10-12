@@ -71,9 +71,9 @@ async function startServer() {
     // await create_notifications_table();
     // await create_inventory_order_table()
 
-    // await db.query(`ALTER TABLE catalogue
-    //     RENAME COLUMN item to product
-    // `)
+    await db.query(`ALTER TABLE catalogue
+        RENAME COLUMN item to product
+    `)
 
     // ADD CONSTRAINT item_image_key UNIQUE(image)
    // let prod =  await db.query(`SELECT * FROM users`)
