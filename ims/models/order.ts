@@ -28,7 +28,7 @@ export async function place_order(product:string, qty:number, size:number, metri
 }
 
 export async function get_one_order(order:string) {
-    let isOrder = await db.query(SQL `SELECT product FROM catalogue WHERE item = ${order}`);
+    let isOrder = await db.query(SQL `SELECT product FROM catalogue WHERE product = ${order}`);
     return isOrder;
 
 }
@@ -50,7 +50,7 @@ export async function get_order_by_status(status:string) {
 }
 
 export async function get_all_order() {
-    let order = await db.query(SQL ` SELECT product, qty, size, metric, unitprice, status, date FROM catalogue`)
+    let order = await db.query(SQL ` SELECT * FROM catalogue`)
     return order;
 }
 
@@ -69,13 +69,13 @@ export async function get_received_orders() {
     return order
 }
 
-export async function update_received_order_quantity(qty:number, item:string) {
-    let order = await db.query(SQL ` UPDATE catalogue SET qty = ${qty} WHERE product = ${item}  `)
+export async function update_received_order_quantity(qty:number, product:string) {
+    let order = await db.query(SQL ` UPDATE catalogue SET qty = ${qty} WHERE product = ${product}  `)
     return order;
 }
 
 export async function total_placed_orders() {
-    let order = await db.query(SQL ` SELECT item, qty, unitprice from catalogue WHERE date = CURRENT_DATE `)
+    let order = await db.query(SQL ` SELECT product, qty, unitprice from catalogue WHERE date = CURRENT_DATE `)
     return order
 }
 

@@ -69,12 +69,10 @@ async function startServer() {
     // await create_Order_Table()
     // await create_credit_table()
     // await create_notifications_table();
-    // await create_inventory_order_table()
+    await create_inventory_order_table()
 
-    // await db.query(`ALTER TABLE catalogue
-    //     RENAME COLUMN item to product
+    // await db.query(`DROP TABLE catalogue
     // `)
-
     // ADD CONSTRAINT item_image_key UNIQUE(image)
    // let prod =  await db.query(`SELECT * FROM users`)
    // console.log(prod.rows)
