@@ -74,11 +74,6 @@ export async function update_received_order_quantity(qty:number, product:string)
     return order;
 }
 
-export async function total_placed_orders() {
-    let order = await db.query(SQL ` SELECT product, qty, unitprice from catalogue WHERE date = CURRENT_DATE `)
-    return order
-}
-
 export async function count_received_order() {
     let count = await db.query(` SELECT count(*) FROM catalogue 
         WHERE date = CURRENT_DATE AND status = 'RECEIVED' `)
@@ -89,4 +84,9 @@ export async function count_cancelled_order() {
     let count = await db.query(` SELECT count(*) FROM catalogue 
         WHERE date = CURRENT_DATE AND status = 'CANCELLED' `)
     return count
+}
+
+export async function calculate_placed_orders() {
+    let totals = await db.query(` SELECT SUM (qty * unitprice) as Total FROM catalogue `)
+    return totals
 }
