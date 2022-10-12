@@ -82,7 +82,7 @@ export async function get_drinks_in_department(department: string) {
 
 export async function delete_item(item:string) {
 
-    let result = await db.query(SQL `DELETE FROM item WHERE product = ${item}`)
+    let result = await db.query(SQL `DELETE FROM products WHERE product = ${item}`)
     return result;
     
 }
@@ -107,6 +107,8 @@ export async function update_item_quantity(product: string, quantity:number) {
     return result;
 }
 
+
+// route for deleting items from ims item
 // how do i make updates on tables to reflect on other tables in postgres
 
 // get all products sent to departments 
