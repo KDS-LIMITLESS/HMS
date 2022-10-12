@@ -45,12 +45,11 @@ export async function uploadPicture(req: any, res: Response) {
     try {
         uploadS3(req, res, (err) =>{
             console.log(req)
-            console.log(req)
             if (err) {
                 console.log(err);
                 return res.status(200).send(`An error occured!`)
             }
-            if(req.body.image === 'undefined') {
+            if(req.file.location === 'undefined') {
                 return res.status(400).send(`  Image not sent an error occured`)
             }
             console.log(req.file.location);
