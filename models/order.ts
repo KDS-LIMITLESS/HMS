@@ -13,7 +13,7 @@ export async function create_Order_Table() {
         item VARCHAR  REFERENCES item(product),
         price INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
-        category VARCHAR REFERENCES products(category) ON DELETE NO ACTION,
+        category VARCHAR NOT NULL,
         image VARCHAR REFERENCES item(image) ON DELETE NO ACTION,
         department VARCHAR REFERENCES dept(department) ON DELETE NO ACTION,
 

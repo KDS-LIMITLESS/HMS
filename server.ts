@@ -53,35 +53,40 @@ async function startServer() {
     // await db.query('DROP TABLE notification')
     // await db.query('DROP TABLE products CASCADE')
     // await db.query('DROP TABLE catalogue ')
-    // await db.query('DROP TABLE transactions')
+    await db.query('DROP TABLE transactions')
     // await db.query('DROP TABLE item CASCADE')
     // await db.query('DROP TABLE dept ')
     // await db.query('DROP TABLE users')
     
     
 
-    // await createUsersTable()
-    // await createDeptTable()
-    // await createItemsTable()
-   //  await createProductTable()
-    // await createTableManager()
-    // await create_Order_Table()
-    // await create_credit_table()
-    // await create_notifications_table();
-    // await create_inventory_order_table()
+    await createUsersTable()
+    await createDeptTable()
+    await createItemsTable()
+    await createProductTable()
+    
+    await createTableManager()
+    await create_Order_Table()
+    await create_credit_table()
+    await create_notifications_table();
+    await create_inventory_order_table()
 
     // await db.query(`ALTER TABLE item
     //     
-    //     ADD CONSTRAINT UNIQUE(product)
+    //     ADD CONSTRAINT item_image_key UNIQUE(image)
     // `)
-   // let prod =  await db.query(`SELECT * FROM item`)
-   // console.log(prod.rows)
+
+   
+   let prod =  await db.query(`SELECT * FROM catalogue`)
+   console.log(prod.rows)
     // await db.query(`ALTER TABLE products
     //     ADD COLUMN category VARCHAR NOT NULL
  // `)
 
 }
 startServer();
+
+// api for deleting item from ims
 
 // check update ordr status on ims
 // Database reordring
