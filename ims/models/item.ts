@@ -81,13 +81,13 @@ export async function get_product_image(product:string) {
 }
 
 export async function get_product_in_department(product:string, dept:string)  {
-    let item = await db.query(` SELECT product FROM products WHERE product = ${product} AND
+    let item = await db.query(SQL ` SELECT product FROM products WHERE product = ${product} AND
         department = ${dept} `)
     return item
 }
 
-export async function update_item_in_pos(products:string, quantity:number, price:number){
-    let product = await db.query(SQL ` UPDATE item SET quantity = ${quantity},price = ${price} 
-        WHERE product = ${products}; `)
-    return product
+export async function update_item_in_pos(product:string, quantity:number, price:number){
+    let prod = await db.query(SQL ` UPDATE item SET quantity = ${quantity},price = ${price} 
+        WHERE product = ${product}; `)
+    return prod
 }
