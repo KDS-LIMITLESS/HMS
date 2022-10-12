@@ -44,11 +44,13 @@ const uploadS3  = multer({
 export async function uploadPicture(req: any, res: Response) {
     try {
         uploadS3(req, res, (err) =>{
+            console.log(req.body + ' body')
+            console.log(req.file + ' file')
             if (err) {
                 console.log(err);
                 return res.status(200).send(`An error occured!`)
             }
-            if(!req.file.location) {
+            if(req.body.image === 'undefined') {
                 return res.status(400).send(`  Image not sent an error occured`)
             }
             console.log(req.file.location);
