@@ -10,7 +10,7 @@ export async function createItemsTable() {
         quantity INTEGER NOT NULL, 
         size INTEGER,
         metric VARCHAR,
-        image VARCHAR UNIQUE NOT NULL,
+        image VARCHAR UNIQUE,
         reorder INTEGER DEFAULT 0,
         date DATE NOT NULL DEFAULT CURRENT_DATE
     )`, 
@@ -73,7 +73,7 @@ export async function add_item(product:string, quantity:number, image: string,
 export async function get_drinks_in_department(department: string) {
 
     let result = await db.query(SQL `SELECT DISTINCT product, price, quantity, 
-        category, department, date FROM products
+        category, department, image, date FROM products
         WHERE department = ${department}`);
     return result;
 }
