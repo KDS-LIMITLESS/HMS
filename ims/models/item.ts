@@ -91,3 +91,10 @@ export async function update_item_in_pos(product:string, quantity:number, price:
         WHERE product = ${product}; `)
     return prod
 }
+
+export async function delete_item(item:string) {
+
+    let result = await db.query(SQL `DELETE FROM item WHERE product = ${item}`)
+    return result;
+    
+}

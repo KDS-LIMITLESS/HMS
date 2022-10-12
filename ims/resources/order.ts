@@ -1,7 +1,8 @@
 import { place_order, update_order_status, get_order_by_status, 
     get_all_order, get_orders_by_date, get_cancelled_orders, 
     get_received_orders, update_received_order_quantity, 
-    get_one_order, total_placed_orders }from '../models/order';
+    get_one_order, total_placed_orders, count_cancelled_order,
+    count_received_order }from '../models/order';
 
 import { add_item, get_item, update_item_quantity } from '../../models/item';
 import { Request, Response } from 'express'
@@ -96,4 +97,14 @@ export async function updateReceivedOrderQuantity(req:Request, res:Response) {
 
 export async function getPlaceOrderTotal(req:Request, res:Response) {
     let total = await total_placed_orders()
+}
+
+export async function countReceivedOrders(req:Request, res:Response) {
+    let count = await count_received_order()
+    return res.status(200).send(count.rows[0])
+}
+
+export async function countCancelledOrders(req:Request, res:Response) {
+    let count = await count_cancelled_order()
+    return res.status(200).send(count.rows[0])
 }

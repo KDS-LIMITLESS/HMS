@@ -79,6 +79,14 @@ export async function total_placed_orders() {
     return order
 }
 
-export async function count_placed_order() {
-    let count = await db.query(` SELECT count(*) FROM catalogue WHERE date = CURRENT_DATE `)
+export async function count_received_order() {
+    let count = await db.query(` SELECT count(*) FROM catalogue 
+        WHERE date = CURRENT_DATE AND status = 'RECEIVED' `)
+    return count
+}
+
+export async function count_cancelled_order() {
+    let count = await db.query(` SELECT count(*) FROM catalogue 
+        WHERE date = CURRENT_DATE AND status = 'CANCELLED' `)
+    return count
 }
