@@ -58,7 +58,7 @@ export async function get_one_waiter_table(tbl_name:string, waiter: string) {
 
 export async function get_table_date_and_time(table_name: string) {
 
-    const date = await db.query(SQL`SELECT date, time FROM tables WHERE table_name = ${table_name}`);
+    const date = await db.query(SQL`SELECT waiter, date, time FROM tables WHERE table_name = ${table_name}`);
     return date
 }
 
@@ -82,6 +82,12 @@ export async function close_table(waiter:string, status: string, tbl_name: strin
         WHERE table_name = ${tbl_name} AND waiter = ${waiter}`)
     return result.rows[0]
 }
+
+// export async function get_closed_table_time(table_name:string) {
+//     let time = await db.query(SQL ` SELECT date, time, waiter, table_name FROM tables
+//         WHERE status = 'CLOSED' AND table_name = ${table_name} `)
+//     return time
+// }
 
 // export async function closed_Tables_db() {
 //     const db = await dbConnection();

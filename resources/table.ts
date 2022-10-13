@@ -72,7 +72,13 @@ export async function closeTable(req:Request, res:Response) {
                 req.body.pos, req.body.credit, req.body.transfer, req.body.total, req.body.discount,
                 req.body.complimentary_drink, req.body.complimentary_qty);
             // console.log(req.body)
-            return res.status(200).send("Table Closed Successfully")
+
+            let time = await get_table_date_and_time(req.body.table_name)
+            return res.status(200).json({
+                closed_time: time.rows[0]['time'],
+                date: time.rows[0]['date'],
+                waiter: time.rows[0]['waiter']
+            })
         }
         return res.status(400).send(`Table already closed or does not exist `)
     }catch(err: any){
