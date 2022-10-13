@@ -50,13 +50,19 @@ export async function authorizeSuperAdminNext(req: Request, res: Response, next:
 }
 
 export async function authorizeStoreManager(req: Request, res: Response, next: NextFunction){
+    const personnels = ['Store Manger', "Super Admin"]
+    
     try {
         
         let userExists = await get_user(req.body.activeUser)
        
-        if (userExists && ( userExists.rows[0]['role'] === 'Store Manager') && (req.body.activePasscode === userExists.rows[0]['passcode']) ){
+        if (userExists && personnels.includes(userExists.rows[0]['role']) 
+            && (req.body.activePasscode === userExists.rows[0]['passcode']) 
+        ) {
             next();
-        }else {
+        }
+            
+        else {
             console.log(req.body)
             return res.status(400).send("Please login to continue")
         }
