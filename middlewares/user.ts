@@ -60,9 +60,7 @@ export async function authorizeStoreManager(req: Request, res: Response, next: N
             && (req.body.activePasscode === userExists.rows[0]['passcode']) 
         ) {
             next();
-        }
-            
-        else {
+        } else {
             console.log(req.body)
             return res.status(400).send("Please login to continue")
         }

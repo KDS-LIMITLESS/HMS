@@ -11,7 +11,7 @@ router.get('/items', getItem)
 
 router.post('/items/department', getAllDrinksDepartment)
 router.post('/items/category', getItemsInCategory)
-router.post('/new-item', authorizeSuperAdminNext, addNewItem) // add item
+router.post('/new-item', authorizeStoreManager, addNewItem) // add item
 router.post('/upload', uploadPicture)
 router.post('/dates-filter', filterItemsByDates)
 
