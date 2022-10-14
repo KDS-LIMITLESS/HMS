@@ -8,7 +8,7 @@ export async function create_Order_Table() {
 
     return await db.query(`CREATE TABLE IF NOT EXISTS orders (
         id BIGSERIAL PRIMARY KEY, 
-        username VARCHAR REFERENCES users(username) ON DELETE NO ACTION,
+        username VARCHAR REFERENCES users(username) ON DELETE SET NULL,
         
         item VARCHAR  REFERENCES item(product),
         price INTEGER NOT NULL,
