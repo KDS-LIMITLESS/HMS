@@ -50,7 +50,7 @@ export async function authorizeSuperAdminNext(req: Request, res: Response, next:
 }
 
 export async function authorizeStoreManager(req: Request, res: Response, next: NextFunction){
-    const personnels = ['Store Manager', "Super Admin"]
+    const personnels = ['Store Manager', "Supervisor", "Super Admin"]
     
     try {
         
@@ -72,7 +72,7 @@ export async function authorizeStoreManager(req: Request, res: Response, next: N
 }
 
 export async function authorizeAuditor(req: Request, res: Response, next: NextFunction){
-    const USERS = ['Auditor', 'Super Admin', 'Bar Man']
+    const USERS = ['Auditor', 'Super Admin', 'Supervisor', 'Bar Man']
     try {
         let userExists = await get_user(req.body.activeUser)
         if (userExists && USERS.includes(userExists.rows[0]['role']) 
@@ -120,7 +120,7 @@ export async function authorizeCredit(req: Request, res:Response, next:NextFunct
     if (req.body.credit !== 0){
         
         try{ 
-            const USERS = ['Auditor', 'Super Admin']
+            const USERS = ['Auditor', 'Supervisor', 'Super Admin']
             let userExists = await get_passcode(req.body.passcode)
             const USER_HAS_CREDIT = await get_credit_status(userExists?.rows[0]['username'])
         
