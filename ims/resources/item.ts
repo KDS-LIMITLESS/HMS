@@ -21,9 +21,11 @@ import { get_item } from '../../models/item';
 export async function distributeItems(req:Request, res:Response) {
     const item = await get_item(req.body.product)
     
-    // if (item.rows[0]['quantity'] === 0 || item.rows[0]['quantity'] < req.body.quantity)
     if(item.rowCount  < 1){
         return res.status(400).send('Item not found!')
+    }
+    if (item.rows[0]['quantity'] === 0 || item.rows[0]['quantity'] < req.body.quantity) {
+        return res.status(400).send(`item quantity too low in`)
     }
     let image = await get_product_image(req.body.product)
     console.log(image)
@@ -33,7 +35,11 @@ export async function distributeItems(req:Request, res:Response) {
     if (product.rowCount >= 1){
         let quantity = product.rows[0]['quantity'] + req.body.quantity
         let update = await update_item_in_pos(req.body.product, quantity, req.body.price)
-        return res.status(200).json({item: update.rows[0]})
+
+        item.rows[0]['quantity'] - req.body.quantity
+        await reduce_item_quantity(req.body.product, quantity)
+
+        return res.status(200).json({item: item.rows, up: update.rows})
     }
     await send_products_to_department(req.body.product, req.body.department, 
         req.body.quantity, image, req.body.category, req.body.price
