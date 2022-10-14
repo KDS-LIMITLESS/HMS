@@ -50,8 +50,8 @@ export async function authorizeSuperAdminNext(req: Request, res: Response, next:
 }
 
 export async function authorizeStoreManager(req: Request, res: Response, next: NextFunction){
-    const personnels = ['Store Manager', "Supervisor", "Super Admin", "Admin"]
-    
+    const personnels = ['Store Manager', "Supervisor", "Super Admin", "Administrator", "Admin"]
+
     try {
         
         let userExists = await get_user(req.body.activeUser)
@@ -72,7 +72,7 @@ export async function authorizeStoreManager(req: Request, res: Response, next: N
 }
 
 export async function authorizeAuditor(req: Request, res: Response, next: NextFunction){
-    const USERS = ['Auditor', 'Super Admin', 'Supervisor', 'Bar Man']
+    const USERS = ['Auditor', 'Super Admin', 'Supervisor', 'Administrator', 'Bar Man']
     try {
         let userExists = await get_user(req.body.activeUser)
         if (userExists && USERS.includes(userExists.rows[0]['role']) 
