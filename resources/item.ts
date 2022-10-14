@@ -1,6 +1,6 @@
 import { get_all_items, add_item, get_item, 
         get_all_items_in_category, get_drinks_in_department, 
-        delete_item, update_item, get_date
+        delete_item, update_item, get_date, update_item_quantity
 } from "../models/item";
 import { NextFunction, Request, Response } from "express";
 
@@ -79,6 +79,20 @@ export async function updateItem(req:Request, res: Response) {
         return res.status(400).send(err.message)
     }   
 }
+
+export async function updateItemQuantity(req:Request, res: Response) {
+    try{
+        const ITEM = await get_item(req.body.product)
+        if (ITEM.rowCount === 1) {
+            let update = await update_item_quantity(req.body.product, req.body.quantity);
+            return res.status(200).send(update.rows[0])
+        }
+        return res.status(404).send(`Item not found!`);
+    } catch (err: any) {
+        return res.status(400).send(err.message)
+    }   
+}
+
 
 export async function filterItemsByDates(req:Request, res:Response) {
     let date = await get_date(req.body.from, req.body.to)

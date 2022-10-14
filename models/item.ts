@@ -103,7 +103,7 @@ export async function update_item(product: string, price:number) {
 
 export async function update_item_quantity(product: string, quantity:number) {
 
-    let result = await db.query(SQL`UPDATE products SET quantity = ${quantity} WHERE product = ${product}`);
+    let result = await db.query(SQL`UPDATE item SET quantity = ${quantity} WHERE product = ${product}`);
     return result;
 }
 

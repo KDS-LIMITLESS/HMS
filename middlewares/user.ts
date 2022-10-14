@@ -50,7 +50,7 @@ export async function authorizeSuperAdminNext(req: Request, res: Response, next:
 }
 
 export async function authorizeStoreManager(req: Request, res: Response, next: NextFunction){
-    const personnels = ['Store Manager', "Supervisor", "Super Admin"]
+    const personnels = ['Store Manager', "Supervisor", "Super Admin", "Admin"]
     
     try {
         
