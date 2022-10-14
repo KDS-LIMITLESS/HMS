@@ -20,33 +20,39 @@ import { get_item } from '../../models/item';
 
 export async function distributeItems(req:Request, res:Response) {
     const item = await get_item(req.body.product)
+    let qty;
     
     if(item.rowCount  < 1){
         return res.status(400).send('Item not found!')
     }
     if (item.rows[0]['quantity'] === 0 || item.rows[0]['quantity'] < req.body.quantity) {
-        return res.status(400).send(`item quantity too low in`)
+        return res.status(400).send(`item quantity too low in store`)
     }
     let image = await get_product_image(req.body.product)
-    console.log(image)
+
     // find product in department 
     let product = await get_product_in_department(req.body.product, req.body.department)
     // if found update product, price and quantity
+
+    
     if (product.rowCount >= 1){
-        let quantity = product.rows[0]['quantity'] + req.body.quantity
-        let update = await update_item_in_pos(req.body.product, quantity, req.body.price)
+        //add/update product quantity
+        let product_quantity = product.rows[0]['quantity'] + req.body.quantity
+        await update_item_in_pos(req.body.product, product_quantity, req.body.price)
 
-        item.rows[0]['quantity'] - req.body.quantity
-        await reduce_item_quantity(req.body.product, quantity)
+        qty = item.rows[0]['quantity'] - req.body.quantity
+        await reduce_item_quantity(req.body.product, qty)
 
-        return res.status(200).json({item: item.rows, up: update.rows})
-    }
-    await send_products_to_department(req.body.product, req.body.department, 
-        req.body.quantity, image, req.body.category, req.body.price
-    )   
-    let quantity = item.rows[0]['quantity'] - req.body.quantity
-    await reduce_item_quantity(req.body.product, quantity)
-    return res.status(200).send(`${req.body.quantity} ${req.body.product} sent to ${req.body.department}`)
+        return res.status(200).send(`OK`)
+        
+    }else {
+        await send_products_to_department(req.body.product, req.body.department, 
+            req.body.quantity, image, req.body.category, req.body.price
+        )   
+        let qty = item.rows[0]['quantity'] - req.body.quantity
+        await reduce_item_quantity(req.body.product, qty)
+        return res.status(200).send(`${req.body.quantity} ${req.body.product} sent to ${req.body.department}`)
+    }  
 }
 
 export async function getAllItemsSent(req:Request, res:Response) {
