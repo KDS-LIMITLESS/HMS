@@ -29,7 +29,9 @@ export async function placeOrder(req: Request, res: Response, next: NextFunction
 // get order history within a table
 export async function getTableOrders(req: Request, res: Response) {
     let TABLE_ORDERS;
-    if (req.body.role === 'Super Admin' || req.body.role === 'Auditor' || req.body.role === 'Accounts' ){
+    if (req.body.role === 'Super Admin' || req.body.role === 'Administrator' || req.body.role === 'Accounts' 
+        || req.body.role === 'Supervisor' ){
+
         TABLE_ORDERS = await get_table_orders_for_admin(req.body.table_name)
         
     } else {
