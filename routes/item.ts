@@ -17,6 +17,6 @@ router.post('/dates-filter', filterItemsByDates)
 
 router.put('/update-item', authorizeSuperAdminNext, updateItem)
 router.put('/update-quantity', authorizeStoreManager,updateItemQuantity)
-router.delete('/delete-item', authorizeSuperAdminNext, deleteItem )
+router.delete('/delete-item', authorizeStoreManager, deleteItem )
 
 module.exports = router;

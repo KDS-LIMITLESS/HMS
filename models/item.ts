@@ -94,9 +94,10 @@ export async function get_date(from:string, to:Date) {
 }
 
 
-export async function update_item(product: string, price:number) {
+export async function update_item(product: string, price:number, department:string) {
 
-    let result = await db.query(SQL`UPDATE products SET price = ${price} WHERE product = ${product}`);
+    let result = await db.query(SQL`UPDATE products SET price = ${price} 
+        WHERE product = ${product} AND department = ${department}`);
     return result;
 }
 
