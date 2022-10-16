@@ -58,7 +58,7 @@ export async function deleteItem(req: Request,res: Response){
     try {
         const ITEM = await get_item(req.body.product)
         if (ITEM.rowCount === 1) {
-            await delete_item(req.body.product)
+            await delete_item(req.body.product, req.body.department)
             return res.status(200).send("OK")
         }
         return res.status(400).send(`Error. Item does not exist.`)

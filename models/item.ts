@@ -80,9 +80,10 @@ export async function get_drinks_in_department(department: string) {
 
 
 
-export async function delete_item(item:string) {
+export async function delete_item(item:string, department:string) {
 
-    let result = await db.query(SQL `DELETE FROM products WHERE product = ${item}`)
+    let result = await db.query(SQL `DELETE FROM products 
+        WHERE product = ${item} AND department = ${department}`)
     return result;
     
 }
