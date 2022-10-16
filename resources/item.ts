@@ -1,8 +1,9 @@
 import { get_all_items, add_item, get_item, 
         get_all_items_in_category, get_drinks_in_department, 
-        delete_item, update_item, get_date, update_item_quantity
-} from "../models/item";
-import { NextFunction, Request, Response } from "express";
+        delete_item, update_item, get_date, update_item_quantity,
+        update_reorder_level    
+    } from "../models/item";
+import { Request, Response } from "express";
 
 
 // item 
@@ -102,3 +103,15 @@ export async function filterItemsByDates(req:Request, res:Response) {
 }
 
 
+export async function updateItemReorderLevel(req:Request, res: Response) {
+    try{
+        const ITEM = await get_item(req.body.product)
+        if (ITEM.rowCount === 1) {
+            let update = await update_reorder_level(req.body.product, req.body.reorder);
+            return res.status(200).send(update.rows[0])
+        }
+        return res.status(404).send(`Item not found!`);
+    } catch (err: any) {
+        return res.status(400).send(err.message)
+    }   
+}

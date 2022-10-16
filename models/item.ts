@@ -110,6 +110,12 @@ export async function update_item_quantity(product: string, quantity:number) {
 }
 
 
+export async function update_reorder_level(product: string, reorder:number) {
+
+    let result = await db.query(SQL`UPDATE item SET reorder = ${reorder} WHERE product = ${product}`);
+    return result;
+}
+
 // route for deleting items from ims item
 // how do i make updates on tables to reflect on other tables in postgres
 

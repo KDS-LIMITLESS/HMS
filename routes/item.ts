@@ -1,6 +1,7 @@
 import express from 'express';
 import { getItem, addNewItem, getItemsInCategory, getAllDrinksDepartment, 
-    deleteItem, updateItem, filterItemsByDates, updateItemQuantity } from '../resources/item';
+    deleteItem, updateItem, filterItemsByDates, updateItemQuantity,
+    updateItemReorderLevel } from '../resources/item';
 import { authorizeSuperAdminNext, authorizeStoreManager } from '../middlewares/user';
 import { uploadPicture } from '../middlewares/imageloader';
 
@@ -17,6 +18,7 @@ router.post('/dates-filter', filterItemsByDates)
 
 router.put('/update-item', authorizeSuperAdminNext, updateItem)
 router.put('/update-quantity', authorizeStoreManager,updateItemQuantity)
+router.put('/update-reorder-level', authorizeStoreManager, updateItemReorderLevel)
 router.delete('/delete-item', authorizeStoreManager, deleteItem )
 
 module.exports = router;
