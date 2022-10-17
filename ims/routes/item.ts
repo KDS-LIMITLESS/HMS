@@ -6,8 +6,8 @@ import {  getAllItemsSent, getTransactionDates,
 const router = express.Router();
 
 router.get('/sent-items', getAllItemsSent)
-router.get('/sent-items/department', getAllItemsSentToDepartment)
 
+router.post('/sent-items/department', getAllItemsSentToDepartment)
 router.post('/send-items', distributeItems)
 router.post('/transactions', getTransactionDates)
 
