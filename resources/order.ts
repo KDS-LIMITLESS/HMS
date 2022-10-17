@@ -137,8 +137,8 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
     console.log(req.body)
     const ORDER: [] = req.body.order
     let order;
-    
-   console.log(JSON.stringify(req.body + 'here'))
+
+    console.log(order)
 
     for (order of ORDER) {
         
@@ -149,8 +149,9 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
                 order['quantity'], req.body.table_name)
         }
 
-        let quantity = await get_product_in_department(order['item']['product'], order['department'])
-        let new_quantity = quantity.rows[0]['quantity'] - order['item']['quantity']
+        let quantity = await get_product_in_department(order['item']['product'], order['item']['department'])
+        
+        let new_quantity: any = quantity.rows[0]['quantity'] + order['quantity']
         console.log(new_quantity)
         await decrease_item_quantity_in_pos(order['product'],new_quantity, order['department'])
     }
