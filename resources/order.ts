@@ -143,17 +143,16 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
     console.log(JSON.stringify(req.body))
 
     for (order of ORDER) {
-        console.log(typeof(order['returned']))
         let item = await get_drinks_in_table(order['item']['product'], req.body.table_name)        
 
         if (item.rowCount !== 0 && order['returned'] > 0) {
 
-            console.log(JSON.stringify((req.body.product, order['returned'])))
+            console.log(JSON.stringify((order['item']['product'], order['returned'])))
+
             await update_order_quantity(order['item']['product'], 
                 order['quantity'], req.body.table_name)
 
             quantity = await get_product_in_department(order['item']['product'], order['item']['department'])
-            console.log(quantity.rows)
             new_quantity = quantity.rows[0]['quantity'] + order['returned']
             
             await decrease_item_quantity_in_pos(order['item']['product'], new_quantity, order['item']['department'])
@@ -163,9 +162,16 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
 }
 
 export async function deleteOrder(req:Request, res:Response) {
+    let quantity:any;
+
     let order = await get_order(req.body.table_name, req.body.product);
     if (order.rowCount === 1){
         await delete_order(req.body.table_name, req.body.product)
+        console.log(order.rows[0]['quantity'])
+        quantity = await get_product_in_department(req.body.product, order.rows[0]['department'])
+        let new_quantity = quantity.rows[0]['quantity'] + order.rows[0]['quantity']
+        await decrease_item_quantity_in_pos(req.body.product, new_quantity, order.rows[0]['department'])
+
         return res.status(200).send(`OK`)
     }
     return res.status(400).send(`ERROR!`)

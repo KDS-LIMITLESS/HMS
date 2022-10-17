@@ -105,7 +105,8 @@ export async function delete_order(table_name: string, item: string){
 }
 
 export async function get_order(table_name: string, product: string) {
-    let result = await db.query(SQL `SELECT item, username, table_name FROM orders 
+    let result = await db.query(SQL `SELECT item, username, table_name, department, quantity
+        FROM orders 
         WHERE table_name = ${table_name} AND item = ${product}`)
     return result;
 }
