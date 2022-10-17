@@ -97,10 +97,9 @@ export async function updateOrder(req: Request, res: Response) {
                 req.body.table_name,time.toLocaleTimeString()
             ); 
 
-            let quantity = await get_product_in_department(order['product'], order['department'])
-            let new_quantity = quantity.rows[0]['quantity'] - order['quantity']
-            console.log(new_quantity)
-            await decrease_item_quantity_in_pos(order['product'], new_quantity, order['department'])
+            let quantity = await reduceQuantity()
+            console.log(quantity)
+            await decrease_item_quantity_in_pos(order['product'], quantity, order['department'])
             
             await send_notification(req.body.activeUser, order['product'], order['quantity'])   
         }
@@ -148,6 +147,9 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
             await update_order_quantity(order['item']['product'], 
                 order['quantity'], req.body.table_name)
         }
+
+        let quantity = await reduceQuantity()
+        await decrease_item_quantity_in_pos(order['product'], quantity, order['department'])
     }
     console.log('outside loop')
     return res.status(200).send(`OK`)
@@ -160,4 +162,12 @@ export async function deleteOrder(req:Request, res:Response) {
         return res.status(200).send(`OK`)
     }
     return res.status(400).send(`ERROR!`)
+}
+
+
+async function reduceQuantity() {
+    let order:any ;
+    let quantity = await get_product_in_department(order['item']['product'], order['department'])
+    let new_quantity = quantity.rows[0]['quantity'] - order['item']['quantity']
+    return new_quantity
 }

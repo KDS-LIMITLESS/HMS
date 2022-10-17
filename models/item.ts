@@ -45,7 +45,6 @@ export async function get_item(product: string) {
     return result
 }
 
-
 // product table
 export async function get_product_price(product: string){
     let result = await db.query(SQL `SELECT price FROM products WHERE product = ${product}`)
@@ -68,7 +67,6 @@ export async function add_item(product:string, quantity:number, image: string,
     return result   
 }
 
-
 // product table
 export async function get_drinks_in_department(department: string) {
 
@@ -78,8 +76,6 @@ export async function get_drinks_in_department(department: string) {
     return result;
 }
 
-
-
 export async function delete_item(item:string, department:string) {
 
     let result = await db.query(SQL `DELETE FROM products 
@@ -87,7 +83,6 @@ export async function delete_item(item:string, department:string) {
     return result;
     
 }
-
 
 export async function get_date(from:string, to:Date) {
     const DATE = await db.query(SQL ` SELECT * FROM item WHERE date BETWEEN ${from} AND ${to} `)
