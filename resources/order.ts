@@ -138,25 +138,24 @@ export async function countWaitersOrder(req: Request, res: Response) {
 export async function removeOrdersFromTable(req: Request, res: Response) {
     const ORDER: [] = req.body.order
     let order;
-    console.log(JSON.stringify(req.body))
-
+    let quantity;
+    let new_quantity: any;
 
     for (order of ORDER) {
-        console.log(order)
 
         let item = await get_drinks_in_table(order['item']['product'], req.body.table_name)        
-        if (item.rowCount !== 0 ) {
+        if (item.rowCount !== 0 && req.body.returned) {
+
+            console.log(JSON.stringify((req.body.product, req.body.returned)))
             await update_order_quantity(order['item']['product'], 
                 order['quantity'], req.body.table_name)
-        }
 
-        let quantity = await get_product_in_department(order['item']['product'], order['item']['department'])
-        console.log(quantity.rows)
-        // check for the item and add a field reduced quantity from the front end
-        let new_quantity: any = quantity.rows[0]['quantity'] - order['quantity']
-        let p = new_quantity + 
-        console.log(new_quantity)
-        await decrease_item_quantity_in_pos(order['item']['product'], new_quantity, order['item']['department'])
+            quantity = await get_product_in_department(order['item']['product'], order['item']['department'])
+            console.log(quantity.rows)
+            new_quantity = quantity.rows[0]['quantity'] + req.body.returned
+            
+            await decrease_item_quantity_in_pos(order['item']['product'], new_quantity, order['item']['department'])
+        }
     }
     return res.status(200).send(`OK`)
 }
