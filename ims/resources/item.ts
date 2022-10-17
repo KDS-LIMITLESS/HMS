@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { get_all_sent_items, get_date, send_products_to_department,
     reduce_item_quantity, get_product_in_department, get_product_image,
-    update_item_in_pos, delete_item} from '../models/item';
+    update_item_in_pos, delete_item, get_all_items_sent_to_department} from '../models/item';
 import { get_item } from '../../models/item';
 
 
@@ -57,6 +57,12 @@ export async function distributeItems(req:Request, res:Response) {
 
 export async function getAllItemsSent(req:Request, res:Response) {
     let items = await get_all_sent_items();
+    return res.status(200).send(items.rows)
+}
+
+
+export async function getAllItemsSentToDepartment(req:Request, res:Response) {
+    let items = await get_all_items_sent_to_department(req.body.department);
     return res.status(200).send(items.rows)
 }
 
