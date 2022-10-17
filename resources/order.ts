@@ -167,7 +167,7 @@ export async function deleteOrder(req:Request, res:Response) {
 
 async function reduceQuantity() {
     let order:any ;
-    let quantity = await get_product_in_department(order['item']['product'], order['department'])
-    let new_quantity = quantity.rows[0]['quantity'] - order['item']['quantity']
+    let quantity = await get_product_in_department(order['product'], order['department'])
+    let new_quantity = quantity.rows[0]['quantity'] - order['quantity']
     return new_quantity
 }
