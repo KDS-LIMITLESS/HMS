@@ -23,7 +23,8 @@ export async function placeOrder(req: Request, res: Response, next: NextFunction
         )
         let quantity = await get_product_in_department(order['product'], order['department'])
         let new_quantity = quantity.rows[0]['quantity'] - order['quantity']
-        await decrease_item_quantity_in_pos(order['product'], new_quantity)
+        console.log(new_quantity)
+        await decrease_item_quantity_in_pos(order['product'], new_quantity, order['department'])
         await send_notification(req.body.activeUser, order['product'], order['quantity'])   
     };
     console.log(`new order created!`)
