@@ -50,11 +50,13 @@ export async function getTableOrders(req: Request, res: Response) {
    
     // converting return type from db to [{}] required by the client.
     let notification: any[] = []
+    let returned = 0
     TABLE_ORDERS?.forEach((item) => {
         
         let items = {
             // "username": item.username,
             "quantity": item.quantity,
+            "returned": returned,
             "item": {
                 "product": item.item,
                 "price": item.price,
@@ -152,7 +154,7 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
         console.log(quantity.rows)
         // check for the item and add a field reduced quantity from the front end
         let new_quantity: any = quantity.rows[0]['quantity'] - order['quantity']
-
+        let p = new_quantity + 
         console.log(new_quantity)
         await decrease_item_quantity_in_pos(order['item']['product'], new_quantity, order['item']['department'])
     }
