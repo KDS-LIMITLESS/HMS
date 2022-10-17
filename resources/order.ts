@@ -134,15 +134,13 @@ export async function countWaitersOrder(req: Request, res: Response) {
 }
 
 export async function removeOrdersFromTable(req: Request, res: Response) {
-    console.log(req.body)
     const ORDER: [] = req.body.order
     let order;
 
-    console.log(order)
 
     for (order of ORDER) {
-        
-        console.log('inside loop')
+        console.log(order)
+
         let item = await get_drinks_in_table(order['item']['product'], req.body.table_name)        
         if (item.rowCount !== 0 ) {
             await update_order_quantity(order['item']['product'], 
@@ -150,12 +148,12 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
         }
 
         let quantity = await get_product_in_department(order['item']['product'], order['item']['department'])
-        
+        console.log(quantity.rows)
+
         let new_quantity: any = quantity.rows[0]['quantity'] + order['quantity']
         console.log(new_quantity)
-        await decrease_item_quantity_in_pos(order['product'],new_quantity, order['department'])
+        await decrease_item_quantity_in_pos(order['product'], new_quantity, order['department'])
     }
-    console.log('outside loop')
     return res.status(200).send(`OK`)
 }
 
