@@ -1,10 +1,11 @@
 import { Response, Request, NextFunction } from "express";
 import { exit } from "process";
-import { get_item } from "../models/item";
 import {new_order, get_table_orders, get_drinks_in_table, 
     update_order_quantity, get_all_orders, delete_order, get_order,
-    count_waiters_order, get_table_orders_for_admin, count_orders_in_closed_tables, count_all_orders} from "../models/order";
+    count_waiters_order, get_table_orders_for_admin,count_all_orders,
+    decrease_item_quantity_in_pos } from "../models/order";
 import { send_notification } from "../models/notifiacation";
+import { get_product_in_department } from "../ims/models/item";
 import { get_user } from "../models/user";
 
 
@@ -20,6 +21,9 @@ export async function placeOrder(req: Request, res: Response, next: NextFunction
             order['image'], order['department'], req.body.table_name,
             time.toLocaleTimeString()
         )
+        let quantity = await get_product_in_department(order['product'], order['department'])
+        let new_quantity = quantity.rows[0]['quantity'] - order['quantity']
+        await decrease_item_quantity_in_pos(order['product'], new_quantity)
         await send_notification(req.body.activeUser, order['product'], order['quantity'])   
     };
     console.log(`new order created!`)

@@ -116,3 +116,16 @@ export async function get_waiter_order(waiter: string) {
 
     return _
 }
+
+// pos ----> ims/item
+export async function decrease_item_quantity_in_pos(product:string, quantity:number, department:string){
+    let prod = await db.query(SQL ` UPDATE products SET quantity = ${quantity}
+        WHERE product = ${product} AND department = ${department}; `)
+    return prod
+}
+
+const x = async function reduceQuantity(oldQuantity:number, newQuantity:number ) {
+
+
+    return newQuantity
+}
