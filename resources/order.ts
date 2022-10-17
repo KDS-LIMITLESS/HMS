@@ -149,10 +149,10 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
 
         let quantity = await get_product_in_department(order['item']['product'], order['item']['department'])
         console.log(quantity.rows)
-
+        // check for the item and add a field reduced quantity from the front end
         let new_quantity: any = quantity.rows[0]['quantity'] + order['quantity']
         console.log(new_quantity)
-        await decrease_item_quantity_in_pos(order['product'], new_quantity, order['department'])
+        await decrease_item_quantity_in_pos(order['item']['product'], new_quantity, order['item']['department'])
     }
     return res.status(200).send(`OK`)
 }
