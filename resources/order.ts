@@ -143,9 +143,9 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
     console.log(JSON.stringify(req.body))
 
     for (order of ORDER) {
-
+        console.log(JSON.stringify(req.body.order.returned))
         let item = await get_drinks_in_table(order['item']['product'], req.body.table_name)        
-        if (item.rowCount !== 0 && req.body.returned) {
+        if (item.rowCount !== 0 && req.body.order.returned > 0) {
 
             console.log(JSON.stringify((req.body.product, req.body.returned)))
             await update_order_quantity(order['item']['product'], 
