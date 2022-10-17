@@ -48,13 +48,13 @@ export async function get_item(product: string) {
 
 // product table
 export async function get_product_price(product: string){
-    let result = await db.query(SQL `SELECT price FROM product WHERE product = ${product}`)
+    let result = await db.query(SQL `SELECT price FROM products WHERE product = ${product}`)
     return result
 }
  
 // start from here 
 export async function get_all_items_in_category(itemCategory: string, department: string){
-    let result = db.query(SQL `SELECT * FROM product WHERE category = ${itemCategory} 
+    let result = db.query(SQL `SELECT * FROM products WHERE category = ${itemCategory} 
             AND department = ${department};`)
     return result
 }
