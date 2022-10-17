@@ -140,6 +140,7 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
     let order;
     let quantity;
     let new_quantity: any;
+    console.log(JSON.stringify(req.body))
 
     for (order of ORDER) {
 
