@@ -97,9 +97,10 @@ export async function updateOrder(req: Request, res: Response) {
                 req.body.table_name,time.toLocaleTimeString()
             ); 
 
-            let quantity = await reduceQuantity()
-            console.log(quantity)
-            await decrease_item_quantity_in_pos(order['product'], quantity, order['department'])
+            let quantity = await get_product_in_department(order['product'], order['department'])
+            let new_quantity = quantity.rows[0]['quantity'] - order['quantity']
+            console.log(new_quantity)
+            await decrease_item_quantity_in_pos(order['product'], new_quantity, order['department'])
             
             await send_notification(req.body.activeUser, order['product'], order['quantity'])   
         }
@@ -148,8 +149,10 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
                 order['quantity'], req.body.table_name)
         }
 
-        let quantity = await reduceQuantity()
-        await decrease_item_quantity_in_pos(order['product'], quantity, order['department'])
+        let quantity = await get_product_in_department(order['item']['product'], order['department'])
+        let new_quantity = quantity.rows[0]['quantity'] - order['item']['quantity']
+        console.log(new_quantity)
+        await decrease_item_quantity_in_pos(order['product'],new_quantity, order['department'])
     }
     console.log('outside loop')
     return res.status(200).send(`OK`)
@@ -165,9 +168,9 @@ export async function deleteOrder(req:Request, res:Response) {
 }
 
 
-async function reduceQuantity() {
-    let order:any ;
-    let quantity = await get_product_in_department(order['product'], order['department'])
-    let new_quantity = quantity.rows[0]['quantity'] - order['quantity']
-    return new_quantity
-}
+// async function reduceQuantity() {
+//     let order:any ;
+//     let quantity = await get_product_in_department(order['item']['product'], order['department'])
+//     let new_quantity = quantity.rows[0]['quantity'] - order['item']['quantity']
+//     return new_quantity
+// }
