@@ -62,7 +62,7 @@ export async function get_drinks_in_table(item: string, col: string ){
     return result;
 }
 
-export async function update_order_quantity(item:string, quantity: string, tbl: string) {
+export async function update_order_quantity(item:string, quantity:number, tbl: string) {
 
     let result = await db.query(SQL `UPDATE orders SET quantity = ${quantity} 
         WHERE item = ${item} AND table_name = ${tbl}`)

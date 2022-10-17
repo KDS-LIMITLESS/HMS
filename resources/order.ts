@@ -80,7 +80,7 @@ export async function updateOrder(req: Request, res: Response) {
         let item = await get_drinks_in_table(order['product'], req.body.table_name)
         console.log(req.body)
         if (item.rowCount !== 0 ) {
-            let quantity = order['quantity'] + item.rows[0]['quantity']
+            let quantity:any = order['quantity'] + item.rows[0]['quantity']
             await update_order_quantity(order['product'], 
                                      quantity, req.body.table_name)
             // order derails to send to the bar man as notification
@@ -143,7 +143,9 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
     console.log(JSON.stringify(req.body))
 
     for (order of ORDER) {
+        console.log(typeof(order['returned']))
         let item = await get_drinks_in_table(order['item']['product'], req.body.table_name)        
+
         if (item.rowCount !== 0 && order['returned'] > 0) {
 
             console.log(JSON.stringify((req.body.product, order['returned'])))
@@ -152,7 +154,7 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
 
             quantity = await get_product_in_department(order['item']['product'], order['item']['department'])
             console.log(quantity.rows)
-            new_quantity = quantity.rows[0]['quantity'] + req.body.returned
+            new_quantity = quantity.rows[0]['quantity'] + order['returned']
             
             await decrease_item_quantity_in_pos(order['item']['product'], new_quantity, order['item']['department'])
         }
