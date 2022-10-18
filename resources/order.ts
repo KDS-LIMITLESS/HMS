@@ -163,15 +163,17 @@ export async function removeOrdersFromTable(req: Request, res: Response) {
 
 export async function deleteOrder(req:Request, res:Response) {
     let quantity:any;
+    let new_quantity;
 
     let order = await get_order(req.body.table_name, req.body.product);
+
     if (order.rowCount === 1){
         await delete_order(req.body.table_name, req.body.product)
-        console.log(order.rows[0]['quantity'])
-        quantity = await get_product_in_department(req.body.product, order.rows[0]['department'])
-        let new_quantity = quantity.rows[0]['quantity'] + order.rows[0]['quantity']
-        await decrease_item_quantity_in_pos(req.body.product, new_quantity, order.rows[0]['department'])
 
+        quantity = await get_product_in_department(req.body.product, order.rows[0]['department'])
+        new_quantity = quantity.rows[0]['quantity'] + order.rows[0]['quantity']
+
+        await decrease_item_quantity_in_pos(req.body.product, new_quantity, order.rows[0]['department'])
         return res.status(200).send(`OK`)
     }
     return res.status(400).send(`ERROR!`)
