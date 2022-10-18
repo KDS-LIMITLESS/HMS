@@ -128,7 +128,7 @@ export async function countWaitersOrder(req: Request, res: Response) {
             return res.status(200).json({order_count: count.rows})
         }
         let count = await count_waiters_order(req.body.activeUser)
-        return res.status(200).json({Waiter_count: count.rowCount})
+        return res.status(200).json({order_count: count.rowCount})
     }catch(err: any){
         console.log(err.message)
         return res.status(400).send(err.message)
