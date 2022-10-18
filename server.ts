@@ -51,10 +51,10 @@ async function startServer() {
     // await db.query('DROP TABLE tables')
     // await db.query('DROP TABLE credit')
     // await db.query('DROP TABLE notification')
-    // await db.query('DROP TABLE products CASCADE')
+    // put products table here
     // await db.query('DROP TABLE catalogue ')
     // await db.query('DROP TABLE transactions')
-    // await db.query('DROP TABLE item CASCADE')
+    // put item table here
     // await db.query('DROP TABLE dept ')
     // await db.query('DROP TABLE users')
     
@@ -69,11 +69,21 @@ async function startServer() {
     // await create_Order_Table()
     // await create_credit_table()
     // await create_notifications_table();
-    await create_inventory_order_table()
+    //await create_inventory_order_table()
+    //let a = await db.query(` DELETE FROM catalogue WHERE product = 'null' `)
+    //console.log(a.rowCount)
 
-    // await db.query(`DROP TABLE catalogue
+    // let d = "Kitchen"
+    // let l = "lounge"
+    // let dept = await db.query(SQL ` UPDATE products SET department = 'Lounge' 
+    //     WHERE department = ${d}`)
+    
+    // console.log(dept.rowCount)
+
+    // await db.query(`ALTER TABLE item
+    //     DROP CONSTRAINT item_image_key CASCADE
     // `)
-    // ADD CONSTRAINT item_image_key UNIQUE(image)
+    // 
    // let prod =  await db.query(`SELECT * FROM users`)
    // console.log(prod.rows)
     // await db.query(`ALTER TABLE products
