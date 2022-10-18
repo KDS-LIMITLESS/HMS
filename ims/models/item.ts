@@ -50,7 +50,6 @@ export async function createProductTable() {
     })
 }
 
-
 export async function reduce_item_quantity(products:string, quantity:number){
     let product = await db.query(SQL ` UPDATE item SET quantity = ${quantity} WHERE product = ${products}; `)
     return product
@@ -62,7 +61,6 @@ export async function send_products_to_department(product:string, department:str
         VALUES(${product}, ${department}, ${quantity}, ${image}, ${category}, ${price});`)
     return result;
 }
-
 
 export async function get_all_sent_items() {
     const items = await db.query(SQL` SELECT * FROM products WHERE DATE = CURRENT_DATE`)
@@ -93,7 +91,8 @@ export async function get_product_in_department(product:string, dept:string)  {
 }
 
 export async function update_item_in_pos(product:string, quantity:number, department:string, price:number){
-    let prod = await db.query(SQL ` UPDATE products SET quantity = ${quantity},price = ${price} 
+    let prod = await db.query(SQL ` UPDATE products SET quantity = ${quantity},price = ${price},
+        date =  CURRENT_DATE
         WHERE product = ${product} AND department = ${department}; `)
     return prod
 }
