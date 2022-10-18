@@ -83,7 +83,7 @@ export async function count_waiters_order(waiter: string) {
 }
 
 export async function count_all_orders() {
-    let count = await db.query(SQL ` SELECT count(*) FROM orders; `)
+    let count = await db.query(SQL ` SELECT * FROM orders; `)
     return count;
 }
 
