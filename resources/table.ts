@@ -12,28 +12,33 @@ export async function createTable(req:Request, res: Response, next: NextFunction
     const ORDER: [] = req.body.order;
     let table = await get_table(req.body.table_name)
     let order;
-
-    if (table.rowCount === 1) {
-        console.log(`table exists`)
-        return res.status(400).end(`Table already exists`)
-    } 
-    if (table.rowCount === 0) {
-        for (order of ORDER){
-            let item = await get_item(order['product']);
-            
-            if (item === null)  {     
-                console.log(item)
-                console.log(`${order['product']} Not found`)
-                res.status(404).end(`Not Found!`); 
-                exit()
-                //stop crashing the server here!!
-            };
-            continue
+    try {
+        if (table.rowCount === 1) {
+            console.log(`table exists`)
+            return res.status(400).end(`Table already exists`)
+        } 
+        if (table.rowCount === 0) {
+            for (order of ORDER){
+                let item = await get_item(order['product']);
+                
+                if (item === null)  {     
+                    console.log(item)
+                    console.log(`${order['product']} Not found`)
+                    res.status(404).end(`Not Found!`); 
+                    exit()
+                    //stop crashing the server here!!
+                };
+                continue
+            }
         }
+        await create_new_table(req.body.table_name, req.body.activeUser)
+        console.log(`Created table ${req.body.table_name}` )     
+        next();
+    } catch (err: any){
+        console.log(err.message)
+        res.status(400).send(err.message)
     }
-    await create_new_table(req.body.table_name, req.body.activeUser)
-    console.log(`Created table ${req.body.table_name}` )     
-    next();
+    
 }
 
 export async function getAllTables(req:Request, res: Response) {
