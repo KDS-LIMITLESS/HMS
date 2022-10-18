@@ -125,7 +125,7 @@ export async function countWaitersOrder(req: Request, res: Response) {
         let user = await get_user(req.body.activeUser)
         if (user.rows[0]['role'] === 'Super Admin') {
             let count = await count_all_orders()
-            return res.status(200).json({order_count: count.rows})
+            return res.status(200).json({order_count: count.rowCount})
         }
         let count = await count_waiters_order(req.body.activeUser)
         return res.status(200).json({order_count: count.rowCount})
