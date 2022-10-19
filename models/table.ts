@@ -71,8 +71,8 @@ export async function delete_table(table_name: string, waiter: string) {
 }
 
 export async function clear_tables() {
-    const clear = await db.query(SQL ` UPDATE tables SET delete_status = 'DELETED'
-        WHERE table_status = 'FALSE' `)
+    const clear = await db.query(SQL ` UPDATE tables SET delete_status = 'TRUE'
+        WHERE delete_status = 'FALSE' `)
 }
 
 export async function close_table(waiter:string, status: string, tbl_name: string, cash: number, 
