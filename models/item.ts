@@ -70,10 +70,10 @@ export async function add_item(product:string, quantity:number, image: string,
 // product table
 export async function get_drinks_in_department(department: string) {
 
-    let result = await db.query(SQL `SELECT DISTINCT product, price, quantity, 
+    let result = db.query(SQL `SELECT DISTINCT product, price, quantity, 
         category, department, image, date FROM products
         WHERE department = ${department}`);
-    return result;
+    return (await result).rows;
 }
 
 export async function delete_item(item:string, department:string) {
