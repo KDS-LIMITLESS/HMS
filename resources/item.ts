@@ -45,7 +45,7 @@ export async function getItemsInCategory(req:Request, res:Response) {
 export async function getAllDrinksDepartment(req:Request, res:Response) {
     try{
         const result = await get_drinks_in_department(req.body.department)
-        return res.status(200).send(result.rows)
+        return res.status(200).json({result: result.rows, qty: result.rows[0]['quantity']})
     
     }catch(err:any){
         console.error(err)
