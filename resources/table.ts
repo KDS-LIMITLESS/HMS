@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { create_new_table, get_table, get_all_waiter_tables, 
     get_one_waiter_table, close_table, get_all_tables, get_table_discount,
-    get_table_date_and_time } from "../models/table";
+    get_table_date_and_time, clear_tables } from "../models/table";
 import { get_item } from "../models/item";        
 import { exit } from "process";
 // import { close_order_table, get_closed_tables } from "../models/table";
@@ -128,4 +128,9 @@ export async function getTableDiscount(req:Request, res: Response) {
         console.log(e.message);
         return res.status(400).send(e.message)
     } 
+}
+
+export async function clearTables(req:Request, res:Response) {
+    let clear = await clear_tables();
+    return res.status(200).send(`TABLES CLEARED`)
 }

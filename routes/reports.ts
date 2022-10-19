@@ -12,7 +12,7 @@ router.get('/overall-reports', generateOverallReport)
 router.post('/upload-report', uploadReportFile)
 router.post('/retrieve-pdf', retrievePDF)
 
-router.delete('/clear-db', authorizeSuperAdminNext, clearDbDetails)
+// router.delete('/clear-db', authorizeSuperAdminNext, clearDbDetails)
 
 
 module.exports = router;

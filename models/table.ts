@@ -8,6 +8,7 @@ export async function createTableManager(){
         table_name VARCHAR NOT NULl PRIMARY KEY,
         waiter VARCHAR REFERENCES users(username) ON DELETE SET NULL,
         status VARCHAR NOT NULL DEFAULT 'OPEN',
+        delete_status VARCHAR NOT NULL DEFAULT 'FALSE'
         cash INTEGER DEFAULT 0,
         pos INTEGER  DEFAULT 0,
         transfer INTEGER  DEFAULT 0,
@@ -67,6 +68,11 @@ export async function delete_table(table_name: string, waiter: string) {
     const DEL_TABLE = await db.query(`DELETE FROM tables WHERE table_name = ${table_name} 
                                 AND waiter = ${waiter}`);
     return DEL_TABLE;
+}
+
+export async function clear_tables() {
+    const clear = await db.query(SQL ` UPDATE tables SET delete_status = 'DELETED'
+        WHERE table_status = 'FALSE' `)
 }
 
 export async function close_table(waiter:string, status: string, tbl_name: string, cash: number, 

@@ -57,6 +57,7 @@ export async function getTableOrders(req: Request, res: Response) {
             // "username": item.username,
             "quantity": item.quantity,
             "returned": returned,
+            "qty": item.qty,
             "item": {
                 "product": item.item,
                 "price": item.price,
