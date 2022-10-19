@@ -49,7 +49,7 @@ export async function getAllDrinksDepartment(req:Request, res:Response) {
             let products = {
                 "product": item.product,
                 "price": item.price,
-                "quantity": item.quantity,
+                // "quantity": item.quantity,
                 "qty": item.quantity,
                 "category": item.category,
                 "department": item.department,
