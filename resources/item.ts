@@ -44,20 +44,22 @@ export async function getItemsInCategory(req:Request, res:Response) {
 
 export async function getAllDrinksDepartment(req:Request, res:Response) {
     try{
+        let p:any = [];
         const result = await get_drinks_in_department(req.body.department)
         result.forEach((item) => {
             let products = {
                 "product": item.product,
                 "price": item.price,
-                // "quantity": item.quantity,
+                "quantity": item.quantity,
                 "qty": item.quantity,
                 "category": item.category,
                 "department": item.department,
                 "image": item.image,
                 "date": item.date
             }
+            p.push(products)
         })
-        return res.status(200).send(result)
+        return res.status(200).send(p)
     
     }catch(err:any){
         console.error(err)
