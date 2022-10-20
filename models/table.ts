@@ -82,7 +82,7 @@ export async function close_table(waiter:string, status: string, tbl_name: strin
         cash = ${cash}, pos = ${pos}, transfer = ${transfer}, credit = ${credit}, 
         total = ${total}, discount = ${discount}, 
         complimentary_drink = ${complimentary_drink},
-        complimentary_qty = ${complimentary_qty}, date = TO_CHAR(CURRENT_TIMESTAMP, 'DD MonthYYYY'),
+        complimentary_qty = ${complimentary_qty}, date = TO_CHAR(CURRENT_TIMESTAMP, 'DD MonthYYYY HH24:MI'),
         time = TO_CHAR(CURRENT_TIMESTAMP, 'HH24:MI')
 
         WHERE table_name = ${tbl_name} AND waiter = ${waiter}`)
