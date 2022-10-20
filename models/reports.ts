@@ -48,7 +48,7 @@ export async function get_all_items_sold() {
 
 export async function filter_items(from_date:string, to_date:string) {
     let allItems = await db.query(SQL
-        `SELECT table.table_name, tables.status, tables.date, item, price, 
+        `SELECT tables.table_name, tables.status, tables.date, item, price, 
             quantity, department FROM orders
 
             LEFT JOIN tables
