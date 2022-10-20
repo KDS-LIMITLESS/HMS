@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { get_all_sent_items, get_date, send_products_to_department,
     reduce_item_quantity, get_product_in_department, get_product_image,
-    update_item_in_pos, delete_item, get_all_items_sent_to_department} from '../models/item';
+    update_item_in_pos, delete_item, get_all_items_sent_to_department,} from '../models/item';
 import { get_item } from '../../models/item';
 
 

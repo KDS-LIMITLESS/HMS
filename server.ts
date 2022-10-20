@@ -80,8 +80,8 @@ async function startServer() {
     
     // console.log(dept.rowCount)
 
-    // await db.query(`ALTER TABLE tables
-    //     ADD COLUMN delete_status VARCHAR NOT NULL DEFAULT 'FALSE'
+    // await db.query(`ALTER TABLE item
+    //     DROP CONSTRAINT item_image_key cascade
     // `)
     // 
    // let prod =  await db.query(`SELECT * FROM users`)

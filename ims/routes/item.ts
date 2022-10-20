@@ -1,7 +1,8 @@
 import express from 'express'
-import { appendFile } from 'fs';
 import {  getAllItemsSent, getTransactionDates,
-     distributeItems, getAllItemsSentToDepartment } from '../resources/item'
+     distributeItems, getAllItemsSentToDepartment, deleteItem } from '../resources/item'
+
+import { authorizeAuditor } from '../../middlewares/user';
 
 const router = express.Router();
 
@@ -11,4 +12,5 @@ router.post('/sent-items/department', getAllItemsSentToDepartment)
 router.post('/send-items', distributeItems)
 router.post('/transactions', getTransactionDates)
 
+router.delete('/delete-item', authorizeAuditor, deleteItem)
 module.exports = router;
