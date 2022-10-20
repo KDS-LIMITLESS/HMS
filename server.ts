@@ -83,7 +83,7 @@ async function startServer() {
     // await db.query(`ALTER TABLE products
     //     DROP CONSTRAINT products_product_fkey CASCADE,
     //     ADD CONSTRAINT products_product_fkey FOREIGN KEY (product) REFERENCES item(product) ON DELETE CASCADE ON UPDATE CASCADE
-    // `)
+    //  `)
     
    // let prod =  await db.query(`SELECT * FROM users`)
    // console.log(prod.rows)
