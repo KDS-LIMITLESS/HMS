@@ -62,22 +62,6 @@ export async function send_products_to_department(product:string, department:str
     return result;
 }
 
-export async function get_all_sent_items() {
-    const items = await db.query(SQL` SELECT * FROM products WHERE DATE = CURRENT_DATE`)
-    return items
-}
-
-export async function get_all_items_sent_to_department(department:string) {
-    const items = await db.query(SQL` SELECT * FROM products 
-        WHERE DATE = CURRENT_DATE AND department = ${department}`)
-    return items
-}
-
-export async function get_date(from:string, to:Date) {
-    const DATE = await db.query(SQL ` SELECT * FROM products WHERE date BETWEEN ${from} AND ${to} `)
-    return DATE
-}
-
 
 export async function get_product_image(product:string) {
     let image = await db.query(SQL ` SELECT image from item WHERE product = ${product} `)

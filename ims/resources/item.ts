@@ -1,22 +1,10 @@
 import { Request, Response } from 'express';
-import { get_all_sent_items, get_date, send_products_to_department,
+import { send_products_to_department,
     reduce_item_quantity, get_product_in_department, get_product_image,
-    update_item_in_pos, delete_item, get_all_items_sent_to_department,} from '../models/item';
+    update_item_in_pos, delete_item } from '../models/item';
 import { get_item } from '../../models/item';
+import { record_transactions } from '../models/transaction';
 
-
-// export async function sendItemsToDepartments(req:Request, res:Response) {
-//     let item = await get_item(req.body.item, req.body.product)
-//     if (item) {
-//         let dept = await send_items_to_depts(req.body.item, req.body.department, req.body.quantity,
-//             req.body.size, req.body.metric)
-//         if (dept.rowCount >= 1) return res.status(200).send(`OK`)
-//         return res.status(400).send(`An error occured!`)
-//     } 
-//     else{
-//         return res.status(404).send(`item not found in specified department`)
-//     }
-// }
 
 export async function distributeItems(req:Request, res:Response) {
     const item = await get_item(req.body.product)
@@ -39,6 +27,7 @@ export async function distributeItems(req:Request, res:Response) {
         //add/update product quantity
         let product_quantity = product.rows[0]['quantity'] + req.body.quantity
         await update_item_in_pos(req.body.product, product_quantity, req.body.department, req.body.price)
+        await record_transactions(req.body.product, req.body.department, req.body.quantity)
 
         qty = item.rows[0]['quantity'] - req.body.quantity
         await reduce_item_quantity(req.body.product, qty)
@@ -48,29 +37,12 @@ export async function distributeItems(req:Request, res:Response) {
     }else {
         await send_products_to_department(req.body.product, req.body.department, 
             req.body.quantity, image, req.body.category, req.body.price
-        )   
+        )  
+        await record_transactions(req.body.product, req.body.department, req.body.quantity) 
         let qty = item.rows[0]['quantity'] - req.body.quantity
         await reduce_item_quantity(req.body.product, qty)
         return res.status(200).send(`${req.body.quantity} ${req.body.product} sent to ${req.body.department}`)
     }  
-}
-
-export async function getAllItemsSent(req:Request, res:Response) {
-    let items = await get_all_sent_items();
-    return res.status(200).send(items.rows)
-}
-
-
-export async function getAllItemsSentToDepartment(req:Request, res:Response) {
-    let items = await get_all_items_sent_to_department(req.body.department);
-    return res.status(200).send(items.rows)
-}
-
-export async function getTransactionDates(req:Request, res:Response) {
-    let date = await get_date(req.body.from, req.body.to)
-    console.log(req.body)
-    if (date) return res.status(200).json({filters: date.rows, count: date.rowCount})
-    return res.status(400).send("Transactions within the specified date does not exist")
 }
 
 export async function deleteItem(req: Request,res: Response){
