@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { getWaiterTables, getAllTables, closeTable, getTableDiscount, getTableDateAndTime,
-    clearTables } from '../resources/table';
+    clearTables, filterTables } from '../resources/table';
 import { authorizeUser, authorizeAuditor, authorizeDiscount, authorizeCredit } from '../middlewares/user';
 
 export const router = Router();
@@ -11,6 +11,7 @@ router.post('/close-table', authorizeDiscount, authorizeCredit, closeTable);
 router.post('/all-tables', authorizeAuditor, getAllTables);
 router.post('/table-discount', getTableDiscount)
 router.post('/table-date', getTableDateAndTime)
+router.post('/filter-tables', filterTables)
 
 router.put('/clear-tables', authorizeAuditor, clearTables)
 

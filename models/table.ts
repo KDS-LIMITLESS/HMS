@@ -89,6 +89,12 @@ export async function close_table(waiter:string, status: string, tbl_name: strin
     return result.rows[0]
 }
 
+export async function filter_tables(from:string, to:string) {
+    let tables = await db.query(SQL`SELECT pos, cash, transfer, status, date from tables
+        WHERE status = 'CLOSED' AND date BETWEEN ${from} AND ${to}`)
+    return tables
+}
+
 // export async function get_closed_table_time(table_name:string) {
 //     let time = await db.query(SQL ` SELECT date, time, waiter, table_name FROM tables
 //         WHERE status = 'CLOSED' AND table_name = ${table_name} `)
