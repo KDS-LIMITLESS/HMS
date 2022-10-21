@@ -13,19 +13,19 @@ export async function create_transactions_table() {
 }
 
 export async function record_transactions(product:string, department:string, quantity:number) {
-    let result = await db.query(SQL ` INSERT INTO transaction(product, department, quantity)
+    let result = await db.query(SQL ` INSERT INTO transactions (product, department, quantity)
         VALUES(${product}, ${department}, ${quantity});`)
     return result;
 }
 
 
 export async function get_all_sent_items() {
-    const items = await db.query(SQL` SELECT * FROM transaction WHERE DATE = CURRENT_DATE`)
+    const items = await db.query(SQL` SELECT * FROM transactions WHERE DATE = CURRENT_DATE`)
     return items
 }
 
 export async function get_all_items_sent_to_department(department:string) {
-    const items = await db.query(SQL` SELECT * FROM transaction 
+    const items = await db.query(SQL` SELECT * FROM transactions 
         WHERE DATE = CURRENT_DATE AND department = ${department}`)
     return items
 }
