@@ -11,6 +11,7 @@ import { create_notifications_table } from './models/notifiacation';
 import { create_inventory_order_table } from './ims/models/order';
 import { createProductTable } from './ims/models/item';
 import { createDeptTable } from './ims/models/department';
+import { create_transactions_table } from './ims/models/transaction';
 
 import SQL from 'sql-template-strings'
 
@@ -33,6 +34,7 @@ app.use('', require('./routes/notiffication'))
 app.use('/ims', require('./ims/routes/order'))
 app.use('/ims', require('./ims/routes/item'))
 app.use('/ims', require('./ims/routes/department'))
+app.use('/ims', require('./ims/routes/transaction'))
 
 
 db.connect((err) => {
@@ -64,7 +66,7 @@ async function startServer() {
     // await createDeptTable()
     // await createItemsTable()
     // await createProductTable()
-    
+    await create_transactions_table()
     // await createTableManager()
     // await create_Order_Table()
     // await create_credit_table()
