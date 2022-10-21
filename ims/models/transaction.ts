@@ -2,7 +2,7 @@ import { SQL } from 'sql-template-strings'
 import { db } from '../../connection'
 
 export async function create_transactions_table() {
-    return db.query(` CREATE TABLE IF NOT EXISTS transaction (
+    return db.query(` CREATE TABLE IF NOT EXISTS transactions (
         id BIGSERIAL PRIMARY KEY,
         product VARCHAR REFERENCES item(product) ON DELETE CASCADE ON UPDATE CASCADE,
         quantity INTEGER NOT NULL DEFAULT 0,
