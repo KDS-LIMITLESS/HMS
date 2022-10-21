@@ -66,7 +66,7 @@ async function startServer() {
     // await createDeptTable()
     // await createItemsTable()
     // await createProductTable()
-    await create_transactions_table()
+    // await create_transactions_table()
     // await createTableManager()
     // await create_Order_Table()
     // await create_credit_table()
