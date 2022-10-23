@@ -1,8 +1,9 @@
 import { get_all_items, add_item, get_item, 
         get_all_items_in_category, get_drinks_in_department, 
         delete_item, update_item, get_date, update_item_quantity,
-        update_reorder_level    
+        update_reorder_level 
     } from "../models/item";
+import { get_item_in_orders } from "../models/order";
 import { Request, Response } from "express";
 
 

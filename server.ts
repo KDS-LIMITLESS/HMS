@@ -66,13 +66,14 @@ async function startServer() {
     // await createDeptTable()
     // await createItemsTable()
     // await createProductTable()
-    await create_transactions_table()
+    // await create_transactions_table()
     // await createTableManager()
     // await create_Order_Table()
     // await create_credit_table()
     // await create_notifications_table();
     //await create_inventory_order_table()
-    //let a = await db.query(` DELETE FROM catalogue WHERE product = 'null' `)
+    // await db.query(` DELETE FROM orders`)
+    // await db.query(` DELETE FROM tables`)
     //console.log(a.rowCount)
 
     // let d = "Kitchen"
@@ -82,10 +83,10 @@ async function startServer() {
     
     // console.log(dept.rowCount)
 
-    // await db.query(`ALTER TABLE products
-    //     DROP CONSTRAINT products_product_fkey CASCADE,
-    //     ADD CONSTRAINT products_product_fkey FOREIGN KEY (product) REFERENCES item(product) ON DELETE CASCADE ON UPDATE CASCADE
-    //  `)
+    // await db.query(`ALTER TABLE orders
+    //     DROP CONSTRAINT orders_item_fkey,
+    //     ADD CONSTRAINT orders_item_fkey FOREIGN KEY (item) REFERENCES item(product) ON DELETE CASCADE ON UPDATE CASCADE
+    // `)
     
    // let prod =  await db.query(`SELECT * FROM users`)
    // console.log(prod.rows)

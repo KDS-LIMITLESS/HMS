@@ -81,6 +81,15 @@ export async function update_item_in_pos(product:string, quantity:number, depart
     return prod
 }
 
+// ims functions
+
+export async function update_item_status(product: string) {
+
+    let result = await db.query(SQL`UPDATE item SET deleted_status = 'TRUE' 
+        WHERE product = ${product}`);
+    return result;
+}
+
 export async function delete_item(item:string) {
 
     let result = await db.query(SQL `DELETE FROM item WHERE product = ${item}`)

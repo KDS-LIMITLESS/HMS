@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import { send_products_to_department,
     reduce_item_quantity, get_product_in_department, get_product_image,
-    update_item_in_pos, delete_item } from '../models/item';
+    update_item_in_pos, delete_item, update_item_status } from '../models/item';
 import { get_item } from '../../models/item';
+import { get_item_in_orders } from '../../models/order';
 import { record_transactions } from '../models/transaction';
 
 
@@ -45,12 +46,20 @@ export async function distributeItems(req:Request, res:Response) {
     }  
 }
 
+// ims function
 export async function deleteItem(req: Request,res: Response){
     try {
+        let item = await get_item_in_orders(req.body.product)
+        if (item.rowCount >= 1 && item.rows[0]['status'] === 'FALSE') {
+            // update the item status in items
+            await update_item_status(req.body.product)
+            // return a response of status set to delete
+            return res.status(200).send("Item status updated")
+        }
         const ITEM = await get_item(req.body.product)
         if (ITEM.rowCount === 1) {
             await delete_item(req.body.product)
-            return res.status(200).send("OK")
+            return res.status(200).send("Item deleted from database")
         }
         return res.status(400).send(`Error. Item does not exist.`)
     } catch(err: any) {

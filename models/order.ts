@@ -10,7 +10,7 @@ export async function create_Order_Table() {
         id BIGSERIAL PRIMARY KEY, 
         username VARCHAR REFERENCES users(username) ON DELETE SET NULL,
         
-        item VARCHAR  REFERENCES item(product),
+        item VARCHAR  REFERENCES item(product) ON DELETE CASCADE,
         price INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
         category VARCHAR NOT NULL,
@@ -125,8 +125,8 @@ export async function decrease_item_quantity_in_pos(product:string, quantity:num
     return prod
 }
 
-const x = async function reduceQuantity(oldQuantity:number, newQuantity:number ) {
-
-
-    return newQuantity
+export async function get_item_in_orders(item:string) {
+    let items = await db.query(` SELECT DISTINCT item from orders 
+        WHERE item = ${item}; `)
+    return items
 }

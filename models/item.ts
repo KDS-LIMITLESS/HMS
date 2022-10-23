@@ -12,6 +12,7 @@ export async function createItemsTable() {
         metric VARCHAR,
         image VARCHAR UNIQUE,
         reorder INTEGER DEFAULT 0,
+        deleted_status VARCHAR DEFAULT 'FALSE',
         date DATE NOT NULL DEFAULT CURRENT_DATE
     )`, 
     (err, result) =>{
@@ -40,7 +41,7 @@ export async function get_all_items() {
 
 export async function get_item(product: string) {
 
-    let result = await db.query(SQL `SELECT * FROM item 
+    let result = await db.query(SQL `SELECT product, quantity, deleted_status FROM item 
         WHERE product = ${product};`)
     return result
 }
