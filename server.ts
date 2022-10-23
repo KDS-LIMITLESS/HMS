@@ -90,9 +90,14 @@ async function startServer() {
     
    // let prod =  await db.query(`SELECT * FROM users`)
    // console.log(prod.rows)
-    // await db.query(`ALTER TABLE products
-    //     ADD COLUMN category VARCHAR NOT NULL
- // `)
+    // await db.query(`ALTER TABLE item
+    //     ADD COLUMN deleted_status VARCHAR DEFAULT 'FALSE'
+    // `)
+
+    // await db.query(`ALTER TABLE transactions
+    //     ADD COLUMN description VARCHAR
+    // `)
+
 
 }
 startServer();
