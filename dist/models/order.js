@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.decrease_item_quantity_in_pos = exports.get_waiter_order = exports.get_order = exports.delete_order = exports.count_orders_in_closed_tables = exports.count_all_orders = exports.count_waiters_order = exports.get_all_orders = exports.update_order_quantity = exports.get_drinks_in_table = exports.get_table_orders_for_admin = exports.get_table_orders = exports.new_order = exports.create_Order_Table = void 0;
+exports.get_item_in_orders = exports.decrease_item_quantity_in_pos = exports.get_waiter_order = exports.get_order = exports.delete_order = exports.count_orders_in_closed_tables = exports.count_all_orders = exports.count_waiters_order = exports.get_all_orders = exports.update_order_quantity = exports.get_drinks_in_table = exports.get_table_orders_for_admin = exports.get_table_orders = exports.new_order = exports.create_Order_Table = void 0;
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const connection_1 = require("../connection");
 const table_1 = require("./table");
@@ -22,7 +22,7 @@ function create_Order_Table() {
         id BIGSERIAL PRIMARY KEY, 
         username VARCHAR REFERENCES users(username) ON DELETE SET NULL,
         
-        item VARCHAR  REFERENCES item(product),
+        item VARCHAR  REFERENCES item(product) ON DELETE CASCADE,
         price INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
         category VARCHAR NOT NULL,
@@ -157,8 +157,11 @@ function decrease_item_quantity_in_pos(product, quantity, department) {
     });
 }
 exports.decrease_item_quantity_in_pos = decrease_item_quantity_in_pos;
-const x = function reduceQuantity(oldQuantity, newQuantity) {
+function get_item_in_orders(item) {
     return __awaiter(this, void 0, void 0, function* () {
-        return newQuantity;
+        let items = yield connection_1.db.query(` SELECT DISTINCT item from orders 
+        WHERE item = ${item}; `);
+        return items;
     });
-};
+}
+exports.get_item_in_orders = get_item_in_orders;

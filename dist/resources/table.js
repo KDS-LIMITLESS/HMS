@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.clearTables = exports.getTableDiscount = exports.getTableDateAndTime = exports.closeTable = exports.getWaiterTables = exports.getAllTables = exports.createTable = void 0;
+exports.filterTables = exports.clearTables = exports.getTableDiscount = exports.getTableDateAndTime = exports.closeTable = exports.getWaiterTables = exports.getAllTables = exports.createTable = void 0;
 const table_1 = require("../models/table");
 const item_1 = require("../models/item");
 const process_1 = require("process");
@@ -153,3 +153,12 @@ function clearTables(req, res) {
     });
 }
 exports.clearTables = clearTables;
+function filterTables(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let tables = yield (0, table_1.filter_tables)(req.body.from, req.body.to);
+        if (tables.rowCount > 0)
+            return res.status(200).send(tables.rows);
+        return res.status(400).send('None');
+    });
+}
+exports.filterTables = filterTables;

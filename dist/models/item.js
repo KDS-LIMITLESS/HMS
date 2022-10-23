@@ -25,6 +25,7 @@ function createItemsTable() {
         metric VARCHAR,
         image VARCHAR UNIQUE,
         reorder INTEGER DEFAULT 0,
+        deleted_status VARCHAR DEFAULT 'FALSE',
         date DATE NOT NULL DEFAULT CURRENT_DATE
     )`, (err, result) => {
             if (err)
@@ -52,7 +53,7 @@ function get_all_items() {
 exports.get_all_items = get_all_items;
 function get_item(product) {
     return __awaiter(this, void 0, void 0, function* () {
-        let result = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT * FROM item 
+        let result = yield connection_1.db.query((0, sql_template_strings_1.default) `SELECT product, quantity, deleted_status FROM item 
         WHERE product = ${product};`);
         return result;
     });

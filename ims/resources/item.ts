@@ -28,7 +28,9 @@ export async function distributeItems(req:Request, res:Response) {
         //add/update product quantity
         let product_quantity = product.rows[0]['quantity'] + req.body.quantity
         await update_item_in_pos(req.body.product, product_quantity, req.body.department, req.body.price)
-        await record_transactions(req.body.product, req.body.department, req.body.quantity)
+        await record_transactions(req.body.product, req.body.department, req.body.quantity, 
+            req.body.description, req.body.price
+        )
 
         qty = item.rows[0]['quantity'] - req.body.quantity
         await reduce_item_quantity(req.body.product, qty)
@@ -39,7 +41,9 @@ export async function distributeItems(req:Request, res:Response) {
         await send_products_to_department(req.body.product, req.body.department, 
             req.body.quantity, image, req.body.category, req.body.price
         )  
-        await record_transactions(req.body.product, req.body.department, req.body.quantity) 
+        await record_transactions(req.body.product, req.body.department, req.body.quantity, 
+            req.body.description, req.body.price
+        ) 
         let qty = item.rows[0]['quantity'] - req.body.quantity
         await reduce_item_quantity(req.body.product, qty)
         return res.status(200).send(`${req.body.quantity} ${req.body.product} sent to ${req.body.department}`)
