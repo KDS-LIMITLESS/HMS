@@ -54,7 +54,7 @@ export async function distributeItems(req:Request, res:Response) {
 export async function deleteItem(req: Request,res: Response){
     try {
         let item = await get_item_in_orders(req.body.product)
-        if (item.rowCount >= 1 && item.rows[0]['status'] === 'FALSE') {
+        if (item.rowCount >= 1 ) {
             // update the item status in items
             await update_item_status(req.body.product)
             // return a response of status set to delete
