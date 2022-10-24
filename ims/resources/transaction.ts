@@ -28,6 +28,7 @@ export async function deleteTransaction(req:Request, res:Response) {
         console .log(transaction.rows)
         // get the product from database
         let product = await get_product_in_department(req.body.product, req.body.department)
+        console.log(product.rows)
         // do the subtraction 
         let quantity = product.rows[0]['quantity'] - transaction.rows[0]['quantity'] 
         // update the database of the product to take the new figure
