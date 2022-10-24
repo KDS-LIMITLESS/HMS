@@ -126,7 +126,7 @@ export async function decrease_item_quantity_in_pos(product:string, quantity:num
 }
 
 export async function get_item_in_orders(item:string) {
-    let items = await db.query(` SELECT DISTINCT item from orders 
+    let items = await db.query(SQL ` SELECT DISTINCT item from orders 
         WHERE item = ${item}; `)
     return items
 }
