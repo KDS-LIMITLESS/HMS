@@ -27,7 +27,7 @@ export async function deleteTransaction(req:Request, res:Response) {
     if (transaction.rowCount === 1){
         // get the product from database
         let product = await get_product_in_department(req.body.product, req.body.department)
-heroku         // do the subtraction 
+    // do the subtraction 
         let quantity = product.rows[0]['quantity'] - transaction.rows[0]['quantity'] 
         // update the database of the product to take the new figure
         await update_item_in_pos(req.body.product, quantity, req.body.department, req.body.price)
