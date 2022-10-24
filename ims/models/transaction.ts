@@ -39,3 +39,9 @@ export async function delete_transaction(id:number) {
     let transaction = await db.query(SQL `DELETE FROM transactions WHERE id = ${id}`)
     return transaction
 }
+
+export async function get_transaction_by_id(id:number) {
+    const transaction = await db.query(SQL ` SELECT id, quantity, product, price, department
+         FROM transactions WHERE date ${id} `)
+    return transaction
+}

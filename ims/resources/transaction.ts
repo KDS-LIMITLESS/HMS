@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { get_all_items_sent_to_department, get_date,
-    get_all_sent_items, delete_transaction } from '../models/transaction';
+    get_all_sent_items, delete_transaction, get_transaction_by_id } from '../models/transaction';
 import { get_product_in_department, update_item_in_pos } from '../models/item';
 
 
@@ -22,7 +22,8 @@ export async function getTransactionDates(req:Request, res:Response) {
 }
 
 export async function deleteTransaction(req:Request, res:Response) {
-    let transaction = await delete_transaction(req.body.id)
+    let transaction = await get_transaction_by_id(req.body.id)
+    // let transaction = await delete_transaction(req.body.id)
     if (transaction.rowCount === 1){
         console .log(transaction.rows)
         // get the product from database
@@ -31,6 +32,7 @@ export async function deleteTransaction(req:Request, res:Response) {
         let quantity = product.rows[0]['quantity'] - transaction.rows[0]['quantity'] 
         // update the database of the product to take the new figure
         await update_item_in_pos(req.body.product, quantity, req.body.department, req.body.price)
+        await delete_transaction(req.body.id)
         
         return res.status(200).send(` Transaction Deleted Successfully!`)
     }
