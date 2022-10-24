@@ -42,6 +42,6 @@ export async function delete_transaction(id:number) {
 
 export async function get_transaction_by_id(id:number) {
     const transaction = await db.query(SQL ` SELECT id, quantity, product, price, department
-         FROM transactions WHERE date ${id} `)
+        FROM transactions WHERE id =  ${id} `)
     return transaction
 }
