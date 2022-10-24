@@ -24,6 +24,7 @@ export async function getTransactionDates(req:Request, res:Response) {
 export async function deleteTransaction(req:Request, res:Response) {
     let transaction = await delete_transaction(req.body.id)
     if (transaction.rowCount === 1){
+        console .log(transaction.rows)
         // get the product from database
         let product = await get_product_in_department(req.body.product, req.body.department)
         // do the subtraction 
