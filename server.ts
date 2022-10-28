@@ -46,7 +46,7 @@ db.connect((err) => {
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
-     console.log('Server Listening on port 3000')
+     console.log(`Server Listening on port ${PORT}`)
 })
 
 async function startServer() {
@@ -62,16 +62,16 @@ async function startServer() {
     // await db.query('DROP TABLE dept ')
     // await db.query('DROP TABLE users')
 
-    await createUsersTable()
-    await createDeptTable()
-    await createItemsTable()
-    await createProductTable()
-    await create_transactions_table()
-    await createTableManager()
-    await create_Order_Table()
-    await create_credit_table()
-    await create_notifications_table();
-    await create_inventory_order_table()
+    // await createUsersTable()
+    // await createDeptTable()
+    // await createItemsTable()
+    // await createProductTable()
+    // await create_transactions_table()
+    // await createTableManager()
+    // await create_Order_Table()
+    // await create_credit_table()
+    // await create_notifications_table();
+    // await create_inventory_order_table()
     // await db.query(` DELETE FROM orders`)
     // await db.query(` DELETE FROM tables`)
     //console.log(a.rowCount)
@@ -83,9 +83,8 @@ async function startServer() {
     
     // console.log(dept.rowCount)
 
-    // await db.query(`ALTER TABLE orders
-    //     DROP CONSTRAINT orders_item_fkey,
-    //     ADD CONSTRAINT orders_item_fkey FOREIGN KEY (item) REFERENCES item(product) ON DELETE CASCADE ON UPDATE CASCADE
+    // await db.query(`ALTER TABLE item
+    //     DROP CONSTRAINT item_quantity_key
     // `)
 
 
@@ -106,7 +105,7 @@ async function startServer() {
     // `)
 
     // await db.query(`ALTER TABLE transactions
-    //     ADD COLUMN description VARCHAR
+    //     ADD COLUMN portion VARCHAR
     // `)
 }
 startServer();

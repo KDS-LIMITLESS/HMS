@@ -8,14 +8,17 @@ export async function create_transactions_table() {
         quantity INTEGER NOT NULL DEFAULT 0,
         price INTEGER  NOT NULL DEFAULT 0,
         description VARCHAR,
+        portion VARCHAR,
         department VARCHAR REFERENCES dept(department) ON DELETE CASCADE,
         date DATE NOT NULL DEFAULT CURRENT_DATE
     )`)
 }
 
-export async function record_transactions(product:string, department:string, quantity:number, description:string, price:number) {
-    let result = await db.query(SQL ` INSERT INTO transactions (product, department, quantity, description, price)
-        VALUES(${product}, ${department}, ${quantity}, ${description}, ${price});`)
+export async function record_transactions(product:string, department:string, quantity:number, 
+    description:string, portion:string, price:number) {
+    let result = await db.query(SQL ` INSERT INTO transactions (product, department, 
+        quantity, description, portion, price)
+        VALUES(${product}, ${department}, ${quantity}, ${description}, ${portion}, ${price});`)
     return result;
 }
 

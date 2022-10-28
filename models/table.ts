@@ -8,7 +8,7 @@ export async function createTableManager(){
         table_name VARCHAR NOT NULl PRIMARY KEY,
         waiter VARCHAR REFERENCES users(username) ON DELETE SET NULL,
         status VARCHAR NOT NULL DEFAULT 'OPEN',
-        delete_status VARCHAR NOT NULL DEFAULT 'FALSE'
+        delete_status VARCHAR NOT NULL DEFAULT 'FALSE',
         cash INTEGER DEFAULT 0,
         pos INTEGER  DEFAULT 0,
         transfer INTEGER  DEFAULT 0,
