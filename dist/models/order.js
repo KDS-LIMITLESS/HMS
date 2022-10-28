@@ -159,7 +159,7 @@ function decrease_item_quantity_in_pos(product, quantity, department) {
 exports.decrease_item_quantity_in_pos = decrease_item_quantity_in_pos;
 function get_item_in_orders(item) {
     return __awaiter(this, void 0, void 0, function* () {
-        let items = yield connection_1.db.query(` SELECT DISTINCT item from orders 
+        let items = yield connection_1.db.query((0, sql_template_strings_1.default) ` SELECT DISTINCT item from orders 
         WHERE item = ${item}; `);
         return items;
     });

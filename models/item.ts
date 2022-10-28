@@ -7,7 +7,7 @@ export async function createItemsTable() {
     db.query(`CREATE TABLE IF NOT EXISTS 
     item(
         product VARCHAR PRIMARY KEY,
-        quantity INTEGER NOT NULL, 
+        quantity INTEGER, 
         size INTEGER,
         metric VARCHAR,
         image VARCHAR UNIQUE,

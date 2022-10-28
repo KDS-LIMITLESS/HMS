@@ -13,6 +13,8 @@ import { createProductTable } from './ims/models/item';
 import { createDeptTable } from './ims/models/department';
 import { create_transactions_table } from './ims/models/transaction';
 
+import { get_all_items } from './models/item';
+import { distributeItems } from './ims/resources/item';
 import SQL from 'sql-template-strings'
 
 const app = express();
@@ -59,19 +61,17 @@ async function startServer() {
     // put item table here
     // await db.query('DROP TABLE dept ')
     // await db.query('DROP TABLE users')
-    
-    
 
-    // await createUsersTable()
-    // await createDeptTable()
-    // await createItemsTable()
-    // await createProductTable()
-    // await create_transactions_table()
-    // await createTableManager()
-    // await create_Order_Table()
-    // await create_credit_table()
-    // await create_notifications_table();
-    //await create_inventory_order_table()
+    await createUsersTable()
+    await createDeptTable()
+    await createItemsTable()
+    await createProductTable()
+    await create_transactions_table()
+    await createTableManager()
+    await create_Order_Table()
+    await create_credit_table()
+    await create_notifications_table();
+    await create_inventory_order_table()
     // await db.query(` DELETE FROM orders`)
     // await db.query(` DELETE FROM tables`)
     //console.log(a.rowCount)
@@ -87,6 +87,17 @@ async function startServer() {
     //     DROP CONSTRAINT orders_item_fkey,
     //     ADD CONSTRAINT orders_item_fkey FOREIGN KEY (item) REFERENCES item(product) ON DELETE CASCADE ON UPDATE CASCADE
     // `)
+
+
+    // let product = await db.query(SQL ` UPDATE item SET quantity = 200 WHERE quantity > 0  `)
+    // console.log(product.rowCount)
+
+    // let prod = await db.query(SQL ` UPDATE products SET quantity = 200 WHERE department = 'Kitchen'`)
+    // console.log(prod.rowCount)
+
+
+    // await db.query(` DELETE FROM ORDERS `)
+    // await db.query(` DELETE FROM tables`)
     
    // let prod =  await db.query(`SELECT * FROM users`)
    // console.log(prod.rows)
@@ -97,8 +108,6 @@ async function startServer() {
     // await db.query(`ALTER TABLE transactions
     //     ADD COLUMN description VARCHAR
     // `)
-
-
 }
 startServer();
 
@@ -113,3 +122,6 @@ startServer();
 // Seprate closed and open tables, push to a side of the screen
 // change items to products like Ada said 
 // Apis for the cards in IMS and POS
+
+
+// delete not null constraint in items quantity
