@@ -123,7 +123,8 @@ export async function getAllOrder(req:Request, res: Response) {
 export async function countWaitersOrder(req: Request, res: Response) {
     try {
         let user = await get_user(req.body.activeUser)
-        if (user.rows[0]['role'] === 'Super Admin') {
+        if (user.rows[0]['role'] === 'Super Admin' || user.rows[0]['role'] === 'Administrator' 
+            || user.rows[0]['role'] === 'Accounts') {
             let count = await count_all_orders()
             return res.status(200).json({order_count: count.rowCount})
         }
