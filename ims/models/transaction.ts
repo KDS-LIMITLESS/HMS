@@ -7,6 +7,7 @@ export async function create_transactions_table() {
         product VARCHAR REFERENCES item(product) ON DELETE CASCADE ON UPDATE CASCADE,
         quantity INTEGER NOT NULL DEFAULT 0,
         price INTEGER  NOT NULL DEFAULT 0,
+        size VARCHAR,
         description VARCHAR,
         portion VARCHAR,
         department VARCHAR REFERENCES dept(department) ON DELETE CASCADE,
@@ -15,10 +16,10 @@ export async function create_transactions_table() {
 }
 
 export async function record_transactions(product:string, department:string, quantity:number, 
-    description:string, portion:string, price:number) {
+    description:string, portion:string, size:string, price:number) {
     let result = await db.query(SQL ` INSERT INTO transactions (product, department, 
-        quantity, description, portion, price)
-        VALUES(${product}, ${department}, ${quantity}, ${description}, ${portion}, ${price});`)
+        quantity, description, portion, size. price)
+        VALUES(${product}, ${department}, ${quantity}, ${description}, ${portion}, ${size}, ${price});`)
     return result;
 }
 
