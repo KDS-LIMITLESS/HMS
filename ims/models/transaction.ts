@@ -18,7 +18,7 @@ export async function create_transactions_table() {
 export async function record_transactions(product:string, department:string, quantity:number, 
     description:string, portion:string, size:string, price:number) {
     let result = await db.query(SQL ` INSERT INTO transactions (product, department, 
-        quantity, description, portion, size. price)
+        quantity, description, portion, size, price)
         VALUES(${product}, ${department}, ${quantity}, ${description}, ${portion}, ${size}, ${price});`)
     return result;
 }
