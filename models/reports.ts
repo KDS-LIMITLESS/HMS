@@ -57,7 +57,7 @@ export async function filter_items(from_date:string, to_date:string) {
 export async function filter_waiter_items(waiter:string, from_date:string, to_date:string) {
     let allItems = await db.query(SQL
         `SELECT tables.table_name, tables.waiter, tables.date, item, price, 
-            quantity, department FROM orders
+            quantity, department, username FROM orders
 
             LEFT JOIN tables
 
