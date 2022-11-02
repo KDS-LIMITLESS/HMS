@@ -56,15 +56,14 @@ export async function filter_items(from_date:string, to_date:string) {
 
 export async function filter_waiter_items(waiter:string, from_date:string, to_date:string) {
     let allItems = await db.query(SQL
-        `SELECT tables.table_name, tables.waiter, tables.date, item, price, 
-            quantity, department, username FROM orders
+        `SELECT tables.status, item, quantity, price FROM orders 
 
-            LEFT JOIN tables
+        LEFT JOIN tables
 
-            ON tables.waiter = orders.username
+        ON tables.table_name = orders.table_name
 
-            WHERE tables.status = 'CLOSED' AND tables.date BETWEEN ${from_date} AND ${to_date} 
-        `);
+        WHERE username = ${waiter} AND tables.status = 'CLOSED' 
+            AND tables.date BETWEEN ${from_date} AND ${to_date}`);
     return allItems;
 }
 
