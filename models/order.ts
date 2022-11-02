@@ -83,10 +83,10 @@ export async function count_waiters_order(waiter: string) {
 }
 
 export async function count_all_orders() {
-    let count = await db.query(SQL ` SELECT count(*), tables.delete_status FROM orders
+    let count = await db.query(SQL ` SELECT *, tables.delete_status FROM orders
         LEFT JOIN tables 
         ON orders.table_name = tables.table_name
-        WHERE tables.delete_status = 'FALSE' `)
+        GROUP BY tables.delete_status = 'FALSE' `)
     return count;
 }
 
