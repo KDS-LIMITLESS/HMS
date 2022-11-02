@@ -83,11 +83,14 @@ export async function count_waiters_order(waiter: string) {
 }
 
 export async function count_all_orders() {
-    let count = await db.query(SQL ` SELECT * FROM orders; `)
+    let count = await db.query(SQL ` SELECT count(*), tables.delete_status FROM orders
+        LEFT JOIN tables 
+        ON orders.table_name = tables.table_name
+        WHERE tables.delete_status = 'FALSE' `)
     return count;
 }
 
-export async function count_orders_in_closed_tables() {
+export async function count_orders_in_closed_tabl() {
     let count = await db.query(SQL ` SELECT count(*), tables.status FROM orders
             LEFT JOIN tables
             ON orders.table_name = tables.table_name
