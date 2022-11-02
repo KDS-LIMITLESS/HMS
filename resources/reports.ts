@@ -1,5 +1,6 @@
 import { Request, Response} from "express";
-import { get_waiters, get_items, get_all_items_sold, clear_db, filter_items } from "../models/reports";
+import { get_waiters, get_items, get_all_items_sold, clear_db, 
+   filter_items, filter_waiter_items } from "../models/reports";
 
 
 export async function report(req: Request, res: Response) {
@@ -20,9 +21,14 @@ export async function generateOverallReport(req:Request, res:Response) {
    return res.status(400).send('None')
 }
 
-
 export async function filterOverallReport(req:Request, res:Response) {
    let items = await filter_items(req.body.from, req.body.to)
+   if (items.rowCount > 0) return res.status(200).send(items.rows)
+   return res.status(400).send('None')
+}
+
+export async function filterIndividualReport(req:Request, res:Response) {
+   let items = await filter_waiter_items(req.body.waiter, req.body.from, req.body.to)
    if (items.rowCount > 0) return res.status(200).send(items.rows)
    return res.status(400).send('None')
 }

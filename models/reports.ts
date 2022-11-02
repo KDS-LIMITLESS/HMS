@@ -1,12 +1,6 @@
 import { db } from "../connection";
 import SQL from "sql-template-strings";
 
-export async function create_reports_table() {
-    return await db.query(`CREATE TABLE IF NOT EXISTS report (
-        waiters_name VARCHAR NOT NULL REFERENCES users (username) ON DELETE SET NULL,
-        date VARCHAR NOT NULL PRIMARY KEY DEFAULT TO_CHAR(CURRENT_TIMESTAMP, 'YYYMMDD')
-    )`)
-}
 
 // returns all the waiters that served items
 export async function get_waiters() {
@@ -48,6 +42,19 @@ export async function get_all_items_sold() {
 
 export async function filter_items(from_date:string, to_date:string) {
     let allItems = await db.query(SQL
+        `SELECT tables.status, tables.date, item, price, quantity, department FROM orders
+        
+            LEFT JOIN tables
+
+            ON tables.table_name = orders.table_name
+
+            WHERE tables.status = 'CLOSED' AND tables.date BETWEEN ${from_date} AND ${to_date}
+        `);
+    return allItems;
+}
+
+export async function filter_waiter_items(waiter:string, from_date:string, to_date:string) {
+    let allItems = await db.query(SQL
         `SELECT tables.table_name, tables.status,tables.cash, tables.transfer, tables.pos,
          tables.date, item, price, quantity, department FROM orders
 
@@ -55,7 +62,8 @@ export async function filter_items(from_date:string, to_date:string) {
 
             ON tables.table_name = orders.table_name
 
-            WHERE tables.status = 'CLOSED' AND tables.date BETWEEN ${from_date} AND ${to_date}
+            WHERE tables.status = 'CLOSED' AND tables.date BETWEEN ${from_date} AND ${to_date} 
+            AND username = ${waiter}
         `);
     return allItems;
 }
