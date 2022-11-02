@@ -88,15 +88,16 @@ async function startServer() {
     // `)
 
 
-    // let product = await db.query(SQL ` UPDATE item SET quantity = 200 WHERE quantity > 0  `)
+    // let product = await db.query(SQL ` UPDATE item SET quantity = 0 WHERE quantity > 0  `)
     // console.log(product.rowCount)
 
-    // let prod = await db.query(SQL ` UPDATE products SET quantity = 200 WHERE department = 'Kitchen'`)
+    // let prod = await db.query(SQL ` UPDATE products SET quantity = 400 WHERE department = 'Lounge'`)
     // console.log(prod.rowCount)
 
 
     // await db.query(` DELETE FROM ORDERS `)
     // await db.query(` DELETE FROM tables`)
+    // await db.query(` DELETE FROM transactions `)
     
    // let prod =  await db.query(`SELECT * FROM users`)
    // console.log(prod.rows)
@@ -104,9 +105,9 @@ async function startServer() {
     //     ADD COLUMN deleted_status VARCHAR DEFAULT 'FALSE'
     // `)
 
-    // await db.query(`ALTER TABLE transactions
-    //     ADD COLUMN portion VARCHAR
-    // `)
+    await db.query(`ALTER TABLE transactions
+        ADD COLUMN size VARCHAR
+    `)
 }
 startServer();
 

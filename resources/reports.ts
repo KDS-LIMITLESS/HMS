@@ -28,6 +28,7 @@ export async function filterOverallReport(req:Request, res:Response) {
 }
 
 export async function filterIndividualReport(req:Request, res:Response) {
+   console.log(req.body)
    let items = await filter_waiter_items(req.body.waiter, req.body.from, req.body.to)
    if (items.rowCount > 0) return res.status(200).send(items.rows)
    return res.status(400).send('None')
