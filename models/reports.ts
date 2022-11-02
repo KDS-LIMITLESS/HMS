@@ -61,10 +61,9 @@ export async function filter_waiter_items(waiter:string, from_date:string, to_da
 
             LEFT JOIN tables
 
-            ON tables.table_name = orders.table_name
+            ON tables.waiter = orders.username
 
             WHERE tables.status = 'CLOSED' AND tables.date BETWEEN ${from_date} AND ${to_date} 
-            AND tables.waiter = ${waiter}
         `);
     return allItems;
 }
