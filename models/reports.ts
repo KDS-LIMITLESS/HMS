@@ -43,14 +43,15 @@ export async function get_all_items_sold() {
 export async function filter_items(from_date:string, to_date:string) {
     let allItems = await db.query(SQL
         `SELECT tables.table_name, tables.status, tables.date, item, price, 
-            quantity, department FROM orders
+            quantity, department FROM tables
 
-            LEFT JOIN tables
+            LEFT JOIN orders
 
             ON tables.table_name = orders.table_name
 
             WHERE tables.status = 'CLOSED' AND tables.date BETWEEN ${from_date} AND ${to_date}
         `);
+        console.log(allItems.rows)
     return allItems;
 }
 
