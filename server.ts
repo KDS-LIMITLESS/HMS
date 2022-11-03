@@ -110,18 +110,3 @@ async function startServer() {
     // `)
 }
 startServer();
-
-// api for deleting item from ims
-
-// check update ordr status on ims
-// Database reordring
-// make seprate table for image 
-// automate adding items to deps when order status chages to RECEIVED 
-// quantity, image, reorderlevel
-
-// Seprate closed and open tables, push to a side of the screen
-// change items to products like Ada said 
-// Apis for the cards in IMS and POS
-
-
-// delete not null constraint in items quantity
