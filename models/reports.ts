@@ -73,13 +73,3 @@ export async function clear_db() {
         DELETE from notification`)
     return clear;
 }
-
-// `SELECT users.username, opening_credit, 
-//         credit_granted, credit_remaining FROM users
-        
-//         LEFT JOIN credit 
-
-//         ON users.username = credit.username
-
-//         WHERE users.role = 'Super Admin' OR users.role = 'Auditor' OR users.role = 'Admin'
-//         `

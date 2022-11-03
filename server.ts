@@ -105,8 +105,8 @@ async function startServer() {
     //     ADD COLUMN deleted_status VARCHAR DEFAULT 'FALSE'
     // `)
 
-    // await db.query(`ALTER TABLE transactions
-    //     ADD COLUMN size VARCHAR
+    // await db.query(`ALTER TABLE tables
+    //     ADD COLUMN delete_status VARCHAR NOT NULL DEFAULT 'FALSE'
     // `)
 }
 startServer();
