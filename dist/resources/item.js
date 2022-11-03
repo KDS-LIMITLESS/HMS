@@ -115,7 +115,9 @@ function updateItemQuantity(req, res) {
         try {
             const ITEM = yield (0, item_1.get_item)(req.body.product);
             if (ITEM.rowCount === 1) {
-                let update = yield (0, item_1.update_item_quantity)(req.body.product, req.body.quantity);
+                let itemQuantity = ITEM.rows[0]['quantity'];
+                let quantity = itemQuantity += req.body.quantity;
+                let update = yield (0, item_1.update_item_quantity)(req.body.product, quantity);
                 return res.status(200).send(update.rows[0]);
             }
             return res.status(404).send(`Item not found!`);

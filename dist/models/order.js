@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_item_in_orders = exports.decrease_item_quantity_in_pos = exports.get_waiter_order = exports.get_order = exports.delete_order = exports.count_orders_in_closed_tables = exports.count_all_orders = exports.count_waiters_order = exports.get_all_orders = exports.update_order_quantity = exports.get_drinks_in_table = exports.get_table_orders_for_admin = exports.get_table_orders = exports.new_order = exports.create_Order_Table = void 0;
+exports.get_item_in_orders = exports.decrease_item_quantity_in_pos = exports.get_waiter_order = exports.get_order = exports.delete_order = exports.count_all_orders = exports.count_waiters_order = exports.get_all_orders = exports.update_order_quantity = exports.get_drinks_in_table = exports.get_table_orders_for_admin = exports.get_table_orders = exports.new_order = exports.create_Order_Table = void 0;
 const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const connection_1 = require("../connection");
 const table_1 = require("./table");
@@ -113,17 +113,6 @@ function count_all_orders() {
     });
 }
 exports.count_all_orders = count_all_orders;
-function count_orders_in_closed_tables() {
-    return __awaiter(this, void 0, void 0, function* () {
-        let count = yield connection_1.db.query((0, sql_template_strings_1.default) ` SELECT count(*), tables.status FROM orders
-            LEFT JOIN tables
-            ON orders.table_name = tables.table_name
-            WHERE tables.table_name = 'CLOSED'
-            GROUP BY tables.status; `);
-        return count;
-    });
-}
-exports.count_orders_in_closed_tables = count_orders_in_closed_tables;
 function delete_order(table_name, item) {
     return __awaiter(this, void 0, void 0, function* () {
         let result = yield connection_1.db.query((0, sql_template_strings_1.default) `DELETE FROM orders 
