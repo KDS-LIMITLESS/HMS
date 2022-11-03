@@ -87,7 +87,6 @@ async function startServer() {
     //     DROP CONSTRAINT item_quantity_key
     // `)
 
-
     // let product = await db.query(SQL ` UPDATE item SET quantity = 0 WHERE quantity > 0  `)
     // console.log(product.rowCount)
 
