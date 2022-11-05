@@ -42,7 +42,7 @@ export async function get_all_tables() {
 
 export async function get_table(table_name:string) {
     let result = await db.query(SQL `SELECT table_name, status, delete_status FROM tables 
-        WHERE table_name = ${table_name}, AND delete_status = 'FALSE'`)
+        WHERE table_name = ${table_name} AND delete_status = 'FALSE'`)
     return result
 }
 
