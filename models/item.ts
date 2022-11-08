@@ -10,7 +10,7 @@ export async function createItemsTable() {
         quantity INTEGER, 
         size INTEGER,
         metric VARCHAR,
-        image VARCHAR UNIQUE,
+        image VARCHAR,
         reorder INTEGER DEFAULT 0,
         deleted_status VARCHAR DEFAULT 'FALSE',
         date DATE NOT NULL DEFAULT CURRENT_DATE
