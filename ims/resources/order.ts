@@ -2,9 +2,8 @@ import { place_order, update_order_status, get_order_by_status,
     get_all_order, get_orders_by_date, get_cancelled_orders, 
     get_received_orders, update_received_order_quantity, 
     get_one_order, count_cancelled_order,
-    count_received_order, calculate_placed_orders }from '../models/order';
+    count_received_order, calculate_placed_orders, calculate_cancelled_orders }from '../models/order';
 
-import { add_item, get_item, update_item_quantity } from '../../models/item';
 import { Request, Response } from 'express'
 
 
@@ -12,8 +11,8 @@ export async function placeOrder(req:Request, res:Response) {
 
     console.log(req.body);
 
-    const order = await place_order(req.body.product, req.body.qty, req.body.size, req.body.metric, 
-        req.body.unitPrice)
+    const order = await place_order(req.body.product, req.body.qty, req.body.qty, 
+        req.body.size, req.body.metric, req.body.unitPrice)
     if (order.rowCount >= 1) return res.status(200).send(`OK`)
     return res.status(400).send(` An error happened! `)
 
@@ -90,9 +89,8 @@ export async function updateReceivedOrderQuantity(req:Request, res:Response) {
     let item = await get_one_order(req.body.item)
     if (item.rowCount >= 1) {
         let orders = await update_received_order_quantity(req.body.qty, req.body.item)
-        return res.status(200).send(`Quantity updated successfully`)
+        return res.status(200).send(orders.rows[0])
     }
-    
 }
 
 export async function countReceivedOrders(req:Request, res:Response) {
@@ -107,5 +105,10 @@ export async function countCancelledOrders(req:Request, res:Response) {
 
 export async function calculatePlacedOrders(req:Request, res:Response) {
     let total = await calculate_placed_orders()
-    return res.status(200).send(total)
+    return res.status(200).send(total.rows[0])
+}
+
+export async function calculateCancelledOrderTotal(req:Request, res:Response) {
+    let total = await calculate_cancelled_orders()
+    return res.status(200).send(total.rows[0])
 }

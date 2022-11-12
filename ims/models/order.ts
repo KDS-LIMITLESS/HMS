@@ -6,6 +6,7 @@ export async function create_inventory_order_table() {
     return db.query(` CREATE TABLE IF NOT EXISTS catalogue (
         product VARCHAR,
         qty INTEGER NOT NULL DEFAULT 0,
+        received_qty INTEGR NOT NULL DEFAULT 0,
         size INTEGER DEFAULT 0,
         metric VARCHAR DEFAULT ' ',
         unitprice INTEGER DEFAULT 0,
@@ -16,19 +17,19 @@ export async function create_inventory_order_table() {
     // refrence the items from the pos already
 }
                                                                     
-export async function place_order(product:string, qty:number, size:number, metric:string, 
+export async function place_order(product:string, qty:number, received_qty:string, size:number, metric:string, 
     unitPrice:number) {
 
-        let order = await db.query(SQL ` INSERT INTO catalogue(product, qty, size, metric, 
+        let order = await db.query(SQL ` INSERT INTO catalogue(product, qty, received_qty, size, metric, 
             unitprice) 
         
-            VALUES (${product}, ${qty}, ${size}, ${metric}, ${unitPrice})`)
+            VALUES (${product}, ${qty}, ${received_qty}, ${size}, ${metric}, ${unitPrice})`)
 
         return order;
 }
 
 export async function get_one_order(order:string) {
-    let isOrder = await db.query(SQL `SELECT product FROM catalogue WHERE product = ${order}`);
+    let isOrder = await db.query(SQL `SELECT product, received_qty FROM catalogue WHERE product = ${order}`);
     return isOrder;
 
 }
@@ -70,7 +71,7 @@ export async function get_received_orders() {
 }
 
 export async function update_received_order_quantity(qty:number, product:string) {
-    let order = await db.query(SQL ` UPDATE catalogue SET qty = ${qty} WHERE product = ${product}  `)
+    let order = await db.query(SQL ` UPDATE catalogue SET received_qty = ${qty} WHERE product = ${product}  `)
     return order;
 }
 
@@ -87,6 +88,13 @@ export async function count_cancelled_order() {
 }
 
 export async function calculate_placed_orders() {
-    let totals = await db.query(` SELECT SUM (qty * unitprice) as Total FROM catalogue `)
+    let totals = await db.query(` SELECT SUM (qty * unitprice) as Total FROM catalogue 
+        WHERE status = "PENDING" AND "RECEIVED" `)
+    return totals
+}
+
+export async function calculate_cancelled_orders() {
+    let totals = await db.query(` SELECT SUM (qty * unitprice) as Total FROM catalogue 
+        WHERE status = "CANCELLED" `)
     return totals
 }

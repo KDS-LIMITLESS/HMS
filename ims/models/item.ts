@@ -40,7 +40,7 @@ export async function createProductTable() {
         price INTEGER  NOT NULL DEFAULT 0,
         category VARCHAR NOT NULL, 
         quantity INTEGER DEFAULT 0,
-        image VARCHAR REFERENCES item(image),
+        image VARCHAR,
         department VARCHAR REFERENCES dept(department) ON DELETE NO ACTION ON UPDATE NO ACTION,
         date DATE NOT NULL DEFAULT CURRENT_DATE
     )`, 

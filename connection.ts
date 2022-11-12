@@ -5,14 +5,14 @@ dotenv.config()
 
 export let db = new Pool();
 
-if (process.env.RDS_HOSTNAME ) {
+if (process.env.INSTANCE_IP ) {
 	console.log(`Running Production Databse......`)
 	db = new Pool({
-		host: process.env.RDS_HOSTNAME,
+		host: process.env.INSTANCE_IP,
 		port: 5432,
-		database: process.env.RDS_DB_NAME,
-		user: process.env.RDS_USERNAME,
-		password: process.env.RDS_PASSWORD
+		database: process.env.DB_NAME,
+		user: process.env.DB_USERNAME,
+		password: process.env.DB_PASSWORD
 	}) 
 }
 else if (process.env.DATABASE_URL) {

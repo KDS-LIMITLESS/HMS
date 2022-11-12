@@ -72,6 +72,9 @@ async function startServer() {
     // await create_credit_table()
     // await create_notifications_table();
     // await create_inventory_order_table()
+
+
+
     // await db.query(` DELETE FROM orders`)
     // await db.query(` DELETE FROM tables`)
     //console.log(a.rowCount)
@@ -107,5 +110,6 @@ async function startServer() {
     // await db.query(`ALTER TABLE tables
     //     ADD COLUMN delete_status VARCHAR NOT NULL DEFAULT 'FALSE'
     // `)
+    // console.log((await db.query(`SELECT * from item`)).rows)
 }
 startServer();
