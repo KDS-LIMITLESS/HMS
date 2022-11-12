@@ -1,1 +1,1 @@
-web: (bash ./proxy.sh &) & tsc-node server.ts
+web: (bash ./proxy.sh &) & ts-node server.ts
