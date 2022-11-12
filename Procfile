@@ -1,1 +1,1 @@
-web:pm2 start dist/server.js
+web: (bash ./proxy.sh &) & tsc-node server.ts
