@@ -100,9 +100,9 @@ export async function updateItemQuantity(req:Request, res: Response) {
     try{
         const ITEM = await get_item(req.body.product)
         if (ITEM.rowCount === 1) {
-            let itemQuantity = ITEM.rows[0]['quantity']
-            let quantity = itemQuantity += req.body.quantity
-            let update = await update_item_quantity(req.body.product, quantity);
+            // let itemQuantity = ITEM.rows[0]['quantity']
+            // let quantity = itemQuantity += req.body.quantity
+            let update = await update_item_quantity(req.body.product, req.body.quantity);
             return res.status(200).send(update.rows[0])
         }
         return res.status(404).send(`Item not found!`);
