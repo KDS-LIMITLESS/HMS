@@ -51,7 +51,7 @@ app.listen(PORT, () => {
 
 async function startServer() {
    
-    // await db.query('DROP TABLE orders')
+    await db.query('DROP TABLE orders')
     // await db.query('DROP TABLE tables')
     // await db.query('DROP TABLE credit')
     // await db.query('DROP TABLE notification')
@@ -68,7 +68,7 @@ async function startServer() {
     // await createProductTable()
     // await create_transactions_table()
     // await createTableManager()
-    // await create_Order_Table()
+    await create_Order_Table()
     // await create_credit_table()
     // await create_notifications_table();
     // await create_inventory_order_table()
@@ -77,10 +77,11 @@ async function startServer() {
 
     // await db.query(` DELETE FROM orders`)
     // await db.query(` DELETE FROM tables`)
+    // await db.query(` DELETE FROM transactions`)
     //console.log(a.rowCount)
 
     // let d = "Kitchen"
-    // let l = "lounge"
+    // let l = "logitunge"
     // let dept = await db.query(SQL ` UPDATE products SET department = 'Lounge' 
     //     WHERE department = ${d}`)
     
@@ -93,7 +94,7 @@ async function startServer() {
     // let product = await db.query(SQL ` UPDATE item SET quantity = 0 WHERE quantity > 0  `)
     // console.log(product.rowCount)
 
-    // let prod = await db.query(SQL ` UPDATE products SET quantity = 400 WHERE department = 'Lounge'`)
+    // let prod = await db.query(SQL ` UPDATE products SET quantity = 0 WHERE department = 'Bar'`)
     // console.log(prod.rowCount)
 
 
