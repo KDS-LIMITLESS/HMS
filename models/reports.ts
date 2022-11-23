@@ -4,11 +4,11 @@ import SQL from "sql-template-strings";
 
 // returns all the waiters that served items
 export async function get_waiters() {
-    let waiter = await db.query(SQL ` SELECT DISTINCT username, tables.delete_status FROM orders 
-        LEFT JOIN tables
+    let waiter = await db.query(SQL ` SELECT DISTINCT waiter, status, orders.item FROM tables
+        LEFT JOIN orders
         ON tables.waiter = orders.username
-        WHERE  tables.delete_status = 'FALSE'`)
-    console.log(waiter)
+        WHERE tables.status = 'CLOSED' AND tables.delete_status = 'FALSE'`)
+    console.log(waiter.rows)
     return waiter;
 }
 
