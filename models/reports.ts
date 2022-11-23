@@ -7,7 +7,7 @@ export async function get_waiters() {
     let waiter = await db.query(SQL ` SELECT DISTINCT username, tables.delete_status, tables.status FROM orders 
         LEFT JOIN tables
         ON tables.table_name = orders.table_name
-        WHERE tables.delete_status = 'FALSE' AND tables.status = 'FALSE'`)
+        WHERE tables.delete_status = 'FALSE' AND tables.status = 'CLOSED'`)
     console.log(waiter.rows)
     return waiter;
 }
