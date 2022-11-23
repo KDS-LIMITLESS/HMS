@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { create_new_table, get_table, get_all_waiter_tables, 
     get_one_waiter_table, close_table, get_all_tables, get_table_discount,
     get_table_date_and_time, clear_tables, filter_tables } from "../models/table";
-import { get_item } from "../models/item";        
+import { get_item } from "../ims/models/item";        
 import { exit } from "process";
 // import { close_order_table, get_closed_tables } from "../models/table";
 

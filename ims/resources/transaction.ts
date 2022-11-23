@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 import { get_all_items_sent_to_department, get_date,
     get_all_sent_items, delete_transaction, get_transaction_by_id } from '../models/transaction';
-import { get_product_in_department, update_item_in_pos } from '../models/item';
-import { get_item, update_item_quantity } from '../../models/item';
+import { get_product_in_department, update_item_in_pos } from '../../models/product';
+import { get_item, update_item_quantity } from '../models/item';
 
 
 export async function getAllItemsSent(req:Request, res:Response) {

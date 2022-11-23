@@ -2,18 +2,18 @@ import express from 'express'
 import dotenv from "dotenv"
 import cors from 'cors'
 import { db } from './connection';
-import { createItemsTable } from './models/item';
+import { createProductTable} from './models/product';
 import { create_Order_Table } from './models/order';
 import { createUsersTable } from './models/user';
 import { createTableManager} from './models/table';
 import { create_credit_table } from './models/credit';
 import { create_notifications_table } from './models/notifiacation';
 import { create_inventory_order_table } from './ims/models/order';
-import { createProductTable } from './ims/models/item';
+import { createItemsTable } from './ims/models/item';
 import { createDeptTable } from './ims/models/department';
 import { create_transactions_table } from './ims/models/transaction';
 
-import { get_all_items } from './models/item';
+import { get_all_items } from './ims/models/item';
 import { distributeItems } from './ims/resources/item';
 import SQL from 'sql-template-strings'
 
@@ -23,7 +23,7 @@ dotenv.config()
 app.use(express.json())
 app.use(cors());
 app.use(express.static('uploads'));
-app.use('', require('./routes/item'));
+app.use('', require('./routes/product'));
 app.use('', require('./routes/user'));
 app.use('', require('./routes/order'));
 app.use('', require('./routes/table'))

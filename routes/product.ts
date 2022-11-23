@@ -1,7 +1,7 @@
 import express from 'express';
 import { getItem, addNewItem, getItemsInCategory, getAllDrinksDepartment, 
     deleteItem, updateItem, filterItemsByDates, updateItemQuantity,
-    updateItemReorderLevel } from '../resources/item';
+    updateItemReorderLevel } from '../resources/product';
 import { authorizeSuperAdminNext, authorizeStoreManager } from '../middlewares/user';
 import { uploadPicture } from '../middlewares/imageloader';
 

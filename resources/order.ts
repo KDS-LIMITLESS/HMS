@@ -5,7 +5,7 @@ import {new_order, get_table_orders, get_drinks_in_table,
     count_waiters_order, get_table_orders_for_admin,count_all_orders,
     decrease_item_quantity_in_pos } from "../models/order";
 import { send_notification } from "../models/notifiacation";
-import { get_product_in_department } from "../ims/models/item";
+import { get_product_in_department } from "../models/product";
 import { get_user } from "../models/user";
 
 
@@ -32,7 +32,7 @@ export async function placeOrder(req: Request, res: Response, next: NextFunction
 }
 
 // get order history within a table
-export async function getTableOrders(req: Request, res: Response) {
+export async function getTableOrders(req: Request,  res: Response) {
     let TABLE_ORDERS;
     if (req.body.role === 'Super Admin' || req.body.role === 'Administrator' || req.body.role === 'Accounts' 
         || req.body.role === 'Supervisor' ){

@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { send_products_to_department,
-    reduce_item_quantity, get_product_in_department, get_product_image,
-    update_item_in_pos, delete_item, update_item_status } from '../models/item';
-import { get_item } from '../../models/item';
+import {
+    reduce_item_quantity, get_product_image,
+    delete_item, update_item_status, get_item } from '../models/item';
+import { get_product_in_department, update_item_in_pos, send_item_to_pos_department, } from '../../models/product';
 import { get_item_in_orders } from '../../models/order';
 import { record_transactions } from '../models/transaction';
 
@@ -38,7 +38,7 @@ export async function distributeItems(req:Request, res:Response) {
         return res.status(200).send(`OK`)
         
     }else {
-        await send_products_to_department(req.body.product, req.body.department, 
+        await send_item_to_pos_department(req.body.product, req.body.department, 
             req.body.quantity, image, req.body.category, req.body.price
         )  
         await record_transactions(req.body.product, req.body.department, req.body.quantity, 
@@ -63,7 +63,7 @@ export async function deleteItem(req: Request,res: Response){
         const ITEM = await get_item(req.body.product)
         if (ITEM.rowCount === 1) {
             await delete_item(req.body.product)
-            return res.status(200).send("Item deleted from database")
+            return res.status(200).json({message: "Item deleted from database", action: 'DELETE'})
         }
         return res.status(400).send(`Error. Item does not exist.`)
     } catch(err: any) {

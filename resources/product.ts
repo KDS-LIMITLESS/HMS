@@ -1,9 +1,8 @@
-import { get_all_items, add_item, get_item, 
-        get_all_items_in_category, get_drinks_in_department, 
-        delete_item, update_item, get_date, update_item_quantity,
-        update_reorder_level 
-    } from "../models/item";
-import { get_item_in_orders } from "../models/order";
+import { get_all_items_in_category, get_drinks_in_department, 
+        delete_product, update_item
+} from "../models/product";
+import { get_all_items, get_item, add_item, get_date, update_item_quantity, 
+    update_reorder_level } from "../ims/models/item";
 import { Request, Response } from "express";
 
 
@@ -74,7 +73,7 @@ export async function deleteItem(req: Request,res: Response){
     try {
         const ITEM = await get_item(req.body.product)
         if (ITEM.rowCount === 1) {
-            await delete_item(req.body.product, req.body.department)
+            await delete_product(req.body.product, req.body.department)
             return res.status(200).send("OK")
         }
         return res.status(400).send(`Error. Item does not exist.`)
