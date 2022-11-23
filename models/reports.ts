@@ -8,6 +8,7 @@ export async function get_waiters() {
         LEFT JOIN tables
         ON tables.waiter = orders.username
         WHERE  tables.delete_status = 'FALSE'`)
+    console.log(waiter)
     return waiter;
 }
 
