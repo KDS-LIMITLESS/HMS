@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.filterTables = exports.clearTables = exports.getTableDiscount = exports.getTableDateAndTime = exports.closeTable = exports.getWaiterTables = exports.getAllTables = exports.createTable = void 0;
 const table_1 = require("../models/table");
-const item_1 = require("../models/item");
+const item_1 = require("../ims/models/item");
 const process_1 = require("process");
 // import { close_order_table, get_closed_tables } from "../models/table";
 function createTable(req, res, next) {
