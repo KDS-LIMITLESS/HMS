@@ -26,7 +26,7 @@ function create_Order_Table() {
         price INTEGER NOT NULL,
         quantity INTEGER NOT NULL,
         category VARCHAR NOT NULL,
-        image VARCHAR REFERENCES item(image) ON DELETE NO ACTION,
+        image VARCHAR,
         department VARCHAR REFERENCES dept(department) ON DELETE NO ACTION,
 
         table_name VARCHAR NOT NULL REFERENCES tables(table_name) ON DELETE NO ACTION,
