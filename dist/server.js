@@ -16,16 +16,6 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = require("./connection");
-const product_1 = require("./models/product");
-const order_1 = require("./models/order");
-const user_1 = require("./models/user");
-const table_1 = require("./models/table");
-const credit_1 = require("./models/credit");
-const notifiacation_1 = require("./models/notifiacation");
-const order_2 = require("./ims/models/order");
-const item_1 = require("./ims/models/item");
-const department_1 = require("./ims/models/department");
-const transaction_1 = require("./ims/models/transaction");
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 app.use(express_1.default.json());
@@ -54,26 +44,26 @@ app.listen(PORT, () => {
 });
 function startServer() {
     return __awaiter(this, void 0, void 0, function* () {
-        // await db.query('DROP TABLE orders')
-        // await db.query('DROP TABLE tables')
-        // await db.query('DROP TABLE credit')
-        // await db.query('DROP TABLE notification')
-        // put products table here
-        // await db.query('DROP TABLE catalogue ')
-        // await db.query('DROP TABLE transactions')
-        // put item table here
-        // await db.query('DROP TABLE dept ')
-        // await db.query('DROP TABLE users')
-        yield (0, user_1.createUsersTable)();
-        yield (0, department_1.createDeptTable)();
-        yield (0, item_1.createItemsTable)();
-        yield (0, product_1.createProductTable)();
-        yield (0, transaction_1.create_transactions_table)();
-        yield (0, table_1.createTableManager)();
-        yield (0, order_1.create_Order_Table)();
-        yield (0, credit_1.create_credit_table)();
-        yield (0, notifiacation_1.create_notifications_table)();
-        yield (0, order_2.create_inventory_order_table)();
+        yield connection_1.db.query('DROP TABLE orders');
+        yield connection_1.db.query('DROP TABLE tables');
+        yield connection_1.db.query('DROP TABLE credit');
+        yield connection_1.db.query('DROP TABLE notification');
+        yield connection_1.db.query('DROP TABLE products');
+        yield connection_1.db.query('DROP TABLE catalogue ');
+        yield connection_1.db.query('DROP TABLE transactions');
+        yield connection_1.db.query('DROP TABLE item');
+        yield connection_1.db.query('DROP TABLE dept ');
+        yield connection_1.db.query('DROP TABLE users');
+        // await createUsersTable()
+        // await createDeptTable()
+        // await createItemsTable()
+        // await createProductTable()
+        // await create_transactions_table()
+        // await createTableManager()
+        // await create_Order_Table()
+        // await create_credit_table()
+        // await create_notifications_table();
+        // await create_inventory_order_table()
         // await db.query(` DELETE FROM orders`)
         // await db.query(` DELETE FROM tables`)
         // await db.query(` DELETE FROM transactions`)
