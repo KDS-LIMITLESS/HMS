@@ -79,7 +79,7 @@ function startServer() {
         // `)
         // let product = await db.query(SQL ` UPDATE item SET quantity = 0 WHERE quantity > 0  `)
         // console.log(product.rowCount)
-        let prod = yield connection_1.db.query((0, sql_template_strings_1.default) ` UPDATE products SET quantity = 200 WHERE department = 'Lounge'`);
+        // let prod = await db.query(SQL ` UPDATE products SET quantity = 0 WHERE department = 'Bar'`)
         // console.log(prod.rowCount)
         // await db.query(` DELETE FROM ORDERS `)
         // await db.query(` DELETE FROM tables`)

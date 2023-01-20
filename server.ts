@@ -51,16 +51,16 @@ app.listen(PORT, () => {
 
 async function startServer() {
    
-    // await db.query('DROP TABLE orders')
-    // await db.query('DROP TABLE tables')
-    // await db.query('DROP TABLE credit')
-    // await db.query('DROP TABLE notification')
-    // put products table here
-    // await db.query('DROP TABLE catalogue ')
-    // await db.query('DROP TABLE transactions')
-    // put item table here
-    // await db.query('DROP TABLE dept ')
-    // await db.query('DROP TABLE users')
+    await db.query('DROP TABLE orders')
+    await db.query('DROP TABLE tables')
+    await db.query('DROP TABLE credit')
+    await db.query('DROP TABLE notification')
+    await db.query('DROP TABLE products')
+    await db.query('DROP TABLE catalogue ')
+    await db.query('DROP TABLE transactions')
+    await db.query('DROP TABLE item')
+    await db.query('DROP TABLE dept ')
+    await db.query('DROP TABLE users')
 
     // await createUsersTable()
     // await createDeptTable()

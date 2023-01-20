@@ -21,7 +21,7 @@ function create_inventory_order_table() {
         return connection_1.db.query(` CREATE TABLE IF NOT EXISTS catalogue (
         product VARCHAR,
         qty INTEGER NOT NULL DEFAULT 0,
-        received_qty INTEGR NOT NULL DEFAULT 0,
+        received_qty INTEGER NOT NULL DEFAULT 0,
         size INTEGER DEFAULT 0,
         metric VARCHAR DEFAULT ' ',
         unitprice INTEGER DEFAULT 0,
