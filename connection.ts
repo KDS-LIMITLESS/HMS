@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-export let db = new Pool();
+export let db: Pool;
 
 if (process.env.INSTANCE_IP ) {
 	console.log(`Running Production Databse......`)

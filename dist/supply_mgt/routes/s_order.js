@@ -1,0 +1,11 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const s_order_1 = require("../resources/s_order");
+const router = express_1.default.Router();
+router.post("/place-order", s_order_1.placeSupplyOrder);
+router.put("/receive-supply-order", s_order_1.receiveSupplyOrder);
+module.exports = router;
