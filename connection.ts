@@ -27,11 +27,11 @@ else if (process.env.DATABASE_URL) {
 else {
 	console.log(`Running Development Databse......`)
 	db = new Pool({
-	  user: "hope",
+	  user: "uppist",
 	  host: "localhost",
-	  database: "ballroom",
-	  password: "12345678kds",
-	  port: 5432
+	  database: "hms",
+	  port: 5432,
+	  password: "12345678kds"
 	});
 }
 

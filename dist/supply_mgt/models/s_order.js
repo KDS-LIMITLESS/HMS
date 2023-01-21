@@ -9,20 +9,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cancel_supply_order = exports.receive_supply_order = exports.place_supply_order = exports.get_order = exports.create_supply_orders_table = void 0;
+exports.get_total = exports.get_all_received_orders = exports.get_all_placed_order = exports.cancel_supply_order = exports.receive_supply_order = exports.place_supply_order = exports.get_order = exports.create_supply_orders_table = void 0;
 const connection_1 = require("../../connection");
 const sql_template_strings_1 = require("sql-template-strings");
 function create_supply_orders_table() {
     return __awaiter(this, void 0, void 0, function* () {
         return yield connection_1.db.query(`CREATE TABLE IF NOT EXISTS s_orders(
         id BIGSERIAL PRIMARY KEY,
-        item VARCHAR REFERENCES item(products) ON DELETE CASCADE,
+        item VARCHAR REFERENCES item(product) ON DELETE CASCADE,
         quantity INTEGER NOT NULL,
         size INTEGER NOT NULL,
         unitPrice INTEGER, 
+        total_price INTEGER NOT NULL,
         measure VARCHAR,
         supplier VARCHAR REFERENCES suppliers(name) ON DELETE CASCADE,
-        status VARCHAR DEFAULT 'PENDING'
+        status VARCHAR DEFAULT 'PENDING',
+        date DATE NOT NULL DEFAULT CURRENT_DATE
     )`);
     });
 }
@@ -35,12 +37,13 @@ function get_order(supplier, item, status) {
     });
 }
 exports.get_order = get_order;
-function place_supply_order(item, quantity, size, unitPrice, measure, supplier) {
+function place_supply_order(item, quantity, size, unitPrice, measure, supplier, total_price) {
     return __awaiter(this, void 0, void 0, function* () {
         let result = yield connection_1.db.query((0, sql_template_strings_1.SQL) `INSERT INTO s_orders(item, quantity, size,
-            unitPrice, measure, supplier)
+            unitPrice, measure, supplier, total_price)
 
-            VALUES(${item}, ${quantity}, ${size}, ${unitPrice}, ${measure}, ${supplier})`);
+            VALUES(${item}, ${quantity}, ${size}, ${unitPrice}, ${measure}, ${supplier}, 
+                ${total_price})`);
         return result;
     });
 }
@@ -59,3 +62,24 @@ function cancel_supply_order(supplier, item) {
     });
 }
 exports.cancel_supply_order = cancel_supply_order;
+function get_all_placed_order(supplier) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * FROM s_orders WHERE status = 'PENDING' AND 
+        supplier = ${supplier} `);
+    });
+}
+exports.get_all_placed_order = get_all_placed_order;
+function get_all_received_orders(supplier) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * FROM s_orders WHERE status = 'PENDING' AND 
+        supplier = ${supplier}  `);
+    });
+}
+exports.get_all_received_orders = get_all_received_orders;
+function get_total(supplier) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT SUM(total_price) AS total_placed FROM s_orders 
+        WHERE supplier = ${supplier}`);
+    });
+}
+exports.get_total = get_total;

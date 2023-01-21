@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.newSupplier = void 0;
+exports.getSupplierDetails = exports.newSupplier = void 0;
 const suppliers_1 = require("../models/suppliers");
 function newSupplier(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -22,3 +22,12 @@ function newSupplier(req, res) {
     });
 }
 exports.newSupplier = newSupplier;
+function getSupplierDetails(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const getSupplier = yield (0, suppliers_1.find_supplier)(req.body.supplier_name);
+        if (getSupplier)
+            return res.status(200).json({ data: getSupplier });
+        return res.status(400).json({ message: "supplier does not exist" });
+    });
+}
+exports.getSupplierDetails = getSupplierDetails;

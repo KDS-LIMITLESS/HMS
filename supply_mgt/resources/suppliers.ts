@@ -10,3 +10,9 @@ export async function newSupplier(req:Request, res:Response) {
         body['gender'], body['address'])
     return res.status(200).json({message: "New Supplier added", data: create_supplier})
 }
+
+export async function getSupplierDetails(req:Request, res:Response) {
+    const getSupplier = await find_supplier(req.body.supplier_name)
+    if (getSupplier) return res.status(200).json({data: getSupplier})
+    return res.status(400).json({message: "supplier does not exist"})
+}

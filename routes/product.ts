@@ -2,7 +2,7 @@ import express from 'express';
 import { getItem, addNewItem, getItemsInCategory, getAllDrinksDepartment, 
     deleteItem, updateItem, filterItemsByDates, updateItemQuantity, 
     updateItemReorderLevel } from '../resources/product';
-    git 
+    
 import { authorizeSuperAdminNext, authorizeStoreManager } from '../middlewares/user';
 import { uploadPicture } from '../middlewares/imageloader';
 
