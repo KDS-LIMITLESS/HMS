@@ -80,7 +80,7 @@ async function startServer() {
     await create_credit_table()
     await create_notifications_table();
     await create_inventory_order_table()
-// 
+
     await create_suppliers_table()
     await create_supply_orders_table()
 
@@ -105,7 +105,7 @@ async function startServer() {
     // let product = await db.query(SQL ` UPDATE item SET quantity = 0 WHERE quantity > 0  `)
     // console.log(product.rowCount)
 
-    let prod = await db.query(SQL ` UPDATE products SET quantity = 200 WHERE department = 'Lounge'`)
+    // let prod = await db.query(SQL ` UPDATE products SET quantity = 200 WHERE department = 'Lounge'`)
     // console.log(prod.rowCount)
 
 

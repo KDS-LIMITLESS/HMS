@@ -16,7 +16,6 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = require("./connection");
-const sql_template_strings_1 = __importDefault(require("sql-template-strings"));
 const product_1 = require("./models/product");
 const order_1 = require("./models/order");
 const user_1 = require("./models/user");
@@ -81,7 +80,6 @@ function startServer() {
         yield (0, credit_1.create_credit_table)();
         yield (0, notifiacation_1.create_notifications_table)();
         yield (0, order_2.create_inventory_order_table)();
-        // 
         yield (0, suppliers_1.create_suppliers_table)();
         yield (0, s_order_1.create_supply_orders_table)();
         // await db.query(` DELETE FROM orders`)
@@ -98,7 +96,7 @@ function startServer() {
         // `)
         // let product = await db.query(SQL ` UPDATE item SET quantity = 0 WHERE quantity > 0  `)
         // console.log(product.rowCount)
-        let prod = yield connection_1.db.query((0, sql_template_strings_1.default) ` UPDATE products SET quantity = 200 WHERE department = 'Lounge'`);
+        // let prod = await db.query(SQL ` UPDATE products SET quantity = 200 WHERE department = 'Lounge'`)
         // console.log(prod.rowCount)
         // await db.query(` DELETE FROM ORDERS `)
         // await db.query(` DELETE FROM tables`)

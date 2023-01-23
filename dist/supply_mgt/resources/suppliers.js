@@ -15,7 +15,8 @@ function newSupplier(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const body = req.body;
         const isSupplier = yield (0, suppliers_1.find_supplier)(req.body.supplier_name);
-        if (isSupplier)
+        console.log(isSupplier.rows);
+        if (isSupplier.rowCount > 0)
             return res.status(400).json({ message: `Supplier already exists.` });
         let create_supplier = yield (0, suppliers_1.new_supplier)(body['supplier_name'], body['email'], body['phone'], body['gender'], body['address']);
         return res.status(200).json({ message: "New Supplier added", data: create_supplier });
@@ -25,7 +26,8 @@ exports.newSupplier = newSupplier;
 function getSupplierDetails(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const getSupplier = yield (0, suppliers_1.find_supplier)(req.body.supplier_name);
-        if (getSupplier)
+        console.log(getSupplier.rows);
+        if (getSupplier.rowCount >= 1)
             return res.status(200).json({ data: getSupplier });
         return res.status(400).json({ message: "supplier does not exist" });
     });
