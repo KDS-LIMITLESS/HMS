@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.new_supplier = exports.find_supplier = exports.create_suppliers_table = void 0;
+exports.new_supplier = exports.get_all_supplier = exports.find_supplier = exports.create_suppliers_table = void 0;
 const connection_1 = require("../../connection");
 const sql_template_strings_1 = require("sql-template-strings");
 function create_suppliers_table() {
@@ -32,6 +32,12 @@ function find_supplier(supplier) {
     });
 }
 exports.find_supplier = find_supplier;
+function get_all_supplier() {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * from suppliers WHERE`);
+    });
+}
+exports.get_all_supplier = get_all_supplier;
 function new_supplier(name, email, phone, gender, address) {
     return __awaiter(this, void 0, void 0, function* () {
         let result = yield connection_1.db.query((0, sql_template_strings_1.SQL) `INSERT INTO suppliers(name, email, phone,

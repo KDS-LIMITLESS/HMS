@@ -20,6 +20,10 @@ export async function find_supplier(supplier:string) {
     return await db.query(SQL` SELECT * from suppliers WHERE name = ${supplier}`)
 }
 
+export async function get_all_supplier() {
+    return await db.query(SQL` SELECT * from suppliers WHERE`)
+}
+
 export async function new_supplier(name:string, email:string, phone:string, 
     gender:string, address: string ){
         let result = await db.query(SQL `INSERT INTO suppliers(name, email, phone,

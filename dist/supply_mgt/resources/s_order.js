@@ -16,7 +16,7 @@ function placeSupplyOrder(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const body = req.body;
         let findSupplier = yield (0, suppliers_1.find_supplier)(body['supplierName']);
-        if (findSupplier) {
+        if (findSupplier.rowCount >= 1) {
             let order = yield (0, s_order_1.place_supply_order)(body['item'], body['quantity'], body['size'], body['unitPrice'], body['measure'], body['supplierName'], body['total_price']);
             return res.status(200).json({ message: "Supply order sent", data: order });
         }
@@ -28,7 +28,7 @@ function receiveSupplyOrder(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let body = req.body;
         let getOrder = yield (0, s_order_1.get_order)(body['supplier'], body['item'], "PENDING");
-        if (getOrder) {
+        if (getOrder.rowCount >= 1) {
             let update = yield (0, s_order_1.receive_supply_order)(body['supplier'], body['item']);
             return res.status(200).json({ message: "Supply updated", data: update });
         }
@@ -39,7 +39,7 @@ exports.receiveSupplyOrder = receiveSupplyOrder;
 function getAllPlacedOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const orders = yield (0, s_order_1.get_all_placed_order)(req.body.supplier);
-        if (orders)
+        if (orders.rowCount >= 1)
             return res.status(200).json({ data: orders });
         return res.status(400).json({ message: "Not found" });
     });
@@ -48,7 +48,7 @@ exports.getAllPlacedOrders = getAllPlacedOrders;
 function getAllReceivedOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const orders = yield (0, s_order_1.get_all_received_orders)(req.body.supplier);
-        if (orders)
+        if (orders.rowCount >= 1)
             return res.status(200).json({ data: orders });
         return res.status(400).json({ message: "Not found" });
     });

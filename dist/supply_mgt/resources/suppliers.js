@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSupplierDetails = exports.newSupplier = void 0;
+exports.getAllSuppliers = exports.getSupplierDetails = exports.newSupplier = void 0;
 const suppliers_1 = require("../models/suppliers");
 function newSupplier(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -33,3 +33,12 @@ function getSupplierDetails(req, res) {
     });
 }
 exports.getSupplierDetails = getSupplierDetails;
+function getAllSuppliers(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const getSupplier = yield (0, suppliers_1.get_all_supplier)();
+        if (getSupplier.rowCount >= 1)
+            return res.status(200).json({ data: getSupplier.rows });
+        return res.status(400).json({ message: "No suppliers found!" });
+    });
+}
+exports.getAllSuppliers = getAllSuppliers;

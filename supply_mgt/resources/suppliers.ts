@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { new_supplier, find_supplier } from '../models/suppliers'
+import { new_supplier, find_supplier, get_all_supplier } from '../models/suppliers'
 
 export async function newSupplier(req:Request, res:Response) {
     const body = req.body
@@ -17,4 +17,10 @@ export async function getSupplierDetails(req:Request, res:Response) {
     console.log(getSupplier.rows)
     if (getSupplier.rowCount >= 1) return res.status(200).json({data: getSupplier})
     return res.status(400).json({message: "supplier does not exist"})
+}
+
+export async function getAllSuppliers(req:Request, res:Response) {
+    const getSupplier = await get_all_supplier()
+    if (getSupplier.rowCount >= 1) return res.status(200).json({data: getSupplier.rows})
+    return res.status(400).json({message: "No suppliers found!"})
 }
