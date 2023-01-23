@@ -3,7 +3,7 @@ import { newSupplier, getSupplierDetails, getAllSuppliers } from '../resources/s
 
 export const router = express.Router()
 
-router.get('suppliers', getAllSuppliers)
+router.get('/suppliers', getAllSuppliers)
 router.post('/supplier-details', getSupplierDetails)
 router.post('/new-supplier', newSupplier)
 

@@ -7,7 +7,7 @@ exports.router = void 0;
 const express_1 = __importDefault(require("express"));
 const suppliers_1 = require("../resources/suppliers");
 exports.router = express_1.default.Router();
-exports.router.get('suppliers', suppliers_1.getAllSuppliers);
+exports.router.get('/suppliers', suppliers_1.getAllSuppliers);
 exports.router.post('/supplier-details', suppliers_1.getSupplierDetails);
 exports.router.post('/new-supplier', suppliers_1.newSupplier);
 module.exports = exports.router;
