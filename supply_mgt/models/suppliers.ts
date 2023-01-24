@@ -11,7 +11,8 @@ export async function create_suppliers_table() {
         gender CHAR NOT NULL,
         phone VARCHAR NOT NULL,
         email VARCHAR NOT NULL,
-        address VARCHAR NOT NULL
+        address VARCHAR NOT NULL,
+        product VARCHAR
     )`)
 }
 
@@ -25,9 +26,9 @@ export async function get_all_supplier() {
 }
 
 export async function new_supplier(name:string, email:string, phone:string, 
-    gender:string, address: string ){
+    gender:string, address: string, product:string ){
         let result = await db.query(SQL `INSERT INTO suppliers(name, email, phone,
-            gender, address)
-            VALUES(${name}, ${email}, ${phone}, ${gender}, ${address})`)
+            gender, address, product)
+            VALUES(${name}, ${email}, ${phone}, ${gender}, ${address}, ${product})`)
         return result
 }

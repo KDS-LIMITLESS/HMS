@@ -119,9 +119,9 @@ async function startServer() {
     //     ADD COLUMN deleted_status VARCHAR DEFAULT 'FALSE'
     // `)
 
-    // await db.query(`ALTER TABLE tables
-    //     ADD COLUMN delete_status VARCHAR NOT NULL DEFAULT 'FALSE'
-    // `)
+     await db.query(`ALTER TABLE suppliers
+         ADD COLUMN product VARCHAR 
+     `)
     // console.log((await db.query(`SELECT * from item`)).rows)
 }
 startServer();

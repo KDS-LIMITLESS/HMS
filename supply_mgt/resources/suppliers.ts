@@ -8,7 +8,7 @@ export async function newSupplier(req:Request, res:Response) {
     if (isSupplier.rowCount > 0) return res.status(400).json({message: `Supplier already exists.`})
 
     let create_supplier = await new_supplier(body['supplier_name'], body['email'], body['phone'],
-        body['gender'], body['address'])
+        body['gender'], body['address'], body['product'])
     return res.status(200).json({message: "New Supplier added", data: create_supplier})
 }
 

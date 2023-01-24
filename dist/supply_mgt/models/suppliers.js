@@ -21,7 +21,8 @@ function create_suppliers_table() {
         gender CHAR NOT NULL,
         phone VARCHAR NOT NULL,
         email VARCHAR NOT NULL,
-        address VARCHAR NOT NULL
+        address VARCHAR NOT NULL,
+        product VARCHAR
     )`);
     });
 }
@@ -38,11 +39,11 @@ function get_all_supplier() {
     });
 }
 exports.get_all_supplier = get_all_supplier;
-function new_supplier(name, email, phone, gender, address) {
+function new_supplier(name, email, phone, gender, address, product) {
     return __awaiter(this, void 0, void 0, function* () {
         let result = yield connection_1.db.query((0, sql_template_strings_1.SQL) `INSERT INTO suppliers(name, email, phone,
-            gender, address)
-            VALUES(${name}, ${email}, ${phone}, ${gender}, ${address})`);
+            gender, address, product)
+            VALUES(${name}, ${email}, ${phone}, ${gender}, ${address}, ${product})`);
         return result;
     });
 }
