@@ -106,9 +106,9 @@ function startServer() {
         // await db.query(`ALTER TABLE item
         //     ADD COLUMN deleted_status VARCHAR DEFAULT 'FALSE'
         // `)
-        yield connection_1.db.query(`ALTER TABLE suppliers
-         ADD COLUMN product VARCHAR 
-     `);
+        //  await db.query(`ALTER TABLE suppliers
+        //      ADD COLUMN product VARCHAR 
+        //  `)
         // console.log((await db.query(`SELECT * from item`)).rows)
     });
 }
