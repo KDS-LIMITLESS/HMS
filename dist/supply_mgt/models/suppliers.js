@@ -34,7 +34,7 @@ function find_supplier(supplier) {
 exports.find_supplier = find_supplier;
 function get_all_supplier() {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * from suppliers WHERE`);
+        return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * from suppliers`);
     });
 }
 exports.get_all_supplier = get_all_supplier;
