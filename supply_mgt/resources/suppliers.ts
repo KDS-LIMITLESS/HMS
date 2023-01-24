@@ -15,7 +15,7 @@ export async function newSupplier(req:Request, res:Response) {
 export async function getSupplierDetails(req:Request, res:Response) {
     const getSupplier = await find_supplier(req.body.supplier_name)
     console.log(getSupplier.rows)
-    if (getSupplier.rowCount >= 1) return res.status(200).json({data: getSupplier})
+    if (getSupplier.rowCount >= 1) return res.status(200).json({data: getSupplier.rows})
     return res.status(400).json({message: "supplier does not exist"})
 }
 

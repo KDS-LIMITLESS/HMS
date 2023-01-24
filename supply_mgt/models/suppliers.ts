@@ -18,7 +18,7 @@ export async function create_suppliers_table() {
 
 
 export async function find_supplier(supplier:string) {
-    return await db.query(SQL` SELECT * from suppliers WHERE name = ${supplier}`)
+    return await db.query(SQL` SELECT * FROM suppliers WHERE name = ${supplier}`)
 }
 
 export async function get_all_supplier() {

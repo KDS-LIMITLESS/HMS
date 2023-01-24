@@ -28,7 +28,7 @@ function getSupplierDetails(req, res) {
         const getSupplier = yield (0, suppliers_1.find_supplier)(req.body.supplier_name);
         console.log(getSupplier.rows);
         if (getSupplier.rowCount >= 1)
-            return res.status(200).json({ data: getSupplier });
+            return res.status(200).json({ data: getSupplier.rows });
         return res.status(400).json({ message: "supplier does not exist" });
     });
 }
