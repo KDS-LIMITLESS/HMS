@@ -16,6 +16,7 @@ function placeSupplyOrder(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const body = req.body;
         let findSupplier = yield (0, suppliers_1.find_supplier)(body['supplierName']);
+        console.log(findSupplier);
         if (findSupplier.rowCount >= 1) {
             let order = yield (0, s_order_1.place_supply_order)(body['item'], body['quantity'], body['size'], body['unitPrice'], body['measure'], body['supplierName'], body['total_price']);
             return res.status(200).json({ message: "Supply order sent", data: order });

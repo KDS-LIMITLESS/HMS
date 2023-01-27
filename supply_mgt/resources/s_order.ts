@@ -8,6 +8,7 @@ import { place_supply_order, receive_supply_order, cancel_supply_order,
 export async function placeSupplyOrder(req:Request, res:Response) {
     const body = req.body
     let findSupplier = await find_supplier(body['supplierName'])
+    console.log(findSupplier)
     if (findSupplier.rowCount >= 1) {
         let order = await place_supply_order(body['item'], body['quantity'], body['size'], body['unitPrice'],
             body['measure'], body['supplierName'], body['total_price'])
