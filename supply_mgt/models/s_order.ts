@@ -23,7 +23,7 @@ export async function get_order(supplier:string, item:string, status:string) {
 }
 
 export async function place_supply_order(item:string, quantity:number, size:number,
-    unitPrice:number, measure:number, supplier:string, total_price:number){
+    unitPrice:number, measure:string, supplier:string, total_price:number){
         let result = await db.query(SQL `INSERT INTO s_orders(item, quantity, size,
             unitPrice, measure, supplier, total_price)
 
