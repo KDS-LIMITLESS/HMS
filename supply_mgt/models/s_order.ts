@@ -18,7 +18,7 @@ export async function create_supply_orders_table() {
 
 export async function get_order(supplier:string, item:string, status:string) {
     let order = await db.query(SQL `SELECT supplier, item, status FROM s_orders
-        WHERE supplier = ${supplier}, item = ${item}, status = 'PENDING'`)
+        WHERE supplier = ${supplier} AND item = ${item} AND status = 'PENDING'`)
     return order
 }
 

@@ -32,7 +32,7 @@ exports.create_supply_orders_table = create_supply_orders_table;
 function get_order(supplier, item, status) {
     return __awaiter(this, void 0, void 0, function* () {
         let order = yield connection_1.db.query((0, sql_template_strings_1.SQL) `SELECT supplier, item, status FROM s_orders
-        WHERE supplier = ${supplier}, item = ${item}, status = 'PENDING'`);
+        WHERE supplier = ${supplier} AND item = ${item} AND status = 'PENDING'`);
         return order;
     });
 }
