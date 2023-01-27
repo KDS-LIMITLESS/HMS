@@ -12,7 +12,7 @@ export async function placeSupplyOrder(req:Request, res:Response) {
     if (findSupplier.rowCount >= 1) {
         let order = await place_supply_order(body['item'], body['quantity'], body['size'], body['unitPrice'],
             body['measure'], body['supplierName'], body['total_price'])
-        return res.status(200).json({message: "Supply order sent", data: order})
+        return res.status(200).json({message: "Supply order sent", data: order.rows})
     }
     return res.status(400).json({message: "Supplier not found in database"})    
 }
@@ -22,7 +22,7 @@ export async function receiveSupplyOrder(req:Request, res:Response) {
     let getOrder = await get_order(body['supplier'], body['item'], "PENDING")
     if (getOrder.rowCount >= 1) {
         let update = await receive_supply_order(body['supplier'], body['item'])
-        return res.status(200).json({message: "Supply updated", data: update})
+        return res.status(200).json({message: "Supply updated", data: update.rows})
     }
     return res.status(400).json({message: "Supply details not found in database"})    
 }
@@ -41,5 +41,5 @@ export async function getAllReceivedOrders(req:Request, res:Response) {
 
 export async function getTotalPlacedOrders(req:Request, res:Response){
     const total = await get_total(req.body.supplier)
-    return res.status(200).json({data: total})
+    return res.status(200).json({data: total.rows})
 }

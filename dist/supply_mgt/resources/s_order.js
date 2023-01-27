@@ -19,7 +19,7 @@ function placeSupplyOrder(req, res) {
         console.log(findSupplier.rows);
         if (findSupplier.rowCount >= 1) {
             let order = yield (0, s_order_1.place_supply_order)(body['item'], body['quantity'], body['size'], body['unitPrice'], body['measure'], body['supplierName'], body['total_price']);
-            return res.status(200).json({ message: "Supply order sent", data: order });
+            return res.status(200).json({ message: "Supply order sent", data: order.rows });
         }
         return res.status(400).json({ message: "Supplier not found in database" });
     });
@@ -31,7 +31,7 @@ function receiveSupplyOrder(req, res) {
         let getOrder = yield (0, s_order_1.get_order)(body['supplier'], body['item'], "PENDING");
         if (getOrder.rowCount >= 1) {
             let update = yield (0, s_order_1.receive_supply_order)(body['supplier'], body['item']);
-            return res.status(200).json({ message: "Supply updated", data: update });
+            return res.status(200).json({ message: "Supply updated", data: update.rows });
         }
         return res.status(400).json({ message: "Supply details not found in database" });
     });
@@ -58,7 +58,7 @@ exports.getAllReceivedOrders = getAllReceivedOrders;
 function getTotalPlacedOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const total = yield (0, s_order_1.get_total)(req.body.supplier);
-        return res.status(200).json({ data: total });
+        return res.status(200).json({ data: total.rows });
     });
 }
 exports.getTotalPlacedOrders = getTotalPlacedOrders;
