@@ -16,7 +16,7 @@ function create_supply_orders_table() {
     return __awaiter(this, void 0, void 0, function* () {
         return yield connection_1.db.query(`CREATE TABLE IF NOT EXISTS s_orders(
         id BIGSERIAL PRIMARY KEY,
-        item VARCHAR REFERENCES item(product) ON DELETE CASCADE,
+        item VARCHAR,
         quantity INTEGER NOT NULL,
         size INTEGER NOT NULL,
         unitPrice INTEGER, 

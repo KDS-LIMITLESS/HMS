@@ -98,9 +98,9 @@ async function startServer() {
     
     // console.log(dept.rowCount)
 
-    // await db.query(`ALTER TABLE item
-    //     DROP CONSTRAINT item_quantity_key
-    // `)
+    // await db.query(`ALTER TABLE s_orders
+    //     DROP CONSTRAINT s_orders_item_fkey
+    // `).then(()=> {console.log("cleaned")})
 
     // let product = await db.query(SQL ` UPDATE item SET quantity = 0 WHERE quantity > 0  `)
     // console.log(product.rowCount)

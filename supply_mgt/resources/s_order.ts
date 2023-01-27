@@ -8,7 +8,7 @@ import { place_supply_order, receive_supply_order, cancel_supply_order,
 export async function placeSupplyOrder(req:Request, res:Response) {
     const body = req.body
     let findSupplier = await find_supplier(body['supplierName'])
-    console.log(findSupplier)
+    console.log(findSupplier.rows)
     if (findSupplier.rowCount >= 1) {
         let order = await place_supply_order(body['item'], body['quantity'], body['size'], body['unitPrice'],
             body['measure'], body['supplierName'], body['total_price'])
@@ -29,7 +29,7 @@ export async function receiveSupplyOrder(req:Request, res:Response) {
 
 export async function getAllPlacedOrders(req:Request, res:Response) {
     const orders = await get_all_placed_order(req.body.supplier)
-    if(orders.rowCount >= 1) return res.status(200).json({data: orders})
+    if(orders.rowCount >= 1) return res.status(200).json({data: orders.rows})
     return res.status(400).json({message: "Not found"})
 }
 
