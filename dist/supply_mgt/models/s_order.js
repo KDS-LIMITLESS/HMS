@@ -71,7 +71,7 @@ function get_all_placed_order(supplier) {
 exports.get_all_placed_order = get_all_placed_order;
 function get_all_received_orders(supplier) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * FROM s_orders WHERE status = 'PENDING' AND 
+        return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * FROM s_orders WHERE status = 'RECEIVED' AND 
         supplier = ${supplier}  `);
     });
 }

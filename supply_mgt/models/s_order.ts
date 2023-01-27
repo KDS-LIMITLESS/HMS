@@ -48,7 +48,7 @@ export async function  get_all_placed_order(supplier:string) {
 }
 
 export async function  get_all_received_orders(supplier:string) {
-    return await db.query(SQL ` SELECT * FROM s_orders WHERE status = 'PENDING' AND 
+    return await db.query(SQL ` SELECT * FROM s_orders WHERE status = 'RECEIVED' AND 
         supplier = ${supplier}  `)
 }
 
