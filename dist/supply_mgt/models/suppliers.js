@@ -29,7 +29,8 @@ function create_suppliers_table() {
 exports.create_suppliers_table = create_suppliers_table;
 function find_supplier(supplier) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * FROM suppliers WHERE name = ${supplier}`);
+        let supp = yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * FROM suppliers WHERE name = ${supplier}`);
+        return supp;
     });
 }
 exports.find_supplier = find_supplier;
