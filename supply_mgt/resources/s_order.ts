@@ -35,7 +35,7 @@ export async function getAllPlacedOrders(req:Request, res:Response) {
 
 export async function getAllReceivedOrders(req:Request, res:Response) {
     const orders = await get_all_received_orders(req.body.supplier)
-    if(orders.rowCount >= 1) return res.status(200).json({data: orders})
+    if(orders.rowCount >= 1) return res.status(200).json({data: orders.rows})
     return res.status(400).json({message: "Not found"})
 }
 

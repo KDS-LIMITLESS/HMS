@@ -50,7 +50,7 @@ function getAllReceivedOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const orders = yield (0, s_order_1.get_all_received_orders)(req.body.supplier);
         if (orders.rowCount >= 1)
-            return res.status(200).json({ data: orders });
+            return res.status(200).json({ data: orders.rows });
         return res.status(400).json({ message: "Not found" });
     });
 }
