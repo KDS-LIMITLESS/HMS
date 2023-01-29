@@ -78,7 +78,7 @@ function get_all_received_orders(supplier) {
 exports.get_all_received_orders = get_all_received_orders;
 function get_total(supplier) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT SUM(total_price) AS total_placed FROM s_orders 
+        return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT SUM(total_price) FROM s_orders 
         WHERE supplier = ${supplier} AND status = 'PENDING`);
     });
 }
