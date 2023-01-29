@@ -41,5 +41,6 @@ export async function getAllReceivedOrders(req:Request, res:Response) {
 
 export async function getTotalPlacedOrders(req:Request, res:Response){
     const total = await get_total(req.body.supplier)
+    console.log(total)
     return res.status(200).json({data: total.rows})
 }

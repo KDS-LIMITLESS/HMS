@@ -58,6 +58,7 @@ exports.getAllReceivedOrders = getAllReceivedOrders;
 function getTotalPlacedOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const total = yield (0, s_order_1.get_total)(req.body.supplier);
+        console.log(total);
         return res.status(200).json({ data: total.rows });
     });
 }
