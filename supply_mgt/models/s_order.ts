@@ -53,6 +53,11 @@ export async function  get_all_received_orders(supplier:string) {
 }
 
 export async function get_total(supplier:string) {
-    return await db.query(SQL ` SELECT SUM(total_price) FROM s_orders 
-        WHERE supplier = ${supplier} AND status = 'PENDING' ` )
+    return await db.query(SQL ` (SELECT 'total' AS Type, SUM(total_price)  FROM s_orders 
+        WHERE supplier = ${supplier} AND status = 'PENDING')
+
+        UNION
+        
+        (SELECT 'placed_orders', COUNT(item) FROM s_orders 
+        WHERE supplier = ${supplier} AND status = 'PENDING')` )
 }
