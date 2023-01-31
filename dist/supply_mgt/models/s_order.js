@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_total = exports.get_all_received_orders = exports.get_all_placed_order = exports.cancel_supply_order = exports.receive_supply_order = exports.place_supply_order = exports.get_order = exports.create_supply_orders_table = void 0;
+exports.get_date = exports.get_total = exports.get_all_received_orders = exports.get_all_placed_order = exports.cancel_supply_order = exports.receive_supply_order = exports.place_supply_order = exports.get_order = exports.create_supply_orders_table = void 0;
 const connection_1 = require("../../connection");
 const sql_template_strings_1 = require("sql-template-strings");
 function create_supply_orders_table() {
@@ -98,3 +98,10 @@ function get_total(supplier) {
     });
 }
 exports.get_total = get_total;
+function get_date(from, to) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const DATE = yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * FROM s_orders WHERE date BETWEEN ${from} AND ${to} `);
+        return DATE;
+    });
+}
+exports.get_date = get_date;

@@ -69,5 +69,10 @@ export async function get_total(supplier:string) {
         UNION 
 
         (SELECT 'cancelled_orders', COUNT(item) FROM s_orders 
-        WHERE supplier = ${supplier} AND status = 'CANCELLED')` )
+        WHERE supplier = ${supplier} AND status = 'CANCELLED')`)
+}
+
+export async function get_date(from:string, to:Date) {
+    const DATE = await db.query(SQL ` SELECT * FROM s_orders WHERE date BETWEEN ${from} AND ${to} `)
+    return DATE
 }

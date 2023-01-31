@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTotalPlacedOrders = exports.getAllReceivedOrders = exports.getAllPlacedOrders = exports.cancelSupplyOrder = exports.receiveSupplyOrder = exports.placeSupplyOrder = void 0;
+exports.filterDate = exports.getTotalPlacedOrders = exports.getAllReceivedOrders = exports.getAllPlacedOrders = exports.cancelSupplyOrder = exports.receiveSupplyOrder = exports.placeSupplyOrder = void 0;
 const suppliers_1 = require("../models/suppliers");
 const s_order_1 = require("../models/s_order");
 function placeSupplyOrder(req, res) {
@@ -75,3 +75,13 @@ function getTotalPlacedOrders(req, res) {
     });
 }
 exports.getTotalPlacedOrders = getTotalPlacedOrders;
+function filterDate(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let date = yield (0, s_order_1.get_date)(req.body.from, req.body.to);
+        console.log(req.body);
+        if (date)
+            return res.status(200).json({ filters: date.rows, count: date.rowCount });
+        return res.status(400).send("Transactions within the specified date does not exist");
+    });
+}
+exports.filterDate = filterDate;
