@@ -11,4 +11,5 @@ router.post('/placed-orders', s_order_1.getAllPlacedOrders);
 router.post('/received-orders', s_order_1.getAllReceivedOrders);
 router.post('/get-total', s_order_1.getTotalPlacedOrders);
 router.put("/receive-supply-order", s_order_1.receiveSupplyOrder);
+router.put("/cancel-supply-order", s_order_1.cancelSupplyOrder);
 module.exports = router;

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTotalPlacedOrders = exports.getAllReceivedOrders = exports.getAllPlacedOrders = exports.receiveSupplyOrder = exports.placeSupplyOrder = void 0;
+exports.getTotalPlacedOrders = exports.getAllReceivedOrders = exports.getAllPlacedOrders = exports.cancelSupplyOrder = exports.receiveSupplyOrder = exports.placeSupplyOrder = void 0;
 const suppliers_1 = require("../models/suppliers");
 const s_order_1 = require("../models/s_order");
 function placeSupplyOrder(req, res) {
@@ -37,6 +37,18 @@ function receiveSupplyOrder(req, res) {
     });
 }
 exports.receiveSupplyOrder = receiveSupplyOrder;
+function cancelSupplyOrder(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let body = req.body;
+        let getOrder = yield (0, s_order_1.get_order)(body['supplier'], body['item'], "PENDING");
+        if (getOrder.rowCount >= 1) {
+            let update = yield (0, s_order_1.cancel_supply_order)(body['supplier'], body['item']);
+            return res.status(200).json({ message: "Supply updated", data: update.rows });
+        }
+        return res.status(400).json({ message: "Supply details not found in database" });
+    });
+}
+exports.cancelSupplyOrder = cancelSupplyOrder;
 function getAllPlacedOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const orders = yield (0, s_order_1.get_all_placed_order)(req.body.supplier);

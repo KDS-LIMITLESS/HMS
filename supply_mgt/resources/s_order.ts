@@ -27,6 +27,16 @@ export async function receiveSupplyOrder(req:Request, res:Response) {
     return res.status(400).json({message: "Supply details not found in database"})    
 }
 
+export async function cancelSupplyOrder(req:Request, res:Response) {
+    let body = req.body
+    let getOrder = await get_order(body['supplier'], body['item'], "PENDING")
+    if (getOrder.rowCount >= 1) {
+        let update = await cancel_supply_order(body['supplier'], body['item'])
+        return res.status(200).json({message: "Supply updated", data: update.rows})
+    }
+    return res.status(400).json({message: "Supply details not found in database"})    
+}
+
 export async function getAllPlacedOrders(req:Request, res:Response) {
     const orders = await get_all_placed_order(req.body.supplier)
     if(orders.rowCount >= 1) return res.status(200).json({data: orders.rows})

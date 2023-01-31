@@ -1,6 +1,6 @@
 import express from 'express'
 import { placeSupplyOrder, receiveSupplyOrder, getAllPlacedOrders,
-    getAllReceivedOrders, getTotalPlacedOrders } from '../resources/s_order'
+    getAllReceivedOrders, getTotalPlacedOrders, cancelSupplyOrder } from '../resources/s_order'
 
 const router = express.Router()
 
@@ -9,5 +9,6 @@ router.post('/placed-orders', getAllPlacedOrders)
 router.post('/received-orders', getAllReceivedOrders)
 router.post('/get-total', getTotalPlacedOrders)
 router.put("/receive-supply-order", receiveSupplyOrder)
+router.put("/cancel-supply-order", cancelSupplyOrder)
 
 module.exports = router
