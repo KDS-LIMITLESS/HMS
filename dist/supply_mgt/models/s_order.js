@@ -84,7 +84,17 @@ function get_total(supplier) {
         UNION
         
         (SELECT 'placed_orders', COUNT(item) FROM s_orders 
-        WHERE supplier = ${supplier} AND status = 'PENDING')`);
+        WHERE supplier = ${supplier} AND status = 'PENDING')
+        
+        UNION 
+
+        (SELECT 'received_orders', COUNT(item) FROM s_orders 
+        WHERE supplier = ${supplier} AND status = 'RECEIVED')
+        
+        UNION 
+
+        (SELECT 'cancelled_orders', COUNT(item) FROM s_orders 
+        WHERE supplier = ${supplier} AND status = 'CANCELLED')`);
     });
 }
 exports.get_total = get_total;
