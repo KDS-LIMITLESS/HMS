@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.filterDate = exports.getTotalPlacedOrders = exports.getAllReceivedOrders = exports.getAllPlacedOrders = exports.cancelSupplyOrder = exports.receiveSupplyOrder = exports.placeSupplyOrder = void 0;
+exports.filterDate = exports.getTotalPlacedOrders = exports.getAllCancelledOrders = exports.getAllReceivedOrders = exports.getAllPlacedOrders = exports.cancelSupplyOrder = exports.receiveSupplyOrder = exports.placeSupplyOrder = void 0;
 const suppliers_1 = require("../models/suppliers");
 const s_order_1 = require("../models/s_order");
 function placeSupplyOrder(req, res) {
@@ -67,6 +67,15 @@ function getAllReceivedOrders(req, res) {
     });
 }
 exports.getAllReceivedOrders = getAllReceivedOrders;
+function getAllCancelledOrders(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const orders = yield (0, s_order_1.get_all_cancelled_orders)(req.body.supplier);
+        if (orders.rowCount >= 1)
+            return res.status(200).json({ data: orders.rows });
+        return res.status(400).json({ message: "Not found" });
+    });
+}
+exports.getAllCancelledOrders = getAllCancelledOrders;
 function getTotalPlacedOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const total = yield (0, s_order_1.get_total)(req.body.supplier);

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_date = exports.get_total = exports.get_all_received_orders = exports.get_all_placed_order = exports.cancel_supply_order = exports.receive_supply_order = exports.place_supply_order = exports.get_order = exports.create_supply_orders_table = void 0;
+exports.get_date = exports.get_total = exports.get_all_cancelled_orders = exports.get_all_received_orders = exports.get_all_placed_order = exports.cancel_supply_order = exports.receive_supply_order = exports.place_supply_order = exports.get_order = exports.create_supply_orders_table = void 0;
 const connection_1 = require("../../connection");
 const sql_template_strings_1 = require("sql-template-strings");
 function create_supply_orders_table() {
@@ -76,6 +76,13 @@ function get_all_received_orders(supplier) {
     });
 }
 exports.get_all_received_orders = get_all_received_orders;
+function get_all_cancelled_orders(supplier) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * FROM s_orders WHERE status = 'CANCELLED' AND 
+        supplier = ${supplier}  `);
+    });
+}
+exports.get_all_cancelled_orders = get_all_cancelled_orders;
 function get_total(supplier) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` (SELECT 'total' AS Type, SUM(total_price)  FROM s_orders 

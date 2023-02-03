@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { find_supplier } from '../models/suppliers'
 import { place_supply_order, receive_supply_order, cancel_supply_order, 
     get_all_placed_order, get_all_received_orders, get_order,
-    get_total, get_date} from '../models/s_order'
+    get_total, get_date, get_all_cancelled_orders} from '../models/s_order'
 
 
 export async function placeSupplyOrder(req:Request, res:Response) {
@@ -45,6 +45,12 @@ export async function getAllPlacedOrders(req:Request, res:Response) {
 
 export async function getAllReceivedOrders(req:Request, res:Response) {
     const orders = await get_all_received_orders(req.body.supplier)
+    if(orders.rowCount >= 1) return res.status(200).json({data: orders.rows})
+    return res.status(400).json({message: "Not found"})
+}
+
+export async function getAllCancelledOrders(req:Request, res:Response) {
+    const orders = await get_all_cancelled_orders(req.body.supplier)
     if(orders.rowCount >= 1) return res.status(200).json({data: orders.rows})
     return res.status(400).json({message: "Not found"})
 }

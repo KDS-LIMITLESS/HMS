@@ -52,6 +52,11 @@ export async function  get_all_received_orders(supplier:string) {
         supplier = ${supplier}  `)
 }
 
+export async function  get_all_cancelled_orders(supplier:string) {
+    return await db.query(SQL ` SELECT * FROM s_orders WHERE status = 'CANCELLED' AND 
+        supplier = ${supplier}  `)
+}
+
 export async function get_total(supplier:string) {
     return await db.query(SQL ` (SELECT 'total' AS Type, SUM(total_price)  FROM s_orders 
         WHERE supplier = ${supplier} AND status = 'PENDING')
