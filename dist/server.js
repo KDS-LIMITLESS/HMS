@@ -16,18 +16,6 @@ const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const connection_1 = require("./connection");
-const product_1 = require("./models/product");
-const order_1 = require("./models/order");
-const user_1 = require("./models/user");
-const table_1 = require("./models/table");
-const credit_1 = require("./models/credit");
-const notifiacation_1 = require("./models/notifiacation");
-const order_2 = require("./ims/models/order");
-const item_1 = require("./ims/models/item");
-const department_1 = require("./ims/models/department");
-const transaction_1 = require("./ims/models/transaction");
-const suppliers_1 = require("./supply_mgt/models/suppliers");
-const s_order_1 = require("./supply_mgt/models/s_order");
 const app = (0, express_1.default)();
 dotenv_1.default.config();
 app.use(express_1.default.json());
@@ -70,18 +58,18 @@ function startServer() {
         // await db.query(`DROP TABLE item`)
         // await db.query('DROP TABLE dept ')
         // await db.query('DROP TABLE users')
-        yield (0, user_1.createUsersTable)();
-        yield (0, department_1.createDeptTable)();
-        yield (0, item_1.createItemsTable)();
-        yield (0, product_1.createProductTable)();
-        yield (0, transaction_1.create_transactions_table)();
-        yield (0, table_1.createTableManager)();
-        yield (0, order_1.create_Order_Table)();
-        yield (0, credit_1.create_credit_table)();
-        yield (0, notifiacation_1.create_notifications_table)();
-        yield (0, order_2.create_inventory_order_table)();
-        yield (0, suppliers_1.create_suppliers_table)();
-        yield (0, s_order_1.create_supply_orders_table)();
+        // await createUsersTable()
+        // await createDeptTable()
+        // await createItemsTable()
+        // await createProductTable()
+        // await create_transactions_table()
+        // await createTableManager()
+        // await create_Order_Table()
+        // await create_credit_table()
+        // await create_notifications_table();
+        // await create_inventory_order_table()
+        // await create_suppliers_table()
+        // await create_supply_orders_table()
         // await db.query(` DELETE FROM orders`)
         // await db.query(` DELETE FROM tables`)
         // await db.query(` DELETE FROM transactions`)

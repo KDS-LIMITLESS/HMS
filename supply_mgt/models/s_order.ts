@@ -74,7 +74,19 @@ export async function get_total(supplier:string) {
         UNION 
 
         (SELECT 'cancelled_orders', COUNT(item) FROM s_orders 
-        WHERE supplier = ${supplier} AND status = 'CANCELLED')`)
+        WHERE supplier = ${supplier} AND status = 'CANCELLED')
+        
+        UNION 
+
+        (SELECT 'total_received', SUM(total_price) FROM s_orders 
+        WHERE supplier = ${supplier} AND status = 'RECEIVED')
+
+        UNION 
+
+        (SELECT 'total_cancelled', SUM(total_price) FROM s_orders 
+        WHERE supplier = ${supplier} AND status = 'CANCELLED')
+        
+        `)
 }
 
 export async function get_date(from:string, to:Date) {
