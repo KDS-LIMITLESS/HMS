@@ -185,6 +185,10 @@ function get_order_counts() {
 
         (SELECT 'total_placed', SUM(total_price) FROM s_orders 
         WHERE status = 'PENDING')
+
+        UNION 
+
+        (SELECT 'total_supplier', COUNT(name) FROM suppliers)
         
     `);
     });
