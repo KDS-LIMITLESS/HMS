@@ -172,8 +172,19 @@ function get_order_counts() {
         (SELECT item FROM s_orders WHERE status = 'PENDING') AS placed_order
         
         UNION
+
         SELECT 'received_order', COUNT(*) FROM 
-            (SELECT item FROM s_orders WHERE status = 'RECEIVED') AS received_order
+        (SELECT item FROM s_orders WHERE status = 'RECEIVED') AS received_order
+        
+        UNION 
+
+        (SELECT 'total_received', SUM(total_price) FROM s_orders 
+        WHERE status = 'RECEIVED')
+
+        UNION 
+
+        (SELECT 'total_placed', SUM(total_price) FROM s_orders 
+        WHERE status = 'PENDING')
         
     `);
     });
