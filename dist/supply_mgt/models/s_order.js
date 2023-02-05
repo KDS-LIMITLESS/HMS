@@ -40,7 +40,8 @@ exports.get_order = get_order;
 function place_supply_order(item, quantity, size, unitPrice, measure, supplier, total_price, status) {
     return __awaiter(this, void 0, void 0, function* () {
         let result = yield connection_1.db.query((0, sql_template_strings_1.SQL) `INSERT INTO s_orders(item, quantity, size,
-            unitPrice, measure, supplier, total_price, status)
+            unitPrice, measure, supplier, total_price, status, 
+            date = TO_CHAR(CURRENT_TIMESTAMP, 'MonthDD, YYYY'))
 
             VALUES(${item}, ${quantity}, ${size}, ${unitPrice}, ${measure}, ${supplier}, 
                 ${total_price}, ${status})`);
@@ -52,14 +53,16 @@ exports.place_supply_order = place_supply_order;
 function receive_supply_order(supplier, item) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield connection_1.db.query((0, sql_template_strings_1.SQL) `UPDATE s_orders SET status = 'RECEIVED' 
-        WHERE supplier = ${supplier} AND item = ${item} AND status = 'PENDING'`);
+        WHERE supplier = ${supplier} AND item = ${item} AND status = 'PENDING',
+        date = TO_CHAR(CURRENT_TIMESTAMP, 'MonthDD, YYYY')`);
     });
 }
 exports.receive_supply_order = receive_supply_order;
 function cancel_supply_order(supplier, item) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield connection_1.db.query((0, sql_template_strings_1.SQL) `UPDATE s_orders SET status = 'CANCELLED' 
-        WHERE supplier = ${supplier} AND item = ${item} AND status = 'PENDING'`);
+        WHERE supplier = ${supplier} AND item = ${item} AND status = 'PENDING',
+        date = TO_CHAR(CURRENT_TIMESTAMP, 'MonthDD, YYYY')`);
     });
 }
 exports.cancel_supply_order = cancel_supply_order;
@@ -196,7 +199,8 @@ function get_order_counts() {
 exports.get_order_counts = get_order_counts;
 function get_date(from, to) {
     return __awaiter(this, void 0, void 0, function* () {
-        const DATE = yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * FROM s_orders WHERE date BETWEEN ${from} AND ${to} `);
+        const DATE = yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * FROM s_orders WHERE status = 'PENDING' 
+        AND date BETWEEN ${from} AND ${to} `);
         return DATE;
     });
 }

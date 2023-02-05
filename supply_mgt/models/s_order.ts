@@ -25,7 +25,8 @@ export async function get_order(supplier:string, item:string, status:string) {
 export async function place_supply_order(item:string, quantity:number, size:number,
     unitPrice:number, measure:string, supplier:string, total_price:number, status:string){
         let result = await db.query(SQL `INSERT INTO s_orders(item, quantity, size,
-            unitPrice, measure, supplier, total_price, status)
+            unitPrice, measure, supplier, total_price, status, 
+            date = TO_CHAR(CURRENT_TIMESTAMP, 'MonthDD, YYYY'))
 
             VALUES(${item}, ${quantity}, ${size}, ${unitPrice}, ${measure}, ${supplier}, 
                 ${total_price}, ${status})`)
@@ -35,12 +36,14 @@ export async function place_supply_order(item:string, quantity:number, size:numb
 
 export async function receive_supply_order(supplier:string, item:string) {
     return await db.query(SQL `UPDATE s_orders SET status = 'RECEIVED' 
-        WHERE supplier = ${supplier} AND item = ${item} AND status = 'PENDING'`)
+        WHERE supplier = ${supplier} AND item = ${item} AND status = 'PENDING',
+        date = TO_CHAR(CURRENT_TIMESTAMP, 'MonthDD, YYYY')`)
 }
 
 export async function cancel_supply_order(supplier:string, item:string) {
     return await db.query(SQL `UPDATE s_orders SET status = 'CANCELLED' 
-        WHERE supplier = ${supplier} AND item = ${item} AND status = 'PENDING'`)
+        WHERE supplier = ${supplier} AND item = ${item} AND status = 'PENDING',
+        date = TO_CHAR(CURRENT_TIMESTAMP, 'MonthDD, YYYY')`)
 }
 
 export async function  get_all_supplier_placed_order(supplier:string) {
@@ -155,6 +158,7 @@ export async function get_order_counts() {
     `)
 }
 export async function get_date(from:string, to:Date) {
-    const DATE = await db.query(SQL ` SELECT * FROM s_orders WHERE date BETWEEN ${from} AND ${to} `)
+    const DATE = await db.query(SQL ` SELECT * FROM s_orders WHERE status = 'PENDING' 
+        AND date BETWEEN ${from} AND ${to} `)
     return DATE
 }
