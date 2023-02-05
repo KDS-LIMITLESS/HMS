@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.filterDate = exports.getTotalPlacedOrders = exports.getAllCancelledOrders = exports.getAllReceivedOrders = exports.getAllPlacedOrders = exports.cancelSupplyOrder = exports.receiveSupplyOrder = exports.placeSupplyOrder = void 0;
+exports.filterDate = exports.getTotalPlacedOrders = exports.getAllReturnedOrders = exports.getAllDamagedOrders = exports.getAllCancelledOrders = exports.getAllReceivedOrders = exports.getAllPlacedOrders = exports.cancelSupplyOrder = exports.receiveSupplyOrder = exports.returnSupplyOrder = exports.damagedSupplyOrder = exports.placeSupplyOrder = void 0;
 const suppliers_1 = require("../models/suppliers");
 const s_order_1 = require("../models/s_order");
 function placeSupplyOrder(req, res) {
@@ -18,13 +18,39 @@ function placeSupplyOrder(req, res) {
         let findSupplier = yield (0, suppliers_1.find_supplier)(body['supplierName']);
         console.log(findSupplier.rows);
         if (findSupplier.rowCount >= 1) {
-            let order = yield (0, s_order_1.place_supply_order)(body['item'], body['quantity'], body['size'], body['unitPrice'], body['measure'], body['supplierName'], body['total_price']);
+            let order = yield (0, s_order_1.place_supply_order)(body['item'], body['quantity'], body['size'], body['unitPrice'], body['measure'], body['supplierName'], body['total_price'], "PENDING");
             return res.status(200).json({ message: "Supply order sent", data: order.rows });
         }
         return res.status(400).json({ message: "Supplier not found in database" });
     });
 }
 exports.placeSupplyOrder = placeSupplyOrder;
+function damagedSupplyOrder(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const body = req.body;
+        let findSupplier = yield (0, suppliers_1.find_supplier)(body['supplierName']);
+        console.log(findSupplier.rows);
+        if (findSupplier.rowCount >= 1) {
+            let order = yield (0, s_order_1.place_supply_order)(body['item'], body['quantity'], body['size'], body['unitPrice'], body['measure'], body['supplierName'], body['total_price'], "DAMAGED");
+            return res.status(200).json({ message: "Supply order sent", data: order.rows });
+        }
+        return res.status(400).json({ message: "Supplier not found in database" });
+    });
+}
+exports.damagedSupplyOrder = damagedSupplyOrder;
+function returnSupplyOrder(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const body = req.body;
+        let findSupplier = yield (0, suppliers_1.find_supplier)(body['supplierName']);
+        console.log(findSupplier.rows);
+        if (findSupplier.rowCount >= 1) {
+            let order = yield (0, s_order_1.place_supply_order)(body['item'], body['quantity'], body['size'], body['unitPrice'], body['measure'], body['supplierName'], body['total_price'], "RETURNED");
+            return res.status(200).json({ message: "Supply order sent", data: order.rows });
+        }
+        return res.status(400).json({ message: "Supplier not found in database" });
+    });
+}
+exports.returnSupplyOrder = returnSupplyOrder;
 function receiveSupplyOrder(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let body = req.body;
@@ -76,6 +102,24 @@ function getAllCancelledOrders(req, res) {
     });
 }
 exports.getAllCancelledOrders = getAllCancelledOrders;
+function getAllDamagedOrders(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const orders = yield (0, s_order_1.get_all_damaged_orders)(req.body.supplier);
+        if (orders.rowCount >= 1)
+            return res.status(200).json({ data: orders.rows });
+        return res.status(400).json({ message: "Not found" });
+    });
+}
+exports.getAllDamagedOrders = getAllDamagedOrders;
+function getAllReturnedOrders(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const orders = yield (0, s_order_1.get_all_damaged_orders)(req.body.supplier);
+        if (orders.rowCount >= 1)
+            return res.status(200).json({ data: orders.rows });
+        return res.status(400).json({ message: "Not found" });
+    });
+}
+exports.getAllReturnedOrders = getAllReturnedOrders;
 function getTotalPlacedOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const total = yield (0, s_order_1.get_total)(req.body.supplier);

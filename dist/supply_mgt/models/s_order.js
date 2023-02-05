@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_date = exports.get_total = exports.get_all_cancelled_orders = exports.get_all_received_orders = exports.get_all_placed_order = exports.cancel_supply_order = exports.receive_supply_order = exports.place_supply_order = exports.get_order = exports.create_supply_orders_table = void 0;
+exports.get_date = exports.get_total = exports.get_all_returned_orders = exports.get_all_damaged_orders = exports.get_all_cancelled_orders = exports.get_all_received_orders = exports.get_all_placed_order = exports.cancel_supply_order = exports.receive_supply_order = exports.place_supply_order = exports.get_order = exports.create_supply_orders_table = void 0;
 const connection_1 = require("../../connection");
 const sql_template_strings_1 = require("sql-template-strings");
 function create_supply_orders_table() {
@@ -24,6 +24,8 @@ function create_supply_orders_table() {
         measure VARCHAR,
         supplier VARCHAR REFERENCES suppliers(name) ON DELETE CASCADE,
         status VARCHAR DEFAULT 'PENDING',
+        damages INTEGER DEFAULT 0,
+        returns INTEGER DEFAULT 0,
         date DATE NOT NULL DEFAULT CURRENT_DATE
     )`);
     });
@@ -37,17 +39,18 @@ function get_order(supplier, item, status) {
     });
 }
 exports.get_order = get_order;
-function place_supply_order(item, quantity, size, unitPrice, measure, supplier, total_price) {
+function place_supply_order(item, quantity, size, unitPrice, measure, supplier, total_price, status) {
     return __awaiter(this, void 0, void 0, function* () {
         let result = yield connection_1.db.query((0, sql_template_strings_1.SQL) `INSERT INTO s_orders(item, quantity, size,
-            unitPrice, measure, supplier, total_price)
+            unitPrice, measure, supplier, total_price, status)
 
             VALUES(${item}, ${quantity}, ${size}, ${unitPrice}, ${measure}, ${supplier}, 
-                ${total_price})`);
+                ${total_price}, ${status})`);
         return result;
     });
 }
 exports.place_supply_order = place_supply_order;
+// what if received before trying to set damaged -- Error
 function receive_supply_order(supplier, item) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield connection_1.db.query((0, sql_template_strings_1.SQL) `UPDATE s_orders SET status = 'RECEIVED' 
@@ -83,6 +86,20 @@ function get_all_cancelled_orders(supplier) {
     });
 }
 exports.get_all_cancelled_orders = get_all_cancelled_orders;
+function get_all_damaged_orders(supplier) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * FROM s_orders WHERE status = 'DAMAGED' AND 
+        supplier = ${supplier}  `);
+    });
+}
+exports.get_all_damaged_orders = get_all_damaged_orders;
+function get_all_returned_orders(supplier) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * FROM s_orders WHERE status = 'RETURNED' AND 
+        supplier = ${supplier}  `);
+    });
+}
+exports.get_all_returned_orders = get_all_returned_orders;
 function get_total(supplier) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` (SELECT 'total' AS Type, SUM(total_price)  FROM s_orders 

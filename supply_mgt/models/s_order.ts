@@ -12,6 +12,8 @@ export async function create_supply_orders_table() {
         measure VARCHAR,
         supplier VARCHAR REFERENCES suppliers(name) ON DELETE CASCADE,
         status VARCHAR DEFAULT 'PENDING',
+        damages INTEGER DEFAULT 0,
+        returns INTEGER DEFAULT 0,
         date DATE NOT NULL DEFAULT CURRENT_DATE
     )`)
 }
@@ -23,14 +25,15 @@ export async function get_order(supplier:string, item:string, status:string) {
 }
 
 export async function place_supply_order(item:string, quantity:number, size:number,
-    unitPrice:number, measure:string, supplier:string, total_price:number){
+    unitPrice:number, measure:string, supplier:string, total_price:number, status:string){
         let result = await db.query(SQL `INSERT INTO s_orders(item, quantity, size,
-            unitPrice, measure, supplier, total_price)
+            unitPrice, measure, supplier, total_price, status)
 
             VALUES(${item}, ${quantity}, ${size}, ${unitPrice}, ${measure}, ${supplier}, 
-                ${total_price})`)
+                ${total_price}, ${status})`)
         return result
 }
+// what if received before trying to set damaged -- Error
 
 export async function receive_supply_order(supplier:string, item:string) {
     return await db.query(SQL `UPDATE s_orders SET status = 'RECEIVED' 
@@ -54,6 +57,16 @@ export async function  get_all_received_orders(supplier:string) {
 
 export async function  get_all_cancelled_orders(supplier:string) {
     return await db.query(SQL ` SELECT * FROM s_orders WHERE status = 'CANCELLED' AND 
+        supplier = ${supplier}  `)
+}
+
+export async function  get_all_damaged_orders(supplier:string) {
+    return await db.query(SQL ` SELECT * FROM s_orders WHERE status = 'DAMAGED' AND 
+        supplier = ${supplier}  `)
+}
+
+export async function  get_all_returned_orders(supplier:string) {
+    return await db.query(SQL ` SELECT * FROM s_orders WHERE status = 'RETURNED' AND 
         supplier = ${supplier}  `)
 }
 
