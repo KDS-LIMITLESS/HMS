@@ -12,8 +12,6 @@ export async function create_supply_orders_table() {
         measure VARCHAR,
         supplier VARCHAR REFERENCES suppliers(name) ON DELETE CASCADE,
         status VARCHAR DEFAULT 'PENDING',
-        damages INTEGER DEFAULT 0,
-        returns INTEGER DEFAULT 0,
         date DATE NOT NULL DEFAULT CURRENT_DATE
     )`)
 }
@@ -45,12 +43,12 @@ export async function cancel_supply_order(supplier:string, item:string) {
         WHERE supplier = ${supplier} AND item = ${item} AND status = 'PENDING'`)
 }
 
-export async function  get_all_placed_order(supplier:string) {
+export async function  get_all_supplier_placed_order(supplier:string) {
     return await db.query(SQL ` SELECT * FROM s_orders WHERE status = 'PENDING' AND 
         supplier = ${supplier} `)
 }
 
-export async function  get_all_received_orders(supplier:string) {
+export async function  get_all_supplier_received_orders(supplier:string) {
     return await db.query(SQL ` SELECT * FROM s_orders WHERE status = 'RECEIVED' AND 
         supplier = ${supplier}  `)
 }
@@ -88,6 +86,16 @@ export async function get_total(supplier:string) {
 
         (SELECT 'cancelled_orders', COUNT(item) FROM s_orders 
         WHERE supplier = ${supplier} AND status = 'CANCELLED')
+
+        UNION 
+
+        (SELECT 'damaged_orders', COUNT(item) FROM s_orders 
+        WHERE supplier = ${supplier} AND status = 'DAMAGED')
+
+        UNION 
+
+        (SELECT 'returned_orders', COUNT(item) FROM s_orders 
+        WHERE supplier = ${supplier} AND status = 'RETURNED')
         
         UNION 
 
@@ -98,10 +106,39 @@ export async function get_total(supplier:string) {
 
         (SELECT 'total_cancelled', SUM(total_price) FROM s_orders 
         WHERE supplier = ${supplier} AND status = 'CANCELLED')
+
+        UNION 
+
+        (SELECT 'total_damaged', SUM(total_price) FROM s_orders 
+        WHERE supplier = ${supplier} AND status = 'DAMAGED')
+
+        UNION 
+
+        (SELECT 'total_returned', SUM(total_price) FROM s_orders 
+        WHERE supplier = ${supplier} AND status = 'RETURNED')
         
-        `)
+    `)
 }
 
+export async function get_all_placed_orders() {
+    return await db.query(SQL `SELECT * FROM s_orders WHERE status = 'PENDING';
+    `)
+}
+
+export async function get_all_received_orders() {
+    return await db.query(SQL `SELECT * FROM s_orders WHERE status = 'RECEIVED';
+    `)
+}
+export async function get_order_counts() {
+    return await db.query(SQL `SELECT 'placed_order' AS Type, COUNT(*) FROM 
+        (SELECT item FROM s_orders WHERE status = 'PENDING') AS placed_order
+        
+        UNION
+        SELECT 'received_order', COUNT(*) FROM 
+            (SELECT item FROM s_orders WHERE status = 'RECEIVED') AS received_order
+        
+    `)
+}
 export async function get_date(from:string, to:Date) {
     const DATE = await db.query(SQL ` SELECT * FROM s_orders WHERE date BETWEEN ${from} AND ${to} `)
     return DATE

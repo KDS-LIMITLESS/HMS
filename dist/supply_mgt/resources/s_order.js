@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.filterDate = exports.getTotalPlacedOrders = exports.getAllReturnedOrders = exports.getAllDamagedOrders = exports.getAllCancelledOrders = exports.getAllReceivedOrders = exports.getAllPlacedOrders = exports.cancelSupplyOrder = exports.receiveSupplyOrder = exports.returnSupplyOrder = exports.damagedSupplyOrder = exports.placeSupplyOrder = void 0;
+exports.filterDate = exports.getOrderCounts = exports.getAllReceivedOrder = exports.getAllPlacedOrder = exports.getTotalPlacedOrders = exports.getAllReturnedOrders = exports.getAllDamagedOrders = exports.getAllCancelledOrders = exports.getAllReceivedOrders = exports.getAllPlacedOrders = exports.cancelSupplyOrder = exports.receiveSupplyOrder = exports.returnSupplyOrder = exports.damagedSupplyOrder = exports.placeSupplyOrder = void 0;
 const suppliers_1 = require("../models/suppliers");
 const s_order_1 = require("../models/s_order");
 function placeSupplyOrder(req, res) {
@@ -77,7 +77,7 @@ function cancelSupplyOrder(req, res) {
 exports.cancelSupplyOrder = cancelSupplyOrder;
 function getAllPlacedOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const orders = yield (0, s_order_1.get_all_placed_order)(req.body.supplier);
+        const orders = yield (0, s_order_1.get_all_supplier_placed_order)(req.body.supplier);
         if (orders.rowCount >= 1)
             return res.status(200).json({ data: orders.rows });
         return res.status(400).json({ message: "Not found" });
@@ -86,7 +86,7 @@ function getAllPlacedOrders(req, res) {
 exports.getAllPlacedOrders = getAllPlacedOrders;
 function getAllReceivedOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const orders = yield (0, s_order_1.get_all_received_orders)(req.body.supplier);
+        const orders = yield (0, s_order_1.get_all_supplier_received_orders)(req.body.supplier);
         if (orders.rowCount >= 1)
             return res.status(200).json({ data: orders.rows });
         return res.status(400).json({ message: "Not found" });
@@ -113,7 +113,7 @@ function getAllDamagedOrders(req, res) {
 exports.getAllDamagedOrders = getAllDamagedOrders;
 function getAllReturnedOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const orders = yield (0, s_order_1.get_all_damaged_orders)(req.body.supplier);
+        const orders = yield (0, s_order_1.get_all_returned_orders)(req.body.supplier);
         if (orders.rowCount >= 1)
             return res.status(200).json({ data: orders.rows });
         return res.status(400).json({ message: "Not found" });
@@ -123,11 +123,31 @@ exports.getAllReturnedOrders = getAllReturnedOrders;
 function getTotalPlacedOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const total = yield (0, s_order_1.get_total)(req.body.supplier);
-        console.log(total);
         return res.status(200).json({ data: total.rows });
     });
 }
 exports.getTotalPlacedOrders = getTotalPlacedOrders;
+function getAllPlacedOrder(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let orders = yield (0, s_order_1.get_all_placed_orders)();
+        return res.status(200).json({ data: orders.rows });
+    });
+}
+exports.getAllPlacedOrder = getAllPlacedOrder;
+function getAllReceivedOrder(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let orders = yield (0, s_order_1.get_all_received_orders)();
+        return res.status(200).json({ data: orders.rows });
+    });
+}
+exports.getAllReceivedOrder = getAllReceivedOrder;
+function getOrderCounts(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let orders = yield (0, s_order_1.get_order_counts)();
+        return res.status(200).json({ data: orders.rows });
+    });
+}
+exports.getOrderCounts = getOrderCounts;
 function filterDate(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let date = yield (0, s_order_1.get_date)(req.body.from, req.body.to);

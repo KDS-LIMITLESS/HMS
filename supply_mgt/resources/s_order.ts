@@ -1,9 +1,10 @@
 import { Request, Response } from 'express'
 import { find_supplier } from '../models/suppliers'
 import { place_supply_order, receive_supply_order, cancel_supply_order, 
-    get_all_placed_order, get_all_received_orders, get_order,
+    get_all_supplier_placed_order, get_all_supplier_received_orders, get_order,
     get_total, get_date, get_all_cancelled_orders,
-    get_all_damaged_orders, get_all_returned_orders} from '../models/s_order'
+    get_all_damaged_orders, get_all_returned_orders,
+    get_all_placed_orders, get_all_received_orders, get_order_counts} from '../models/s_order'
 
 
 export async function placeSupplyOrder(req:Request, res:Response) {
@@ -63,13 +64,13 @@ export async function cancelSupplyOrder(req:Request, res:Response) {
 }
 
 export async function getAllPlacedOrders(req:Request, res:Response) {
-    const orders = await get_all_placed_order(req.body.supplier)
+    const orders = await get_all_supplier_placed_order(req.body.supplier)
     if(orders.rowCount >= 1) return res.status(200).json({data: orders.rows})
     return res.status(400).json({message: "Not found"})
 }
 
 export async function getAllReceivedOrders(req:Request, res:Response) {
-    const orders = await get_all_received_orders(req.body.supplier)
+    const orders = await get_all_supplier_received_orders(req.body.supplier)
     if(orders.rowCount >= 1) return res.status(200).json({data: orders.rows})
     return res.status(400).json({message: "Not found"})
 }
@@ -87,15 +88,29 @@ export async function getAllDamagedOrders(req:Request, res:Response) {
 }
 
 export async function getAllReturnedOrders(req:Request, res:Response) {
-    const orders = await get_all_damaged_orders(req.body.supplier)
+    const orders = await get_all_returned_orders(req.body.supplier)
     if(orders.rowCount >= 1) return res.status(200).json({data: orders.rows})
     return res.status(400).json({message: "Not found"})
 }
 
 export async function getTotalPlacedOrders(req:Request, res:Response){
     const total = await get_total(req.body.supplier)
-    console.log(total)
     return res.status(200).json({data: total.rows})
+}
+
+export async function getAllPlacedOrder(req:Request, res:Response) {
+    let orders = await get_all_placed_orders()
+    return res.status(200).json({data: orders.rows})
+}
+
+export async function getAllReceivedOrder(req:Request, res:Response) {
+    let orders = await get_all_received_orders()
+    return res.status(200).json({data: orders.rows})
+}
+
+export async function getOrderCounts(req:Request, res:Response) {
+    let orders = await get_order_counts()
+    return res.status(200).json({data: orders.rows})
 }
 
 export async function filterDate(req:Request, res:Response) {

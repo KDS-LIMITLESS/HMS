@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.get_date = exports.get_total = exports.get_all_returned_orders = exports.get_all_damaged_orders = exports.get_all_cancelled_orders = exports.get_all_received_orders = exports.get_all_placed_order = exports.cancel_supply_order = exports.receive_supply_order = exports.place_supply_order = exports.get_order = exports.create_supply_orders_table = void 0;
+exports.get_date = exports.get_order_counts = exports.get_all_received_orders = exports.get_all_placed_orders = exports.get_total = exports.get_all_returned_orders = exports.get_all_damaged_orders = exports.get_all_cancelled_orders = exports.get_all_supplier_received_orders = exports.get_all_supplier_placed_order = exports.cancel_supply_order = exports.receive_supply_order = exports.place_supply_order = exports.get_order = exports.create_supply_orders_table = void 0;
 const connection_1 = require("../../connection");
 const sql_template_strings_1 = require("sql-template-strings");
 function create_supply_orders_table() {
@@ -24,8 +24,6 @@ function create_supply_orders_table() {
         measure VARCHAR,
         supplier VARCHAR REFERENCES suppliers(name) ON DELETE CASCADE,
         status VARCHAR DEFAULT 'PENDING',
-        damages INTEGER DEFAULT 0,
-        returns INTEGER DEFAULT 0,
         date DATE NOT NULL DEFAULT CURRENT_DATE
     )`);
     });
@@ -65,20 +63,20 @@ function cancel_supply_order(supplier, item) {
     });
 }
 exports.cancel_supply_order = cancel_supply_order;
-function get_all_placed_order(supplier) {
+function get_all_supplier_placed_order(supplier) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * FROM s_orders WHERE status = 'PENDING' AND 
         supplier = ${supplier} `);
     });
 }
-exports.get_all_placed_order = get_all_placed_order;
-function get_all_received_orders(supplier) {
+exports.get_all_supplier_placed_order = get_all_supplier_placed_order;
+function get_all_supplier_received_orders(supplier) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * FROM s_orders WHERE status = 'RECEIVED' AND 
         supplier = ${supplier}  `);
     });
 }
-exports.get_all_received_orders = get_all_received_orders;
+exports.get_all_supplier_received_orders = get_all_supplier_received_orders;
 function get_all_cancelled_orders(supplier) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * FROM s_orders WHERE status = 'CANCELLED' AND 
@@ -119,6 +117,16 @@ function get_total(supplier) {
 
         (SELECT 'cancelled_orders', COUNT(item) FROM s_orders 
         WHERE supplier = ${supplier} AND status = 'CANCELLED')
+
+        UNION 
+
+        (SELECT 'damaged_orders', COUNT(item) FROM s_orders 
+        WHERE supplier = ${supplier} AND status = 'DAMAGED')
+
+        UNION 
+
+        (SELECT 'returned_orders', COUNT(item) FROM s_orders 
+        WHERE supplier = ${supplier} AND status = 'RETURNED')
         
         UNION 
 
@@ -129,11 +137,48 @@ function get_total(supplier) {
 
         (SELECT 'total_cancelled', SUM(total_price) FROM s_orders 
         WHERE supplier = ${supplier} AND status = 'CANCELLED')
+
+        UNION 
+
+        (SELECT 'total_damaged', SUM(total_price) FROM s_orders 
+        WHERE supplier = ${supplier} AND status = 'DAMAGED')
+
+        UNION 
+
+        (SELECT 'total_returned', SUM(total_price) FROM s_orders 
+        WHERE supplier = ${supplier} AND status = 'RETURNED')
         
-        `);
+    `);
     });
 }
 exports.get_total = get_total;
+function get_all_placed_orders() {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield connection_1.db.query((0, sql_template_strings_1.SQL) `SELECT * FROM s_orders WHERE status = 'PENDING';
+    `);
+    });
+}
+exports.get_all_placed_orders = get_all_placed_orders;
+function get_all_received_orders() {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield connection_1.db.query((0, sql_template_strings_1.SQL) `SELECT * FROM s_orders WHERE status = 'RECEIVED';
+    `);
+    });
+}
+exports.get_all_received_orders = get_all_received_orders;
+function get_order_counts() {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield connection_1.db.query((0, sql_template_strings_1.SQL) `SELECT 'placed_order' AS Type, COUNT(*) FROM 
+        (SELECT item FROM s_orders WHERE status = 'PENDING') AS placed_order
+        
+        UNION
+        SELECT 'received_order', COUNT(*) FROM 
+            (SELECT item FROM s_orders WHERE status = 'RECEIVED') AS received_order
+        
+    `);
+    });
+}
+exports.get_order_counts = get_order_counts;
 function get_date(from, to) {
     return __awaiter(this, void 0, void 0, function* () {
         const DATE = yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * FROM s_orders WHERE date BETWEEN ${from} AND ${to} `);

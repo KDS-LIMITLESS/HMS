@@ -2,10 +2,14 @@ import express from 'express'
 import { placeSupplyOrder, receiveSupplyOrder, getAllPlacedOrders,
     getAllReceivedOrders, getTotalPlacedOrders, cancelSupplyOrder,
 filterDate, getAllCancelledOrders, damagedSupplyOrder,
-returnSupplyOrder, getAllDamagedOrders, getAllReturnedOrders} from '../resources/s_order'
+returnSupplyOrder, getAllDamagedOrders, getAllReturnedOrders,
+getAllPlacedOrder, getAllReceivedOrder, getOrderCounts} from '../resources/s_order'
 
 const router = express.Router()
 
+router.get('/get-all-placed-orders', getAllPlacedOrder)
+router.get('/get-all-received-orders', getAllReceivedOrder)
+router.get('/count', getOrderCounts)
 router.post("/place-order", placeSupplyOrder)
 router.post('/placed-orders', getAllPlacedOrders)
 router.post('/received-orders', getAllReceivedOrders)
