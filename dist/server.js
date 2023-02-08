@@ -70,6 +70,7 @@ function startServer() {
         // await create_inventory_order_table()
         // await create_suppliers_table()
         // await create_supply_orders_table()
+        // console.log((await db.query(`SELECT TO_CHAR(NOW()::date, 'DD MM YYYY ')`)).rows)
         // await db.query(` DELETE FROM orders`)
         // await db.query(` DELETE FROM tables`)
         // await db.query(` DELETE FROM transactions`)
@@ -80,7 +81,7 @@ function startServer() {
         //     WHERE department = ${d}`)
         // console.log(dept.rowCount)
         // await db.query(`ALTER TABLE s_orders
-        //     DROP CONSTRAINT s_orders_item_fkey
+        //     DROP COLUMN orderDate
         // `).then(()=> {console.log("cleaned")})
         // let product = await db.query(SQL ` UPDATE item SET quantity = 0 WHERE quantity > 0  `)
         // console.log(product.rowCount)
@@ -91,9 +92,9 @@ function startServer() {
         // await db.query(` DELETE FROM transactions `)
         // let prod =  await db.query(`SELECT * FROM users`)
         // console.log(prod.rows)
-        // await db.query(`ALTER TABLE item
-        //     ADD COLUMN deleted_status VARCHAR DEFAULT 'FALSE'
-        // `)
+        // await db.query(`ALTER TABLE s_orders
+        //   ADD COLUMN orderDate TEXT NOT NULL DEFAULT TO_CHAR(CURRENT_TIMESTAMP, 'DD-MM-YYYY')
+        // `).then(() => { console.log("Done")})
         //  await db.query(`ALTER TABLE suppliers
         //      ADD COLUMN product VARCHAR 
         //  `)

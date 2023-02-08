@@ -24,7 +24,7 @@ function create_supply_orders_table() {
         measure VARCHAR,
         supplier VARCHAR REFERENCES suppliers(name) ON DELETE CASCADE,
         status VARCHAR DEFAULT 'PENDING',
-        date DATE NOT NULL DEFAULT CURRENT_DATE
+        orderDate TEXT NOT NULL DEFAULT TO_CHAR(CURRENT_TIMESTAMP, 'DD-MM-YYYY')
     )`);
     });
 }
@@ -197,7 +197,7 @@ exports.get_order_counts = get_order_counts;
 function get_date(from, to) {
     return __awaiter(this, void 0, void 0, function* () {
         const DATE = yield connection_1.db.query((0, sql_template_strings_1.SQL) ` SELECT * FROM s_orders WHERE status = 'PENDING' 
-        AND date BETWEEN ${from} AND ${to} `);
+        AND orderDate BETWEEN ${from} AND ${to} `);
         return DATE;
     });
 }

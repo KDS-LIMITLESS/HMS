@@ -12,7 +12,7 @@ export async function create_supply_orders_table() {
         measure VARCHAR,
         supplier VARCHAR REFERENCES suppliers(name) ON DELETE CASCADE,
         status VARCHAR DEFAULT 'PENDING',
-        date DATE NOT NULL DEFAULT CURRENT_DATE
+        orderDate TEXT NOT NULL DEFAULT TO_CHAR(CURRENT_TIMESTAMP, 'DD-MM-YYYY')
     )`)
 }
 
@@ -156,6 +156,6 @@ export async function get_order_counts() {
 }
 export async function get_date(from:string, to:Date) {
     const DATE = await db.query(SQL ` SELECT * FROM s_orders WHERE status = 'PENDING' 
-        AND date BETWEEN ${from} AND ${to} `)
+        AND orderDate BETWEEN ${from} AND ${to} `)
     return DATE
 }
