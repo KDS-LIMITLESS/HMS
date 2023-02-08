@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.filterDate = exports.getOrderCounts = exports.getAllReceivedOrder = exports.getAllPlacedOrder = exports.getTotalPlacedOrders = exports.getAllReturnedOrders = exports.getAllDamagedOrders = exports.getAllCancelledOrders = exports.getAllReceivedOrders = exports.getAllPlacedOrders = exports.cancelSupplyOrder = exports.receiveSupplyOrder = exports.returnSupplyOrder = exports.damagedSupplyOrder = exports.placeSupplyOrder = void 0;
+exports.filterCancelledOrderDate = exports.filterReceivedOrderDate = exports.filterPlacedOrderDate = exports.getOrderCounts = exports.getAllReceivedOrder = exports.getAllPlacedOrder = exports.getTotalPlacedOrders = exports.getAllReturnedOrders = exports.getAllDamagedOrders = exports.getAllCancelledOrders = exports.getAllReceivedOrders = exports.getAllPlacedOrders = exports.cancelSupplyOrder = exports.receiveSupplyOrder = exports.returnSupplyOrder = exports.damagedSupplyOrder = exports.placeSupplyOrder = void 0;
 const suppliers_1 = require("../models/suppliers");
 const s_order_1 = require("../models/s_order");
 function placeSupplyOrder(req, res) {
@@ -148,13 +148,33 @@ function getOrderCounts(req, res) {
     });
 }
 exports.getOrderCounts = getOrderCounts;
-function filterDate(req, res) {
+function filterPlacedOrderDate(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        let date = yield (0, s_order_1.get_date)(req.body.from, req.body.to);
+        let date = yield (0, s_order_1.filter_placed_order_date)(req.body.from, req.body.to);
         console.log(req.body);
         if (date)
             return res.status(200).json({ filters: date.rows, count: date.rowCount });
         return res.status(400).send("Transactions within the specified date does not exist");
     });
 }
-exports.filterDate = filterDate;
+exports.filterPlacedOrderDate = filterPlacedOrderDate;
+function filterReceivedOrderDate(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let date = yield (0, s_order_1.filter_received_order_date)(req.body.from, req.body.to);
+        console.log(req.body);
+        if (date)
+            return res.status(200).json({ filters: date.rows, count: date.rowCount });
+        return res.status(400).send("Transactions within the specified date does not exist");
+    });
+}
+exports.filterReceivedOrderDate = filterReceivedOrderDate;
+function filterCancelledOrderDate(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let date = yield (0, s_order_1.filter_cancelled_order_date)(req.body.from, req.body.to);
+        console.log(req.body);
+        if (date)
+            return res.status(200).json({ filters: date.rows, count: date.rowCount });
+        return res.status(400).send("Transactions within the specified date does not exist");
+    });
+}
+exports.filterCancelledOrderDate = filterCancelledOrderDate;

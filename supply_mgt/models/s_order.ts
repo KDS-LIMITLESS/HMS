@@ -154,8 +154,20 @@ export async function get_order_counts() {
         
     `)
 }
-export async function get_date(from:string, to:Date) {
-    const DATE = await db.query(SQL ` SELECT * FROM s_orders WHERE status = 'PENDING' 
-        AND orderDate BETWEEN ${from} AND ${to} `)
+export async function filter_placed_order_date(from:string, to:Date) {
+    const DATE = await db.query(SQL ` (SELECT * FROM s_orders WHERE status = 'PENDING' 
+        AND orderDate BETWEEN ${from} AND ${to}) `)
+    return DATE
+}
+
+export async function filter_received_order_date(from:string, to:Date) {
+    const DATE = await db.query(SQL ` (SELECT * FROM s_orders WHERE status = 'RECEIVED' 
+        AND orderDate BETWEEN ${from} AND ${to}) `)
+    return DATE
+}
+
+export async function filter_cancelled_order_date(from:string, to:Date) {
+    const DATE = await db.query(SQL ` (SELECT * FROM s_orders WHERE status = 'CANCELLED' 
+        AND orderDate BETWEEN ${from} AND ${to}) `)
     return DATE
 }

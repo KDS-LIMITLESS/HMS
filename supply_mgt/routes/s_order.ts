@@ -1,9 +1,10 @@
 import express from 'express'
 import { placeSupplyOrder, receiveSupplyOrder, getAllPlacedOrders,
     getAllReceivedOrders, getTotalPlacedOrders, cancelSupplyOrder,
-filterDate, getAllCancelledOrders, damagedSupplyOrder,
+filterPlacedOrderDate, getAllCancelledOrders, damagedSupplyOrder,
 returnSupplyOrder, getAllDamagedOrders, getAllReturnedOrders,
-getAllPlacedOrder, getAllReceivedOrder, getOrderCounts} from '../resources/s_order'
+getAllPlacedOrder, getAllReceivedOrder, getOrderCounts, filterCancelledOrderDate,
+filterReceivedOrderDate} from '../resources/s_order'
 
 const router = express.Router()
 
@@ -15,7 +16,9 @@ router.post('/placed-orders', getAllPlacedOrders)
 router.post('/received-orders', getAllReceivedOrders)
 router.post('/cancelled-orders', getAllCancelledOrders)
 router.post('/get-total', getTotalPlacedOrders)
-router.post("/filter-supply-date", filterDate)
+router.post("/filter-placed-orders", filterPlacedOrderDate)
+router.post("/filter-received-orders", filterReceivedOrderDate)
+router.post("/filter-cancelled-orders", filterCancelledOrderDate)
 router.post("/get-damaged-orders", getAllDamagedOrders)
 router.post("/get-returned-order", getAllReturnedOrders)
 router.post('/set-damaged-order', damagedSupplyOrder)

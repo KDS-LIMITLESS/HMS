@@ -2,9 +2,10 @@ import { Request, Response } from 'express'
 import { find_supplier } from '../models/suppliers'
 import { place_supply_order, receive_supply_order, cancel_supply_order, 
     get_all_supplier_placed_order, get_all_supplier_received_orders, get_order,
-    get_total, get_date, get_all_cancelled_orders,
+    get_total, filter_placed_order_date, get_all_cancelled_orders,
     get_all_damaged_orders, get_all_returned_orders,
-    get_all_placed_orders, get_all_received_orders, get_order_counts} from '../models/s_order'
+    get_all_placed_orders, get_all_received_orders, get_order_counts, filter_cancelled_order_date,
+    filter_received_order_date} from '../models/s_order'
 
 
 export async function placeSupplyOrder(req:Request, res:Response) {
@@ -113,8 +114,22 @@ export async function getOrderCounts(req:Request, res:Response) {
     return res.status(200).json({data: orders.rows})
 }
 
-export async function filterDate(req:Request, res:Response) {
-    let date = await get_date(req.body.from, req.body.to)
+export async function filterPlacedOrderDate(req:Request, res:Response) {
+    let date = await filter_placed_order_date(req.body.from, req.body.to)
+    console.log(req.body)
+    if (date) return res.status(200).json({filters: date.rows, count: date.rowCount})
+    return res.status(400).send("Transactions within the specified date does not exist")
+}
+
+export async function filterReceivedOrderDate(req:Request, res:Response) {
+    let date = await filter_received_order_date(req.body.from, req.body.to)
+    console.log(req.body)
+    if (date) return res.status(200).json({filters: date.rows, count: date.rowCount})
+    return res.status(400).send("Transactions within the specified date does not exist")
+}
+
+export async function filterCancelledOrderDate(req:Request, res:Response) {
+    let date = await filter_cancelled_order_date(req.body.from, req.body.to)
     console.log(req.body)
     if (date) return res.status(200).json({filters: date.rows, count: date.rowCount})
     return res.status(400).send("Transactions within the specified date does not exist")
