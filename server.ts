@@ -35,9 +35,7 @@ app.listen(PORT, () => {
 })
 
 async function startServer() {
-    // await createUsersTable();
     
-    // await createItemsTable();
     // await db.query('DROP TABLE item')
     // await db.query('DROP TABLE users')
     // await db.query('DROP TABLE orders')
@@ -45,8 +43,8 @@ async function startServer() {
     // await db.query('DROP TABLE credit')
     // await db.query('DROP TABLE notification')
     
-    // await createUsersTable()
-    // await createItemsTable()
+    await createUsersTable()
+    await createItemsTable()
     await createTableManager()
     await create_Order_Table()
     await create_credit_table()
